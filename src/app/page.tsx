@@ -106,8 +106,8 @@ export default function Home() {
         </Typography>
         <Typography variant="body1">
           Whether you&apos;re searching for someone or providing information,
-          HopeNet connects you with the resources and community support you
-          need during difficult times.
+          HopeNet connects you with the resources and community support you need
+          during difficult times.
         </Typography>
       </Box>
     </Container>

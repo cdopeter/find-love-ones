@@ -1,0 +1,299 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Kingston",
+        "parish": "Kingston",
+        "county": "Surrey",
+        "capital": "Kingston"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [-76.8231, 17.9514],
+            [-76.7631, 17.9514],
+            [-76.7631, 17.9914],
+            [-76.8231, 17.9914],
+            [-76.8231, 17.9514]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "St. Andrew",
+        "parish": "St. Andrew",
+        "county": "Surrey",
+        "capital": "Half Way Tree"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [-76.8499, 17.9879],
+            [-76.7699, 17.9879],
+            [-76.7699, 18.0479],
+            [-76.8499, 18.0479],
+            [-76.8499, 17.9879]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "St. Thomas",
+        "parish": "St. Thomas",
+        "county": "Surrey",
+        "capital": "Morant Bay"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [-76.4493, 17.8515],
+            [-76.3693, 17.8515],
+            [-76.3693, 17.9115],
+            [-76.4493, 17.9115],
+            [-76.4493, 17.8515]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Portland",
+        "parish": "Portland",
+        "county": "Surrey",
+        "capital": "Port Antonio"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [-76.4915, 18.1474],
+            [-76.4115, 18.1474],
+            [-76.4115, 18.2074],
+            [-76.4915, 18.2074],
+            [-76.4915, 18.1474]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "St. Mary",
+        "parish": "St. Mary",
+        "county": "Middlesex",
+        "capital": "Port Maria"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [-76.9297, 18.3386],
+            [-76.8497, 18.3386],
+            [-76.8497, 18.3986],
+            [-76.9297, 18.3986],
+            [-76.9297, 18.3386]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "St. Ann",
+        "parish": "St. Ann",
+        "county": "Middlesex",
+        "capital": "St. Ann's Bay"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [-77.2409, 18.4073],
+            [-77.1609, 18.4073],
+            [-77.1609, 18.4673],
+            [-77.2409, 18.4673],
+            [-77.2409, 18.4073]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Trelawny",
+        "parish": "Trelawny",
+        "county": "Middlesex",
+        "capital": "Falmouth"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [-77.6959, 18.4619],
+            [-77.6159, 18.4619],
+            [-77.6159, 18.5219],
+            [-77.6959, 18.5219],
+            [-77.6959, 18.4619]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "St. James",
+        "parish": "St. James",
+        "county": "Middlesex",
+        "capital": "Montego Bay"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [-77.9339, 18.4462],
+            [-77.8539, 18.4462],
+            [-77.8539, 18.5062],
+            [-77.9339, 18.5062],
+            [-77.9339, 18.4462]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Hanover",
+        "parish": "Hanover",
+        "county": "Cornwall",
+        "capital": "Lucea"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [-78.2136, 18.421],
+            [-78.1336, 18.421],
+            [-78.1336, 18.481],
+            [-78.2136, 18.481],
+            [-78.2136, 18.421]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Westmoreland",
+        "parish": "Westmoreland",
+        "county": "Cornwall",
+        "capital": "Savanna-la-Mar"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [-78.1722, 18.1886],
+            [-78.0922, 18.1886],
+            [-78.0922, 18.2486],
+            [-78.1722, 18.2486],
+            [-78.1722, 18.1886]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "St. Elizabeth",
+        "parish": "St. Elizabeth",
+        "county": "Cornwall",
+        "capital": "Black River"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [-77.8889, 17.9961],
+            [-77.8089, 17.9961],
+            [-77.8089, 18.0561],
+            [-77.8889, 18.0561],
+            [-77.8889, 17.9961]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Manchester",
+        "parish": "Manchester",
+        "county": "Middlesex",
+        "capital": "Mandeville"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [-77.5464, 18.0104],
+            [-77.4664, 18.0104],
+            [-77.4664, 18.0704],
+            [-77.5464, 18.0704],
+            [-77.5464, 18.0104]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Clarendon",
+        "parish": "Clarendon",
+        "county": "Middlesex",
+        "capital": "May Pen"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [-77.2816, 17.9346],
+            [-77.2016, 17.9346],
+            [-77.2016, 17.9946],
+            [-77.2816, 17.9946],
+            [-77.2816, 17.9346]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "St. Catherine",
+        "parish": "St. Catherine",
+        "county": "Middlesex",
+        "capital": "Spanish Town"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [-76.9963, 17.9612],
+            [-76.9163, 17.9612],
+            [-76.9163, 18.0212],
+            [-76.9963, 18.0212],
+            [-76.9963, 17.9612]
+          ]
+        ]
+      }
+    }
+  ]
+}

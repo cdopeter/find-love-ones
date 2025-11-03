@@ -1,0 +1,255 @@
+{
+  "type": "Topology",
+  "arcs": [
+    [
+      [-76823, 19514],
+      [-76763, 19514],
+      [-76763, 19914],
+      [-76823, 19914],
+      [-76823, 19514]
+    ],
+    [
+      [-76849, 19879],
+      [-76769, 19879],
+      [-76769, 20479],
+      [-76849, 20479],
+      [-76849, 19879]
+    ],
+    [
+      [-76449, 18515],
+      [-76369, 18515],
+      [-76369, 19115],
+      [-76449, 19115],
+      [-76449, 18515]
+    ],
+    [
+      [-76491, 21474],
+      [-76411, 21474],
+      [-76411, 22074],
+      [-76491, 22074],
+      [-76491, 21474]
+    ],
+    [
+      [-76929, 23386],
+      [-76849, 23386],
+      [-76849, 23986],
+      [-76929, 23986],
+      [-76929, 23386]
+    ],
+    [
+      [-77240, 24073],
+      [-77160, 24073],
+      [-77160, 24673],
+      [-77240, 24673],
+      [-77240, 24073]
+    ],
+    [
+      [-77695, 24619],
+      [-77615, 24619],
+      [-77615, 25219],
+      [-77695, 25219],
+      [-77695, 24619]
+    ],
+    [
+      [-77933, 24462],
+      [-77853, 24462],
+      [-77853, 25062],
+      [-77933, 25062],
+      [-77933, 24462]
+    ],
+    [
+      [-78213, 24210],
+      [-78133, 24210],
+      [-78133, 24810],
+      [-78213, 24810],
+      [-78213, 24210]
+    ],
+    [
+      [-78172, 21886],
+      [-78092, 21886],
+      [-78092, 22486],
+      [-78172, 22486],
+      [-78172, 21886]
+    ],
+    [
+      [-77888, 19961],
+      [-77808, 19961],
+      [-77808, 20561],
+      [-77888, 20561],
+      [-77888, 19961]
+    ],
+    [
+      [-77546, 20104],
+      [-77466, 20104],
+      [-77466, 20704],
+      [-77546, 20704],
+      [-77546, 20104]
+    ],
+    [
+      [-77281, 19346],
+      [-77201, 19346],
+      [-77201, 19946],
+      [-77281, 19946],
+      [-77281, 19346]
+    ],
+    [
+      [-76996, 19612],
+      [-76916, 19612],
+      [-76916, 20212],
+      [-76996, 20212],
+      [-76996, 19612]
+    ]
+  ],
+  "objects": {
+    "parishes": {
+      "type": "GeometryCollection",
+      "geometries": [
+        {
+          "type": "Polygon",
+          "properties": {
+            "name": "Kingston",
+            "parish": "Kingston",
+            "county": "Surrey",
+            "capital": "Kingston"
+          },
+          "arcs": [[0]]
+        },
+        {
+          "type": "Polygon",
+          "properties": {
+            "name": "St. Andrew",
+            "parish": "St. Andrew",
+            "county": "Surrey",
+            "capital": "Half Way Tree"
+          },
+          "arcs": [[1]]
+        },
+        {
+          "type": "Polygon",
+          "properties": {
+            "name": "St. Thomas",
+            "parish": "St. Thomas",
+            "county": "Surrey",
+            "capital": "Morant Bay"
+          },
+          "arcs": [[2]]
+        },
+        {
+          "type": "Polygon",
+          "properties": {
+            "name": "Portland",
+            "parish": "Portland",
+            "county": "Surrey",
+            "capital": "Port Antonio"
+          },
+          "arcs": [[3]]
+        },
+        {
+          "type": "Polygon",
+          "properties": {
+            "name": "St. Mary",
+            "parish": "St. Mary",
+            "county": "Middlesex",
+            "capital": "Port Maria"
+          },
+          "arcs": [[4]]
+        },
+        {
+          "type": "Polygon",
+          "properties": {
+            "name": "St. Ann",
+            "parish": "St. Ann",
+            "county": "Middlesex",
+            "capital": "St. Ann's Bay"
+          },
+          "arcs": [[5]]
+        },
+        {
+          "type": "Polygon",
+          "properties": {
+            "name": "Trelawny",
+            "parish": "Trelawny",
+            "county": "Middlesex",
+            "capital": "Falmouth"
+          },
+          "arcs": [[6]]
+        },
+        {
+          "type": "Polygon",
+          "properties": {
+            "name": "St. James",
+            "parish": "St. James",
+            "county": "Middlesex",
+            "capital": "Montego Bay"
+          },
+          "arcs": [[7]]
+        },
+        {
+          "type": "Polygon",
+          "properties": {
+            "name": "Hanover",
+            "parish": "Hanover",
+            "county": "Cornwall",
+            "capital": "Lucea"
+          },
+          "arcs": [[8]]
+        },
+        {
+          "type": "Polygon",
+          "properties": {
+            "name": "Westmoreland",
+            "parish": "Westmoreland",
+            "county": "Cornwall",
+            "capital": "Savanna-la-Mar"
+          },
+          "arcs": [[9]]
+        },
+        {
+          "type": "Polygon",
+          "properties": {
+            "name": "St. Elizabeth",
+            "parish": "St. Elizabeth",
+            "county": "Cornwall",
+            "capital": "Black River"
+          },
+          "arcs": [[10]]
+        },
+        {
+          "type": "Polygon",
+          "properties": {
+            "name": "Manchester",
+            "parish": "Manchester",
+            "county": "Middlesex",
+            "capital": "Mandeville"
+          },
+          "arcs": [[11]]
+        },
+        {
+          "type": "Polygon",
+          "properties": {
+            "name": "Clarendon",
+            "parish": "Clarendon",
+            "county": "Middlesex",
+            "capital": "May Pen"
+          },
+          "arcs": [[12]]
+        },
+        {
+          "type": "Polygon",
+          "properties": {
+            "name": "St. Catherine",
+            "parish": "St. Catherine",
+            "county": "Middlesex",
+            "capital": "Spanish Town"
+          },
+          "arcs": [[13]]
+        }
+      ]
+    }
+  },
+  "bbox": [-78.2136, 17.8515, -76.3693, 18.5219],
+  "transform": {
+    "scale": [0.0001, 0.0001],
+    "translate": [-78.2136, 17.8515]
+  }
+}
