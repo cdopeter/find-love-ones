@@ -27,7 +27,8 @@ export async function logStatusChange(entry: AuditLogEntry): Promise<void> {
 
     if (error) {
       console.error('Failed to log status change to audit table:', error);
-      throw error;
+      // Don't throw - we don't want audit logging failures to break the main flow
+      return;
     }
 
     console.log(`Audit log created: ${entry.oldStatus} -> ${entry.newStatus} by ${entry.changedBy || 'system'}`);

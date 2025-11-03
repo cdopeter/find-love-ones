@@ -29,13 +29,20 @@ ALTER TABLE missing_person_requests
   ADD COLUMN IF NOT EXISTS email_sent_at TIMESTAMP WITH TIME ZONE;
 
 -- Create function to trigger email notification on status change to 'found'
+-- NOTE: This function uses pg_net extension which may not be available in all Supabase projects
+-- For Supabase, you may want to use Database Webhooks instead:
+-- https://supabase.com/docs/guides/database/webhooks
+--
+-- Alternative: Use the client-side notification service in src/lib/services/notification.ts
+-- which is automatically called when status is updated through the dashboard
+
 CREATE OR REPLACE FUNCTION trigger_found_notification()
 RETURNS TRIGGER AS $$
 BEGIN
   -- Only trigger if status changed to 'found' and email hasn't been sent
   IF NEW.status = 'found' AND (OLD.status IS NULL OR OLD.status != 'found') AND NEW.email_sent_at IS NULL THEN
-    -- Call Edge Function via pg_net or similar
-    -- This is a placeholder - actual implementation depends on your Edge Function setup
+    -- This requires pg_net extension to be enabled: CREATE EXTENSION IF NOT EXISTS pg_net;
+    -- If pg_net is not available, comment out this function and rely on client-side notifications
     PERFORM net.http_post(
       url := current_setting('app.edge_function_url', true) || '/send-found-notification',
       headers := jsonb_build_object(
@@ -56,13 +63,10 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
 
--- Create trigger for status changes
+-- Create trigger for status changes (optional - only if using database-level notifications)
+-- Comment this out if you prefer client-side notifications only
 DROP TRIGGER IF EXISTS on_status_change_to_found ON missing_person_requests;
 CREATE TRIGGER on_status_change_to_found
   AFTER UPDATE OF status ON missing_person_requests
   FOR EACH ROW
   EXECUTE FUNCTION trigger_found_notification();
-
--- Note: The above trigger uses pg_net extension which needs to be enabled:
--- You may need to run: CREATE EXTENSION IF NOT EXISTS pg_net;
--- Alternatively, you can use Supabase Edge Functions with database webhooks

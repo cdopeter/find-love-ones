@@ -105,7 +105,7 @@ export default function DashboardPage() {
         request: updatedRequest,
         oldStatus,
         newStatus,
-        changedBy: 'dashboard-user', // TODO: Replace with actual user ID when authentication is implemented
+        changedBy: 'anonymous-dashboard-user', // User identifier when authentication is not yet implemented
       });
 
       setSnackbar({ open: true, message: 'Status updated successfully', severity: 'success' });

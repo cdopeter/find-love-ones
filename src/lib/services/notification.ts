@@ -56,11 +56,18 @@ async function sendFoundNotification(request: MissingPersonRequest): Promise<voi
         ? '/api/send-found-notification'
         : `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/api/send-found-notification`;
 
+    // Note: EDGE_FUNCTION_SECRET should only be used server-side
+    // Client-side calls will need to go through a server action or API route
+    const secret = process.env.EDGE_FUNCTION_SECRET;
+    if (!secret) {
+      console.warn('EDGE_FUNCTION_SECRET not configured - email notification may fail');
+    }
+
     const response = await fetch(apiUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${process.env.EDGE_FUNCTION_SECRET || process.env.NEXT_PUBLIC_EDGE_FUNCTION_SECRET}`,
+        Authorization: `Bearer ${secret}`,
       },
       body: JSON.stringify({
         requestId: request.id,
