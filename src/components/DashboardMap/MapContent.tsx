@@ -5,6 +5,7 @@ import { MapContainer, TileLayer, Marker, Popup, CircleMarker } from 'react-leaf
 import L from 'leaflet';
 import { MissingPersonRequest } from '@/lib/types/database';
 import { PARISH_METADATA } from '@/lib/constants/parishes';
+import { getMarkerOffset } from '@/lib/utils/map';
 
 interface MapContentProps {
   requests: MissingPersonRequest[];
@@ -31,22 +32,6 @@ export default function MapContent({ requests, onMarkerClick }: MapContentProps)
     });
     return counts;
   }, [requests]);
-
-  // Generate consistent offset based on request ID
-  const getOffset = (id: string | undefined) => {
-    if (!id) return { lat: 0, lng: 0 };
-    // Simple hash to generate consistent but pseudo-random offset
-    let hash = 0;
-    for (let i = 0; i < id.length; i++) {
-      hash = (hash << 5) - hash + id.charCodeAt(i);
-      hash = hash & hash; // Convert to 32-bit integer
-    }
-    const normalized = Math.abs(hash) / 2147483647; // Normalize to 0-1
-    return {
-      lat: (normalized - 0.5) * 0.05,
-      lng: ((normalized * 1.5) % 1 - 0.5) * 0.05, // Different multiplier for lng
-    };
-  };
 
   // Jamaica center coordinates
   const jamaicaCenter: [number, number] = [18.1096, -77.2975];
@@ -100,7 +85,7 @@ export default function MapContent({ requests, onMarkerClick }: MapContentProps)
         if (!metadata) return null;
 
         // Use consistent offset based on ID to prevent markers from stacking
-        const offset = getOffset(request.id);
+        const offset = getMarkerOffset(request.id);
         const lat = metadata.lat + offset.lat;
         const lng = metadata.lng + offset.lng;
 

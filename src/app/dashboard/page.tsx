@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useMemo } from 'react';
+import { Suspense, useState, useEffect, useMemo } from 'react';
 import {
   Container,
   Box,
@@ -23,15 +23,15 @@ import PersonDetailDrawer from '@/components/PersonDetailDrawer';
 import { MissingPersonRequest } from '@/lib/types/database';
 import { JAMAICAN_PARISHES } from '@/lib/constants/parishes';
 import { exportToCSV } from '@/lib/utils/csv-export';
+import { useMapUrlParams } from '@/lib/hooks/useMapUrlParams';
 
 // Force dynamic rendering
 export const dynamic = 'force-dynamic';
 
-export default function DashboardPage() {
+function DashboardContent() {
   const [requests, setRequests] = useState<MissingPersonRequest[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [selectedParish, setSelectedParish] = useState<string>('all');
   const [selectedRequest, setSelectedRequest] = useState<MissingPersonRequest | null>(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [snackbar, setSnackbar] = useState<{ open: boolean; message: string; severity: 'success' | 'error' }>({
@@ -39,6 +39,9 @@ export default function DashboardPage() {
     message: '',
     severity: 'success',
   });
+
+  // Use URL parameter hook for state management
+  const { params, updateParams } = useMapUrlParams();
 
   useEffect(() => {
     fetchRequests();
@@ -66,12 +69,25 @@ export default function DashboardPage() {
   };
 
   const filteredRequests = useMemo(() => {
-    if (selectedParish === 'all') return requests;
-    return requests.filter((req) => req.parish === selectedParish);
-  }, [requests, selectedParish]);
+    if (params.parish === 'all') return requests;
+    return requests.filter((req) => req.parish === params.parish);
+  }, [requests, params.parish]);
 
   const handleParishChange = (event: SelectChangeEvent) => {
-    setSelectedParish(event.target.value);
+    updateParams({ parish: event.target.value });
+  };
+
+  const handleParishClick = (parish: string) => {
+    // Toggle parish selection: if same parish clicked, show all; otherwise filter
+    updateParams({ parish: params.parish === parish ? 'all' : parish });
+  };
+
+  const handleHeatmapToggle = () => {
+    updateParams({ showHeatmap: !params.showHeatmap });
+  };
+
+  const handleParishOverlayToggle = () => {
+    updateParams({ showParishOverlay: !params.showParishOverlay });
   };
 
   const handleStatusUpdate = async (id: string, newStatus: 'missing' | 'found' | 'in_progress') => {
@@ -173,7 +189,7 @@ export default function DashboardPage() {
             <Select
               labelId="parish-filter-label"
               id="parish-filter"
-              value={selectedParish}
+              value={params.parish}
               label="Filter by Parish"
               onChange={handleParishChange}
             >
@@ -192,7 +208,16 @@ export default function DashboardPage() {
           <Typography variant="h6" gutterBottom>
             Map View
           </Typography>
-          <DashboardMap requests={filteredRequests} onMarkerClick={handleRowClick} />
+          <DashboardMap
+            requests={filteredRequests}
+            onMarkerClick={handleRowClick}
+            selectedParish={params.parish}
+            onParishClick={handleParishClick}
+            showHeatmap={params.showHeatmap}
+            showParishOverlay={params.showParishOverlay}
+            onHeatmapToggle={handleHeatmapToggle}
+            onParishOverlayToggle={handleParishOverlayToggle}
+          />
         </Paper>
 
         {/* Table View */}
@@ -233,5 +258,21 @@ export default function DashboardPage() {
         </Snackbar>
       </Box>
     </Container>
+  );
+}
+
+export default function DashboardPage() {
+  return (
+    <Suspense
+      fallback={
+        <Container maxWidth="xl">
+          <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '400px' }}>
+            <CircularProgress />
+          </Box>
+        </Container>
+      }
+    >
+      <DashboardContent />
+    </Suspense>
   );
 }
