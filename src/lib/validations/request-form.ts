@@ -58,8 +58,8 @@ export const requestFormSchema = z.object({
   contact_phone: z
     .string()
     .regex(
-      /^(\+?1[-.\s]?)?(\(?\d{3}\)?[-.\s]?)?\d{3}[-.\s]?\d{4}$/,
-      'Please enter a valid phone number'
+      /^(\+?1[-.\s]?)?876[-.\s]?\d{3}[-.\s]?\d{4}$|^\d{3}[-.\s]?\d{4}$/,
+      'Please enter a valid Jamaican phone number (e.g., 876-123-4567 or +1-876-123-4567)'
     )
     .optional()
     .or(z.literal('')),

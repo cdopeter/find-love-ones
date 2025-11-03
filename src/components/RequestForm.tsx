@@ -82,7 +82,10 @@ export default function RequestForm({ onSuccess }: RequestFormProps) {
       }
 
       // Generate tracking code from the inserted record ID
-      const trackingCode = insertedData.id.substring(0, 8).toUpperCase();
+      // Use the first 8 characters of the UUID for the tracking code
+      const trackingCode = insertedData.id
+        ? String(insertedData.id).substring(0, 8).toUpperCase()
+        : 'REQ' + Date.now().toString(36).toUpperCase().substring(0, 8);
       
       // Call success callback with tracking code
       onSuccess(trackingCode);
