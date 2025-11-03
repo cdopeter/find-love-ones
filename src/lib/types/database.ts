@@ -29,6 +29,7 @@ export interface MissingPersonRequest {
   // Additional info
   photo_url?: string;
   notes?: string;
+  message_from_found?: string;
 }
 
 export type RequestStatus = 'missing' | 'found' | 'in_progress';

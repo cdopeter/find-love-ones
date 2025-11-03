@@ -21,6 +21,7 @@ const pages = [
   { label: 'About', href: '#about' },
   { label: 'Search', href: '#search' },
   { label: 'Submit Request', href: '/request' },
+  { label: 'Dashboard', href: '/dashboard' },
   { label: 'Contact', href: '#contact' },
 ];
 
