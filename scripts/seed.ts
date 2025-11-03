@@ -11,8 +11,8 @@
  */
 
 import { createClient } from '@supabase/supabase-js';
-import { JAMAICAN_PARISHES } from '../src/lib/constants/parishes.js';
-import type { MissingPersonRequest } from '../src/lib/types/database.js';
+import { JAMAICAN_PARISHES } from '../src/lib/constants/parishes';
+import type { MissingPersonRequest } from '../src/lib/types/database';
 
 // Sample first names
 const FIRST_NAMES = [

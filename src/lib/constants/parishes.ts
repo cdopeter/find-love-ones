@@ -43,7 +43,7 @@ export const PARISHES_BY_COUNTY = {
  * Parish metadata with coordinates for map center points
  */
 export const PARISH_METADATA: Record<
-  string,
+  JamaicanParish,
   {
     name: string;
     county: 'Surrey' | 'Middlesex' | 'Cornwall';
