@@ -10,7 +10,9 @@ This document explains how to use the seed script to populate your HopeNet datab
 
 ## Database Schema
 
-Create the following table in your Supabase SQL editor:
+Create the following tables in your Supabase SQL editor:
+
+### Main Table
 
 ```sql
 CREATE TABLE missing_person_requests (
@@ -39,7 +41,10 @@ CREATE TABLE missing_person_requests (
 
   -- Additional info
   photo_url TEXT,
-  notes TEXT
+  notes TEXT,
+
+  -- Email notification tracking
+  email_sent_at TIMESTAMP WITH TIME ZONE
 );
 
 -- Create indexes for better query performance
@@ -59,6 +64,13 @@ CREATE POLICY "Allow anonymous read access" ON missing_person_requests
 CREATE POLICY "Allow authenticated insert" ON missing_person_requests
   FOR INSERT WITH CHECK (auth.role() = 'authenticated');
 ```
+
+### Audit Logging Table
+
+For tracking status changes, also run the SQL in `scripts/schema-updates.sql` to create the audit logging table and triggers. This enables:
+- Tracking who changed status and when
+- Automatic email notifications when status changes to "found"
+- Full audit trail of all status changes
 
 ## Setup
 

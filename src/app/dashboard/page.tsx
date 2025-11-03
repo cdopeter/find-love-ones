@@ -76,6 +76,10 @@ export default function DashboardPage() {
 
   const handleStatusUpdate = async (id: string, newStatus: 'missing' | 'found' | 'in_progress') => {
     try {
+      // Find the current request to get old status
+      const currentRequest = requests.find((req) => req.id === id);
+      const oldStatus = currentRequest?.status || null;
+
       const { supabase } = await import('@/lib/supabase');
       const { error: updateError } = await supabase
         .from('missing_person_requests')
@@ -85,11 +89,25 @@ export default function DashboardPage() {
       if (updateError) throw updateError;
 
       // Update local state
+      const updatedRequest = {
+        ...currentRequest!,
+        status: newStatus,
+        updated_at: new Date().toISOString(),
+      };
+
       setRequests((prev) =>
-        prev.map((req) =>
-          req.id === id ? { ...req, status: newStatus, updated_at: new Date().toISOString() } : req
-        )
+        prev.map((req) => (req.id === id ? updatedRequest : req))
       );
+
+      // Handle notification and audit logging
+      const { handleStatusChangeNotification } = await import('@/lib/services/notification');
+      await handleStatusChangeNotification({
+        request: updatedRequest,
+        oldStatus,
+        newStatus,
+        changedBy: 'dashboard-user', // TODO: Replace with actual user ID when authentication is implemented
+      });
+
       setSnackbar({ open: true, message: 'Status updated successfully', severity: 'success' });
     } catch (err) {
       console.error('Error updating status:', err);
