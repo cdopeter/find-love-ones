@@ -16,7 +16,6 @@ import {
 } from '@mui/material';
 import { requestFormSchema, type RequestFormData } from '@/lib/validations/request-form';
 import { JAMAICAN_PARISHES } from '@/lib/constants/parishes';
-import { supabase } from '@/lib/supabase';
 
 interface RequestFormProps {
   onSuccess: (trackingCode: string) => void;
@@ -52,6 +51,9 @@ export default function RequestForm({ onSuccess }: RequestFormProps) {
     setError(null);
 
     try {
+      // Dynamically import supabase only when needed
+      const { supabase } = await import('@/lib/supabase');
+
       // Prepare the data for submission
       const requestData = {
         first_name: data.first_name,

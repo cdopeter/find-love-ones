@@ -42,8 +42,9 @@ export const requestFormSchema = z.object({
     .optional(),
   
   parish: z
-    .enum(JAMAICAN_PARISHES as [string, ...string[]])
-    .refine((val) => JAMAICAN_PARISHES.includes(val), {
+    .string()
+    .min(1, 'Parish is required')
+    .refine((val) => JAMAICAN_PARISHES.includes(val as typeof JAMAICAN_PARISHES[number]), {
       message: 'Please select a valid parish',
     }),
   
