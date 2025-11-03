@@ -1,6 +1,7 @@
 'use client';
 
 import * as React from 'react';
+import Link from 'next/link';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -16,7 +17,12 @@ import Brightness7Icon from '@mui/icons-material/Brightness7';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { useThemeContext } from './ThemeProvider';
 
-const pages = ['About', 'Search', 'Submit Request', 'Contact'];
+const pages = [
+  { label: 'About', href: '#about' },
+  { label: 'Search', href: '#search' },
+  { label: 'Submit Request', href: '/request' },
+  { label: 'Contact', href: '#contact' },
+];
 
 function Navigation() {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
@@ -81,8 +87,15 @@ function Navigation() {
               sx={{ display: { xs: 'block', md: 'none' } }}
             >
               {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography sx={{ textAlign: 'center' }}>{page}</Typography>
+                <MenuItem
+                  key={page.label}
+                  onClick={handleCloseNavMenu}
+                  component={Link}
+                  href={page.href}
+                >
+                  <Typography sx={{ textAlign: 'center' }}>
+                    {page.label}
+                  </Typography>
                 </MenuItem>
               ))}
             </Menu>
@@ -107,11 +120,13 @@ function Navigation() {
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pages.map((page) => (
               <Button
-                key={page}
+                key={page.label}
+                component={Link}
+                href={page.href}
                 onClick={handleCloseNavMenu}
                 sx={{ my: 2, color: 'white', display: 'block' }}
               >
-                {page}
+                {page.label}
               </Button>
             ))}
           </Box>
