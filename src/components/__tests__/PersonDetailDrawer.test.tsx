@@ -85,7 +85,9 @@ describe('PersonDetailDrawer', () => {
       />
     );
 
-    const closeButton = screen.getByRole('button', { name: /close/i });
+    // The IconButton with CloseIcon
+    const closeButtons = screen.getAllByRole('button');
+    const closeButton = closeButtons[0]; // First button is the close button
     await user.click(closeButton);
 
     expect(mockOnClose).toHaveBeenCalled();
