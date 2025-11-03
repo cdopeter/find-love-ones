@@ -24,6 +24,10 @@ HopeNet — a community-powered platform that helps families and organizations l
 - ✅ Clean layout with header and footer
 - ✅ ESLint and Prettier configured
 - ✅ Supabase client setup (requires configuration)
+- ✅ **Email notifications when person is found**
+- ✅ **Audit logging for status changes (who/when)**
+- ✅ **Professional email templates**
+- ✅ **Multiple email provider support (Resend, SendGrid, Test mode)**
 
 ## Getting Started
 
@@ -52,12 +56,23 @@ npm install
 cp .env.example .env.local
 ```
 
-Edit `.env.local` and add your Supabase credentials:
+Edit `.env.local` and add your Supabase credentials and email settings:
 
 ```
 NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+
+# Email Configuration (optional, defaults to test mode)
+EMAIL_PROVIDER=test  # Options: 'resend', 'sendgrid', 'test'
+EMAIL_FROM=notifications@hopenet.example.com
+EDGE_FUNCTION_SECRET=your_secret_key
+
+# For production email sending, configure one of:
+# RESEND_API_KEY=your_resend_api_key
+# SENDGRID_API_KEY=your_sendgrid_api_key
 ```
+
+See `.env.example` for all available options.
 
 4. Run the development server:
 
@@ -76,6 +91,30 @@ npm run dev
 - `npm run format` - Format code with Prettier
 - `npm run format:check` - Check code formatting
 - `npm run seed` - Seed database with sample data (requires Supabase setup)
+- `node scripts/test-email.js` - Test email notification system
+
+## Email Notifications
+
+When a person's status is changed to "found" in the dashboard, the system automatically:
+
+1. Updates the status in the database
+2. Logs the change to the audit table (who changed it and when)
+3. Sends an email notification to the requester's contact email
+
+### Testing Email Notifications
+
+```bash
+# Test in development mode (emails logged to console)
+EMAIL_PROVIDER=test node scripts/test-email.js
+
+# Start dev server in another terminal
+npm run dev
+
+# Then run the test
+node scripts/test-email.js
+```
+
+For detailed information about email notifications, audit logging, and configuration, see [docs/EMAIL_NOTIFICATIONS.md](docs/EMAIL_NOTIFICATIONS.md).
 
 ## Database Seeding
 
