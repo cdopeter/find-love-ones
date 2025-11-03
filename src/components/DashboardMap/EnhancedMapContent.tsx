@@ -13,15 +13,18 @@ import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
 import 'leaflet.heat';
 import { MissingPersonRequest } from '@/lib/types/database';
 import { PARISH_METADATA } from '@/lib/constants/parishes';
+import { getMarkerOffset } from '@/lib/utils/map';
 import type { Feature, FeatureCollection, Geometry } from 'geojson';
 
-// Import marker cluster plugin dynamically
-let markerClusterLoaded = false;
-async function ensureMarkerClusterLoaded() {
-  if (!markerClusterLoaded && typeof window !== 'undefined') {
-    await import('leaflet.markercluster');
-    markerClusterLoaded = true;
+// Import marker cluster plugin dynamically with a promise cache
+let markerClusterPromise: Promise<void> | null = null;
+function ensureMarkerClusterLoaded(): Promise<void> {
+  if (!markerClusterPromise && typeof window !== 'undefined') {
+    markerClusterPromise = import('leaflet.markercluster').then(() => {
+      // Plugin is now loaded
+    });
   }
+  return markerClusterPromise || Promise.resolve();
 }
 
 interface MapContentProps {
@@ -59,7 +62,7 @@ function HeatmapLayer({ requests }: { requests: MissingPersonRequest[] }) {
       const metadata = PARISH_METADATA[req.parish as keyof typeof PARISH_METADATA];
       if (!metadata) return;
 
-      const offset = getOffset(req.id);
+      const offset = getMarkerOffset(req.id);
       const lat = metadata.lat + offset.lat;
       const lng = metadata.lng + offset.lng;
       const key = `${lat.toFixed(3)},${lng.toFixed(3)}`;
@@ -68,8 +71,8 @@ function HeatmapLayer({ requests }: { requests: MissingPersonRequest[] }) {
       points.push([lat, lng, 0.8]);
     });
 
-    // @ts-expect-error - L.heatLayer is added by leaflet.heat plugin
-    const heatLayer = L.heatLayer(points, {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const heatLayer = (L as any).heatLayer(points, {
       radius: 25,
       blur: 15,
       maxZoom: 17,
@@ -210,7 +213,7 @@ function MarkerClusterLayer({
         const metadata = PARISH_METADATA[request.parish as keyof typeof PARISH_METADATA];
         if (!metadata || !markerClusterGroup) return;
 
-        const offset = getOffset(request.id);
+        const offset = getMarkerOffset(request.id);
         const lat = metadata.lat + offset.lat;
         const lng = metadata.lng + offset.lng;
 
@@ -245,21 +248,6 @@ function MarkerClusterLayer({
 
   return null;
 }
-
-// Generate consistent offset based on request ID
-const getOffset = (id: string | undefined) => {
-  if (!id) return { lat: 0, lng: 0 };
-  let hash = 0;
-  for (let i = 0; i < id.length; i++) {
-    hash = (hash << 5) - hash + id.charCodeAt(i);
-    hash = hash & hash;
-  }
-  const normalized = Math.abs(hash) / 2147483647;
-  return {
-    lat: (normalized - 0.5) * 0.05,
-    lng: ((normalized * 1.5) % 1 - 0.5) * 0.05,
-  };
-};
 
 export default function MapContent({
   requests,
