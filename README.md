@@ -34,28 +34,33 @@ HopeNet — a community-powered platform that helps families and organizations l
 ### Installation
 
 1. Clone the repository:
+
 ```bash
 git clone https://github.com/cdopeter/find-love-ones.git
 cd find-love-ones
 ```
 
 2. Install dependencies:
+
 ```bash
 npm install
 ```
 
 3. Set up environment variables:
+
 ```bash
 cp .env.example .env.local
 ```
 
 Edit `.env.local` and add your Supabase credentials:
+
 ```
 NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
 ```
 
 4. Run the development server:
+
 ```bash
 npm run dev
 ```
