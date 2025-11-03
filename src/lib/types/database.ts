@@ -30,6 +30,20 @@ export interface MissingPersonRequest {
   photo_url?: string;
   notes?: string;
   message_from_found?: string;
+
+  // Email notification tracking
+  email_sent_at?: string;
 }
 
 export type RequestStatus = 'missing' | 'found' | 'in_progress';
+
+export interface StatusChangeAudit {
+  id: string;
+  request_id: string;
+  old_status: string | null;
+  new_status: string;
+  changed_by: string;
+  changed_at: string;
+  metadata?: Record<string, unknown>;
+}
+

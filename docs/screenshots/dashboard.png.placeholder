@@ -1,0 +1,15 @@
+# Placeholder for Dashboard Screenshot
+
+This file serves as a placeholder for the HopeNet dashboard screenshot.
+
+**To be replaced with**: Actual screenshot of the responder dashboard showing:
+- Interactive map with parish boundaries
+- Data table with missing person requests
+- Parish filter dropdown
+- CSV export button
+- Status indicators
+
+**Recommended dimensions**: 1280x720 or higher
+**Format**: PNG
+
+Replace this file with an actual screenshot once the application is deployed.
