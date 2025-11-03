@@ -32,9 +32,14 @@ export default function DashboardPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [selectedParish, setSelectedParish] = useState<string>('all');
-  const [selectedRequest, setSelectedRequest] = useState<MissingPersonRequest | null>(null);
+  const [selectedRequest, setSelectedRequest] =
+    useState<MissingPersonRequest | null>(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const [snackbar, setSnackbar] = useState<{ open: boolean; message: string; severity: 'success' | 'error' }>({
+  const [snackbar, setSnackbar] = useState<{
+    open: boolean;
+    message: string;
+    severity: 'success' | 'error';
+  }>({
     open: false,
     message: '',
     severity: 'success',
@@ -74,7 +79,10 @@ export default function DashboardPage() {
     setSelectedParish(event.target.value);
   };
 
-  const handleStatusUpdate = async (id: string, newStatus: 'missing' | 'found' | 'in_progress') => {
+  const handleStatusUpdate = async (
+    id: string,
+    newStatus: 'missing' | 'found' | 'in_progress'
+  ) => {
     try {
       const { supabase } = await import('@/lib/supabase');
       const { error: updateError } = await supabase
@@ -87,13 +95,27 @@ export default function DashboardPage() {
       // Update local state
       setRequests((prev) =>
         prev.map((req) =>
-          req.id === id ? { ...req, status: newStatus, updated_at: new Date().toISOString() } : req
+          req.id === id
+            ? {
+                ...req,
+                status: newStatus,
+                updated_at: new Date().toISOString(),
+              }
+            : req
         )
       );
-      setSnackbar({ open: true, message: 'Status updated successfully', severity: 'success' });
+      setSnackbar({
+        open: true,
+        message: 'Status updated successfully',
+        severity: 'success',
+      });
     } catch (err) {
       console.error('Error updating status:', err);
-      setSnackbar({ open: true, message: 'Failed to update status', severity: 'error' });
+      setSnackbar({
+        open: true,
+        message: 'Failed to update status',
+        severity: 'error',
+      });
     }
   };
 
@@ -102,7 +124,10 @@ export default function DashboardPage() {
       const { supabase } = await import('@/lib/supabase');
       const { error: updateError } = await supabase
         .from('missing_person_requests')
-        .update({ message_from_found: message, updated_at: new Date().toISOString() })
+        .update({
+          message_from_found: message,
+          updated_at: new Date().toISOString(),
+        })
         .eq('id', id);
 
       if (updateError) throw updateError;
@@ -110,13 +135,27 @@ export default function DashboardPage() {
       // Update local state
       setRequests((prev) =>
         prev.map((req) =>
-          req.id === id ? { ...req, message_from_found: message, updated_at: new Date().toISOString() } : req
+          req.id === id
+            ? {
+                ...req,
+                message_from_found: message,
+                updated_at: new Date().toISOString(),
+              }
+            : req
         )
       );
-      setSnackbar({ open: true, message: 'Message updated successfully', severity: 'success' });
+      setSnackbar({
+        open: true,
+        message: 'Message updated successfully',
+        severity: 'success',
+      });
     } catch (err) {
       console.error('Error updating message:', err);
-      setSnackbar({ open: true, message: 'Failed to update message', severity: 'error' });
+      setSnackbar({
+        open: true,
+        message: 'Failed to update message',
+        severity: 'error',
+      });
     }
   };
 
@@ -136,7 +175,14 @@ export default function DashboardPage() {
   if (loading) {
     return (
       <Container maxWidth="xl">
-        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '400px' }}>
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            minHeight: '400px',
+          }}
+        >
           <CircularProgress />
         </Box>
       </Container>
@@ -146,7 +192,14 @@ export default function DashboardPage() {
   return (
     <Container maxWidth="xl">
       <Box sx={{ my: 4 }}>
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            mb: 3,
+          }}
+        >
           <Typography variant="h3" component="h1" gutterBottom>
             Responder Dashboard
           </Typography>
@@ -192,7 +245,10 @@ export default function DashboardPage() {
           <Typography variant="h6" gutterBottom>
             Map View
           </Typography>
-          <DashboardMap requests={filteredRequests} onMarkerClick={handleRowClick} />
+          <DashboardMap
+            requests={filteredRequests}
+            onMarkerClick={handleRowClick}
+          />
         </Paper>
 
         {/* Table View */}
