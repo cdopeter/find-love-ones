@@ -4,17 +4,23 @@ This directory contains screenshots of the HopeNet application for documentation
 
 ## Current Screenshots
 
+> **Note**: Currently, placeholder files exist. Actual screenshots need to be added by running the application and capturing screenshots.
+
 ### Homepage
-**File**: `homepage.png`
+**File**: `homepage.png` (placeholder: `homepage.png.placeholder`)
 - Main landing page
 - Features overview
 - Call-to-action buttons
 
 ### Dashboard
-**File**: `dashboard.png`
+**File**: `dashboard.png` (placeholder: `dashboard.png.placeholder`)
 - Responder dashboard view
 - Interactive map showing missing persons by parish
 - Data table with filtering options
+
+### To Be Added
+
+The following screenshots should be added once the application is running:
 
 ### Request Form
 **File**: `request-form.png`
