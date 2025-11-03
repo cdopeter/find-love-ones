@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
@@ -37,7 +38,13 @@ export default function Home() {
           <Button variant="contained" size="large" startIcon={<SearchIcon />}>
             Search for Someone
           </Button>
-          <Button variant="outlined" size="large" startIcon={<AddCircleIcon />}>
+          <Button
+            component={Link}
+            href="/request"
+            variant="outlined"
+            size="large"
+            startIcon={<AddCircleIcon />}
+          >
             Submit a Request
           </Button>
         </Box>
