@@ -15,6 +15,15 @@ import { MissingPersonRequest } from '@/lib/types/database';
 import { PARISH_METADATA } from '@/lib/constants/parishes';
 import type { Feature, FeatureCollection, Geometry } from 'geojson';
 
+// Import marker cluster plugin dynamically
+let markerClusterLoaded = false;
+async function ensureMarkerClusterLoaded() {
+  if (!markerClusterLoaded && typeof window !== 'undefined') {
+    await import('leaflet.markercluster');
+    markerClusterLoaded = true;
+  }
+}
+
 interface MapContentProps {
   requests: MissingPersonRequest[];
   onMarkerClick: (request: MissingPersonRequest) => void;
@@ -181,43 +190,56 @@ function MarkerClusterLayer({
   const map = useMap();
 
   useEffect(() => {
-    // Create marker cluster group
-    const markerClusterGroup = L.markerClusterGroup({
-      showCoverageOnHover: false,
-      maxClusterRadius: 50,
-      spiderfyOnMaxZoom: true,
-      removeOutsideVisibleBounds: true,
-      animate: true,
-    });
+    let markerClusterGroup: L.MarkerClusterGroup | null = null;
 
-    // Add markers to cluster group
-    requests.forEach((request) => {
-      const metadata = PARISH_METADATA[request.parish as keyof typeof PARISH_METADATA];
-      if (!metadata) return;
+    const setupCluster = async () => {
+      // Ensure marker cluster library is loaded
+      await ensureMarkerClusterLoaded();
 
-      const offset = getOffset(request.id);
-      const lat = metadata.lat + offset.lat;
-      const lng = metadata.lng + offset.lng;
+      // Create marker cluster group using the extended L object
+      markerClusterGroup = L.markerClusterGroup({
+        showCoverageOnHover: false,
+        maxClusterRadius: 50,
+        spiderfyOnMaxZoom: true,
+        removeOutsideVisibleBounds: true,
+        animate: true,
+      });
 
-      const marker = L.marker([lat, lng], { icon });
-      marker.bindPopup(`
-        <div>
-          <strong>${request.first_name} ${request.last_name}</strong><br />
-          Age: ${request.age || 'N/A'}<br />
-          Parish: ${request.parish}<br />
-          Status: <span style="text-transform: capitalize">${request.status.replace('_', ' ')}</span><br />
-          Last seen: ${request.last_seen_location}
-        </div>
-      `);
+      // Add markers to cluster group
+      requests.forEach((request) => {
+        const metadata = PARISH_METADATA[request.parish as keyof typeof PARISH_METADATA];
+        if (!metadata || !markerClusterGroup) return;
 
-      marker.on('click', () => onMarkerClick(request));
-      markerClusterGroup.addLayer(marker);
-    });
+        const offset = getOffset(request.id);
+        const lat = metadata.lat + offset.lat;
+        const lng = metadata.lng + offset.lng;
 
-    map.addLayer(markerClusterGroup);
+        const marker = L.marker([lat, lng], { icon });
+        marker.bindPopup(`
+          <div>
+            <strong>${request.first_name} ${request.last_name}</strong><br />
+            Age: ${request.age || 'N/A'}<br />
+            Parish: ${request.parish}<br />
+            Status: <span style="text-transform: capitalize">${request.status.replace('_', ' ')}</span><br />
+            Last seen: ${request.last_seen_location}
+          </div>
+        `);
+
+        marker.on('click', () => onMarkerClick(request));
+        markerClusterGroup.addLayer(marker);
+      });
+
+      if (markerClusterGroup) {
+        map.addLayer(markerClusterGroup);
+      }
+    };
+
+    setupCluster();
 
     return () => {
-      map.removeLayer(markerClusterGroup);
+      if (markerClusterGroup) {
+        map.removeLayer(markerClusterGroup);
+      }
     };
   }, [map, requests, onMarkerClick]);
 
