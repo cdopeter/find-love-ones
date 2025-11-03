@@ -73,12 +73,15 @@ export default function DashboardTable({ requests, onStatusUpdate, onRowClick }:
         header: 'Status',
         cell: (info) => {
           const row = info.row.original;
+          if (!row.id) return <Chip label="Unknown" size="small" />;
           return (
             <Select
               value={info.getValue()}
               onChange={(e) => {
                 e.stopPropagation();
-                onStatusUpdate(row.id!, e.target.value as RequestStatus);
+                if (row.id) {
+                  onStatusUpdate(row.id, e.target.value as RequestStatus);
+                }
               }}
               size="small"
               sx={{ minWidth: 120 }}
@@ -112,7 +115,6 @@ export default function DashboardTable({ requests, onStatusUpdate, onRowClick }:
     [onStatusUpdate]
   );
 
-  // eslint-disable-next-line react-hooks/incompatible-library
   const table = useReactTable({
     data: requests,
     columns,

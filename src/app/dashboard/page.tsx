@@ -14,6 +14,7 @@ import {
   SelectChangeEvent,
   Alert,
   CircularProgress,
+  Snackbar,
 } from '@mui/material';
 import { Download as DownloadIcon } from '@mui/icons-material';
 import DashboardMap from '@/components/DashboardMap';
@@ -33,6 +34,11 @@ export default function DashboardPage() {
   const [selectedParish, setSelectedParish] = useState<string>('all');
   const [selectedRequest, setSelectedRequest] = useState<MissingPersonRequest | null>(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [snackbar, setSnackbar] = useState<{ open: boolean; message: string; severity: 'success' | 'error' }>({
+    open: false,
+    message: '',
+    severity: 'success',
+  });
 
   useEffect(() => {
     fetchRequests();
@@ -84,9 +90,10 @@ export default function DashboardPage() {
           req.id === id ? { ...req, status: newStatus, updated_at: new Date().toISOString() } : req
         )
       );
+      setSnackbar({ open: true, message: 'Status updated successfully', severity: 'success' });
     } catch (err) {
       console.error('Error updating status:', err);
-      alert('Failed to update status. Please try again.');
+      setSnackbar({ open: true, message: 'Failed to update status', severity: 'error' });
     }
   };
 
@@ -106,9 +113,10 @@ export default function DashboardPage() {
           req.id === id ? { ...req, message_from_found: message, updated_at: new Date().toISOString() } : req
         )
       );
+      setSnackbar({ open: true, message: 'Message updated successfully', severity: 'success' });
     } catch (err) {
       console.error('Error updating message:', err);
-      alert('Failed to update message. Please try again.');
+      setSnackbar({ open: true, message: 'Failed to update message', severity: 'error' });
     }
   };
 
@@ -207,6 +215,22 @@ export default function DashboardPage() {
           onStatusUpdate={handleStatusUpdate}
           onMessageUpdate={handleMessageUpdate}
         />
+
+        {/* Snackbar for notifications */}
+        <Snackbar
+          open={snackbar.open}
+          autoHideDuration={6000}
+          onClose={() => setSnackbar({ ...snackbar, open: false })}
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+        >
+          <Alert
+            onClose={() => setSnackbar({ ...snackbar, open: false })}
+            severity={snackbar.severity}
+            sx={{ width: '100%' }}
+          >
+            {snackbar.message}
+          </Alert>
+        </Snackbar>
       </Box>
     </Container>
   );
