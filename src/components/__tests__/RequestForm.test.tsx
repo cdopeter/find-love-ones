@@ -29,15 +29,14 @@ describe('RequestForm', () => {
   it('renders form fields', () => {
     render(<RequestForm onSuccess={mockOnSuccess} />);
     
-    // Target person fields
-    expect(screen.getByLabelText(/first name/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/last name/i)).toBeInTheDocument();
+    // Check that we have multiple first/last name fields (target + requester)
+    const firstNameInputs = screen.getAllByLabelText(/first name/i);
+    const lastNameInputs = screen.getAllByLabelText(/last name/i);
+    
+    expect(firstNameInputs).toHaveLength(2); // Target and requester
+    expect(lastNameInputs).toHaveLength(2); // Target and requester
     expect(screen.getByLabelText(/last known address/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/parish/i)).toBeInTheDocument();
-    
-    // Requester fields
-    expect(screen.getByLabelText(/your first name/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/your last name/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/email/i)).toBeInTheDocument();
     
     expect(screen.getByRole('button', { name: /submit request/i })).toBeInTheDocument();

@@ -33,8 +33,6 @@ function DashboardContent() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [selectedParish, setSelectedParish] = useState<string>('all');
-  const [selectedRequest, setSelectedRequest] =
-    useState<MissingPersonRequest | null>(null);
   const [selectedRequest, setSelectedRequest] = useState<MissingPersonRequest | null>(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [snackbar, setSnackbar] = useState<{
@@ -102,10 +100,6 @@ function DashboardContent() {
     newStatus: 'open' | 'closed'
   ) => {
     try {
-      // Find the current request to get old status
-      const currentRequest = requests.find((req) => req.id === id);
-      const oldStatus = currentRequest?.status || null;
-
       const { supabase } = await import('@/lib/supabase');
       const { error: updateError } = await supabase
         .from('requests')
@@ -115,11 +109,6 @@ function DashboardContent() {
       if (updateError) throw updateError;
 
       // Update local state
-      const updatedRequest = {
-        ...currentRequest!,
-        status: newStatus,
-      };
-
       setRequests((prev) =>
         prev.map((req) =>
           req.id === id

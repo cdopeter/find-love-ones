@@ -93,34 +93,6 @@ const LOCATIONS_BY_PARISH: Record<string, string[]> = {
   'St. Catherine': ['Spanish Town', 'Portmore', 'Old Harbour', 'Linstead'],
 };
 
-// Sample descriptions
-const DESCRIPTIONS = [
-  'Last seen wearing blue jeans and white t-shirt',
-  'Wearing glasses, medium build',
-  'Tall, athletic build, short hair',
-  'Medium height, wearing red shirt',
-  'Short hair, carrying black backpack',
-  'Long hair, wearing floral dress',
-  'Wearing school uniform',
-  'Elderly, walking with a cane',
-];
-
-// Sample contact names (family members)
-const CONTACT_RELATIONS = [
-  'Mother',
-  'Father',
-  'Sister',
-  'Brother',
-  'Wife',
-  'Husband',
-  'Daughter',
-  'Son',
-  'Aunt',
-  'Uncle',
-  'Cousin',
-  'Friend',
-];
-
 /**
  * Generate a random item from an array
  */
@@ -133,16 +105,6 @@ function randomItem<T>(array: T[]): T {
  */
 function randomInt(min: number, max: number): number {
   return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
-/**
- * Generate a random date within the last 30 days
- */
-function randomRecentDate(): string {
-  const now = new Date();
-  const daysAgo = randomInt(1, 30);
-  const date = new Date(now.getTime() - daysAgo * 24 * 60 * 60 * 1000);
-  return date.toISOString();
 }
 
 /**

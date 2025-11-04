@@ -8,7 +8,6 @@ export interface AuditLogEntry {
   requestId: string;
   oldStatus: string | null;
   newStatus: string;
-  changedBy?: string;
   metadata?: Record<string, unknown>;
 }
 
@@ -18,7 +17,7 @@ export interface AuditLogEntry {
  */
 export async function logStatusChange(entry: AuditLogEntry): Promise<void> {
   try {
-    console.log(`Status change: ${entry.oldStatus} -> ${entry.newStatus} by ${entry.changedBy || 'system'} for request ${entry.requestId}`);
+    console.log(`Status change: ${entry.oldStatus} -> ${entry.newStatus} for request ${entry.requestId}`);
     // Future implementation could use a separate audit table or logging service
   } catch (error) {
     console.error('Error in logStatusChange:', error);
@@ -29,7 +28,8 @@ export async function logStatusChange(entry: AuditLogEntry): Promise<void> {
  * Get audit history for a specific request
  * TODO: Implement when audit table is added to schema
  */
-export async function getAuditHistory(requestId: string) {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export async function getAuditHistory(_requestId: string) {
   console.warn('Audit history feature not yet implemented');
   return [];
 }
@@ -38,7 +38,8 @@ export async function getAuditHistory(requestId: string) {
  * Get recent audit logs across all requests
  * TODO: Implement when audit table is added to schema
  */
-export async function getRecentAuditLogs(limit: number = 50) {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export async function getRecentAuditLogs(_limit: number = 50) {
   console.warn('Recent audit logs feature not yet implemented');
   return [];
 }

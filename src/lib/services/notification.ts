@@ -8,7 +8,6 @@ export interface StatusChangeNotification {
   request: MissingPersonRequest;
   oldStatus: string | null;
   newStatus: string;
-  changedBy?: string;
 }
 
 /**
@@ -18,7 +17,6 @@ export async function handleStatusChangeNotification({
   request,
   oldStatus,
   newStatus,
-  changedBy,
 }: StatusChangeNotification): Promise<void> {
   try {
     // If status changed to "closed", trigger email notification

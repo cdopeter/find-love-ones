@@ -44,6 +44,7 @@ export default function PersonDetailDrawer({
     if (request?.id && open) {
       fetchFoundUpdates();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [request?.id, open]);
 
   const fetchFoundUpdates = async () => {
