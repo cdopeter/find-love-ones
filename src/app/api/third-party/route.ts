@@ -48,7 +48,7 @@ export async function POST(request: NextRequest) {
     // 2. Verify admin client is configured
     try {
       verifyAdminClient();
-    } catch (error) {
+    } catch {
       logError({
         action: 'third_party_api',
         status: 500,
@@ -79,7 +79,7 @@ export async function POST(request: NextRequest) {
     let body: unknown;
     try {
       body = JSON.parse(bodyText);
-    } catch (error) {
+    } catch {
       logError({
         action: 'third_party_api',
         status: 400,
@@ -411,42 +411,57 @@ export async function POST(request: NextRequest) {
 
       // Apply ID filter if provided
       if (id) {
-        query = query.eq('id', id).single();
-      }
+        const { data, error } = await query.eq('id', id).single();
+        
+        if (error) {
+          // Check if record not found
+          if (error.code === 'PGRST116') {
+            logError({
+              action: 'read',
+              table,
+              id,
+              status: 404,
+              error: 'Record not found',
+            });
+            return NextResponse.json(
+              { error: 'Record not found' },
+              { status: 404 }
+            );
+          }
 
-      const { data, error } = await query;
-
-      if (error) {
-        // Check if record not found
-        if (error.code === 'PGRST116') {
           logError({
             action: 'read',
             table,
             id,
-            status: 404,
-            error: 'Record not found',
+            status: 500,
+            error: `Database error: ${error.message}`,
           });
           return NextResponse.json(
-            { error: 'Record not found' },
-            { status: 404 }
+            { error: 'Database error', message: error.message },
+            { status: 500 }
           );
         }
 
-        logError({
-          action: 'read',
-          table,
-          id,
-          status: 500,
-          error: `Database error: ${error.message}`,
-        });
-        return NextResponse.json(
-          { error: 'Database error', message: error.message },
-          { status: 500 }
-        );
-      }
+        recordId = id;
+        result = { data };
+      } else {
+        const { data, error } = await query;
+        
+        if (error) {
+          logError({
+            action: 'read',
+            table,
+            status: 500,
+            error: `Database error: ${error.message}`,
+          });
+          return NextResponse.json(
+            { error: 'Database error', message: error.message },
+            { status: 500 }
+          );
+        }
 
-      recordId = id;
-      result = { data };
+        result = { data };
+      }
 
       // Log to audit table
       auditEventId = await logAuditEvent({
@@ -476,14 +491,15 @@ export async function POST(request: NextRequest) {
       metadata: {
         ip: clientIp,
         keyUsed: hmacResult.keyUsed,
-      },
+      } as Record<string, unknown>,
     });
 
     // 12. Return response with metadata
+    const responseData = result as Record<string, unknown>;
     return NextResponse.json(
       {
         success: true,
-        ...result,
+        ...responseData,
         meta: {
           auditEventId,
           timestamp: new Date().toISOString(),
