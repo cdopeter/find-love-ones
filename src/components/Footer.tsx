@@ -77,6 +77,10 @@ function Footer() {
             </Typography>
             <Stack direction="row" spacing={1}>
               <IconButton
+                component="a"
+                href="https://www.facebook.com"
+                target="_blank"
+                rel="noopener noreferrer"
                 aria-label="Facebook"
                 color="inherit"
                 sx={{
@@ -87,6 +91,10 @@ function Footer() {
                 <FacebookIcon />
               </IconButton>
               <IconButton
+                component="a"
+                href="https://www.instagram.com"
+                target="_blank"
+                rel="noopener noreferrer"
                 aria-label="Instagram"
                 color="inherit"
                 sx={{
@@ -97,6 +105,10 @@ function Footer() {
                 <InstagramIcon />
               </IconButton>
               <IconButton
+                component="a"
+                href="https://www.twitter.com"
+                target="_blank"
+                rel="noopener noreferrer"
                 aria-label="Twitter"
                 color="inherit"
                 sx={{
