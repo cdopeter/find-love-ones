@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import {
   Box,
   Paper,
@@ -30,7 +30,7 @@ export default function TrackingResult({
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchRequestByTrackingCode = async () => {
+  const fetchRequestByTrackingCode = useCallback(async () => {
     try {
       setLoading(true);
       setError(null);
@@ -41,7 +41,7 @@ export default function TrackingResult({
       // We need to search for requests where the ID starts with these characters (case-insensitive)
       const { data, error: fetchError } = await supabase
         .from('requests')
-        .select('*')
+        .select('id, target_first_name, target_last_name, status, last_known_address, parish, message_to_person, created_at, requester_first_name, requester_last_name, requester_email')
         .ilike('id', `${trackingCode.toLowerCase()}%`)
         .limit(1)
         .single();
@@ -63,7 +63,7 @@ export default function TrackingResult({
       if (data.id) {
         const { data: updates, error: updatesError } = await supabase
           .from('found_updates')
-          .select('*')
+          .select('id, request_id, message_from_found_party, created_at, created_by')
           .eq('request_id', data.id)
           .order('created_at', { ascending: true });
 
@@ -83,12 +83,11 @@ export default function TrackingResult({
     } finally {
       setLoading(false);
     }
-  };
+  }, [trackingCode]);
 
   useEffect(() => {
     fetchRequestByTrackingCode();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [trackingCode]);
+  }, [fetchRequestByTrackingCode]);
 
   if (loading) {
     return (
