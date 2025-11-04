@@ -46,6 +46,26 @@ async function sendFoundNotification(request: MissingPersonRequest): Promise<voi
       console.warn('EDGE_FUNCTION_SECRET not configured - email notification may fail');
     }
 
+    // Fetch the most recent found update message if available
+    let latestMessage = '';
+    try {
+      const { supabase } = await import('@/lib/supabase');
+      const { data } = await supabase
+        .from('found_updates')
+        .select('message_from_found_party')
+        .eq('request_id', request.id!)
+        .order('created_at', { ascending: false })
+        .limit(1)
+        .single();
+      
+      if (data) {
+        latestMessage = data.message_from_found_party;
+      }
+    } catch (err) {
+      // If we can't fetch the message, continue without it
+      console.warn('Could not fetch found update message:', err);
+    }
+
     const response = await fetch(apiUrl, {
       method: 'POST',
       headers: {
@@ -60,7 +80,7 @@ async function sendFoundNotification(request: MissingPersonRequest): Promise<voi
         lastName: request.target_last_name,
         lastSeenLocation: request.last_known_address,
         parish: request.parish,
-        messageFromFound: '', // Will be fetched from found_updates table
+        messageFromFound: latestMessage,
       }),
     });
 
