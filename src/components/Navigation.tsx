@@ -18,10 +18,9 @@ import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 import { useThemeContext } from './ThemeProvider';
 
 const pages = [
-  { label: 'About', href: '#about' },
-  { label: 'Submit Report', href: '/request' },
-  { label: 'Dashboard', href: '/dashboard' },
-  { label: 'Contact', href: '#contact' },
+  { label: 'Home', href: '/' },
+  { label: 'Submit Request', href: '/request' },
+  { label: 'Tracker', href: '/tracker' },
 ];
 
 function Navigation() {
