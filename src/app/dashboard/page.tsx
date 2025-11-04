@@ -139,12 +139,13 @@ function DashboardContent() {
       const { supabase } = await import('@/lib/supabase');
       
       // Insert a new found_update record
+      // TODO: Replace with actual user ID when authentication is implemented
       const { error: insertError } = await supabase
         .from('found_updates')
         .insert({
           request_id: id,
           message_from_found_party: message,
-          created_by: 'anonymous', // TODO: Use actual user ID when auth is implemented
+          created_by: '00000000-0000-0000-0000-000000000000', // Placeholder UUID for anonymous users
         });
 
       if (insertError) throw insertError;

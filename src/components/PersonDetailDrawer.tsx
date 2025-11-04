@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import {
   Drawer,
   Box,
@@ -40,14 +40,7 @@ export default function PersonDetailDrawer({
   const [foundUpdates, setFoundUpdates] = useState<FoundUpdate[]>([]);
   const [loadingUpdates, setLoadingUpdates] = useState(false);
 
-  useEffect(() => {
-    if (request?.id && open) {
-      fetchFoundUpdates();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [request?.id, open]);
-
-  const fetchFoundUpdates = async () => {
+  const fetchFoundUpdates = useCallback(async () => {
     if (!request?.id) return;
     
     try {
@@ -66,7 +59,13 @@ export default function PersonDetailDrawer({
     } finally {
       setLoadingUpdates(false);
     }
-  };
+  }, [request?.id]);
+
+  useEffect(() => {
+    if (request?.id && open) {
+      fetchFoundUpdates();
+    }
+  }, [request?.id, open, fetchFoundUpdates]);
 
   const handleMessageSave = async () => {
     if (request?.id) {

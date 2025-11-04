@@ -55,7 +55,6 @@ export const requestFormSchema = z.object({
   
   requester_email: z
     .string()
-    .min(1, 'Email is required')
     .email('Please enter a valid email address'),
   
   // Optional message
