@@ -37,14 +37,14 @@ export default function ThemeProvider({ children }: { children: ReactNode }) {
         palette: {
           mode,
           primary: {
-            main: '#1976d2',
-            light: '#42a5f5',
-            dark: '#1565c0',
+            main: '#00477d',
+            light: '#3d6f9e',
+            dark: '#003158',
           },
           secondary: {
-            main: '#dc004e',
-            light: '#e33371',
-            dark: '#9a0036',
+            main: '#FFD700', // Gold for Jamaican flag
+            light: '#ffe14d',
+            dark: '#b39600',
           },
           background: {
             default: mode === 'light' ? '#f5f5f5' : '#121212',

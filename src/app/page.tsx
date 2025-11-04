@@ -8,115 +8,200 @@ import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
-import SearchIcon from '@mui/icons-material/Search';
-import AddCircleIcon from '@mui/icons-material/AddCircle';
-import PeopleIcon from '@mui/icons-material/People';
+import PersonSearchIcon from '@mui/icons-material/PersonSearch';
+import VerifiedUserIcon from '@mui/icons-material/VerifiedUser';
+import GroupsIcon from '@mui/icons-material/Groups';
 
 export default function Home() {
   return (
     <Container maxWidth="lg">
-      <Box sx={{ my: 4 }}>
+      {/* Hero Section */}
+      <Box
+        sx={{
+          my: 6,
+          textAlign: 'center',
+          py: 8,
+          px: 3,
+          background: 'linear-gradient(135deg, rgba(0,71,125,0.05) 0%, rgba(255,215,0,0.05) 100%)',
+          borderRadius: 2,
+        }}
+      >
         <Typography
           variant="h2"
           component="h1"
           gutterBottom
-          align="center"
-          sx={{ fontWeight: 'bold' }}
+          sx={{
+            fontWeight: 'bold',
+            fontSize: { xs: '2rem', md: '3.5rem' },
+            color: 'primary.main',
+          }}
         >
-          Welcome to HopeNet
+          Human Rights in Action: Helping Jamaicans Reconnect After Hurricane
+          Melissa
         </Typography>
         <Typography
-          variant="h5"
+          variant="h6"
           align="center"
           color="text.secondary"
           paragraph
+          sx={{
+            mt: 3,
+            mb: 4,
+            maxWidth: '900px',
+            mx: 'auto',
+            lineHeight: 1.8,
+          }}
         >
-          A community-powered platform helping families reunite after natural
-          disasters
+          In times of crisis, every voice matters. The Office of the Public
+          Defender, in partnership with ODPEM and Jamaica&apos;s emergency
+          response agencies, is working to reunite families, protect rights, and
+          restore hope.
         </Typography>
-        <Box sx={{ mt: 4, display: 'flex', justifyContent: 'center', gap: 2 }}>
-          <Button variant="contained" size="large" startIcon={<SearchIcon />}>
-            Search for Someone
-          </Button>
-          <Button
-            component={Link}
-            href="/request"
-            variant="outlined"
-            size="large"
-            startIcon={<AddCircleIcon />}
-          >
-            Submit a Request
-          </Button>
-        </Box>
+        <Button
+          component={Link}
+          href="/request"
+          variant="contained"
+          size="large"
+          sx={{
+            py: 2,
+            px: 5,
+            fontSize: '1.1rem',
+            fontWeight: 'bold',
+            boxShadow: 3,
+            '&:hover': {
+              boxShadow: 6,
+            },
+          }}
+        >
+          Submit a Missing Person Report
+        </Button>
       </Box>
 
-      <Grid container spacing={4} sx={{ mt: 4 }}>
+      {/* About Section */}
+      <Box id="about" sx={{ my: 8 }}>
+        <Typography
+          variant="h3"
+          gutterBottom
+          align="center"
+          sx={{ fontWeight: 'bold', mb: 4, color: 'primary.main' }}
+        >
+          Together, We&apos;re Protecting Lives and Upholding Dignity
+        </Typography>
+        <Typography
+          variant="body1"
+          paragraph
+          sx={{ fontSize: '1.1rem', lineHeight: 1.8, mb: 3 }}
+        >
+          The Human Rights in Action campaign is a national relief and
+          accountability initiative by the Office of the Public Defender. In the
+          aftermath of Hurricane Melissa, many families have lost communication
+          with their loved ones across Jamaica.
+        </Typography>
+        <Typography
+          variant="body1"
+          paragraph
+          sx={{ fontSize: '1.1rem', lineHeight: 1.8, mb: 3 }}
+        >
+          This platform allows Jamaicans at home and abroad to report missing
+          persons, request welfare checks, and receive verified updates through
+          official emergency channels.
+        </Typography>
+        <Typography
+          variant="body1"
+          sx={{ fontSize: '1.1rem', lineHeight: 1.8, fontWeight: 500 }}
+        >
+          Our goal: to ensure that every person&apos;s safety, rights, and
+          dignity are respected — even in the hardest of times.
+        </Typography>
+      </Box>
+
+      {/* Features Grid */}
+      <Grid container spacing={4} sx={{ my: 6 }}>
         <Grid size={{ xs: 12, md: 4 }}>
-          <Card sx={{ height: '100%' }}>
-            <CardContent>
-              <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-                <SearchIcon color="primary" sx={{ fontSize: 40, mr: 2 }} />
-                <Typography variant="h5" component="h2">
-                  Search
+          <Card
+            sx={{
+              height: '100%',
+              boxShadow: 3,
+              transition: 'transform 0.2s, box-shadow 0.2s',
+              '&:hover': {
+                transform: 'translateY(-4px)',
+                boxShadow: 6,
+              },
+            }}
+          >
+            <CardContent sx={{ p: 4 }}>
+              <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
+                <PersonSearchIcon
+                  color="primary"
+                  sx={{ fontSize: 50, mr: 2 }}
+                />
+                <Typography variant="h5" component="h2" fontWeight="bold">
+                  Report Missing Persons
                 </Typography>
               </Box>
               <Typography variant="body1" color="text.secondary">
-                Find information about missing loved ones using our
-                comprehensive search database.
+                Submit detailed reports about missing loved ones to help our
+                emergency response teams locate and verify their safety.
               </Typography>
             </CardContent>
           </Card>
         </Grid>
         <Grid size={{ xs: 12, md: 4 }}>
-          <Card sx={{ height: '100%' }}>
-            <CardContent>
-              <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-                <AddCircleIcon color="primary" sx={{ fontSize: 40, mr: 2 }} />
-                <Typography variant="h5" component="h2">
-                  Submit
+          <Card
+            sx={{
+              height: '100%',
+              boxShadow: 3,
+              transition: 'transform 0.2s, box-shadow 0.2s',
+              '&:hover': {
+                transform: 'translateY(-4px)',
+                boxShadow: 6,
+              },
+            }}
+          >
+            <CardContent sx={{ p: 4 }}>
+              <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
+                <VerifiedUserIcon
+                  color="primary"
+                  sx={{ fontSize: 50, mr: 2 }}
+                />
+                <Typography variant="h5" component="h2" fontWeight="bold">
+                  Verified Updates
                 </Typography>
               </Box>
               <Typography variant="body1" color="text.secondary">
-                Submit search requests for missing family members or provide
-                updates on found individuals.
+                Receive official, verified information through our partnership
+                with ODPEM and Jamaica&apos;s emergency response agencies.
               </Typography>
             </CardContent>
           </Card>
         </Grid>
         <Grid size={{ xs: 12, md: 4 }}>
-          <Card sx={{ height: '100%' }}>
-            <CardContent>
-              <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-                <PeopleIcon color="primary" sx={{ fontSize: 40, mr: 2 }} />
-                <Typography variant="h5" component="h2">
-                  Community
+          <Card
+            sx={{
+              height: '100%',
+              boxShadow: 3,
+              transition: 'transform 0.2s, box-shadow 0.2s',
+              '&:hover': {
+                transform: 'translateY(-4px)',
+                boxShadow: 6,
+              },
+            }}
+          >
+            <CardContent sx={{ p: 4 }}>
+              <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
+                <GroupsIcon color="primary" sx={{ fontSize: 50, mr: 2 }} />
+                <Typography variant="h5" component="h2" fontWeight="bold">
+                  Community Support
                 </Typography>
               </Box>
               <Typography variant="body1" color="text.secondary">
                 Connect with trusted response teams and community members
-                working to reunite families.
+                dedicated to reuniting families across Jamaica.
               </Typography>
             </CardContent>
           </Card>
         </Grid>
       </Grid>
-
-      <Box sx={{ mt: 6, p: 4, bgcolor: 'background.paper', borderRadius: 2 }}>
-        <Typography variant="h4" gutterBottom align="center">
-          How It Works
-        </Typography>
-        <Typography variant="body1" paragraph>
-          When natural disasters disrupt electricity, cell, and internet
-          services, HopeNet provides a resilient communication channel. Our
-          platform allows you to submit search requests for missing loved ones
-          and receive verified updates from trusted response teams.
-        </Typography>
-        <Typography variant="body1">
-          Whether you&apos;re searching for someone or providing information,
-          HopeNet connects you with the resources and community support you need
-          during difficult times.
-        </Typography>
-      </Box>
     </Container>
   );
 }
