@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Drawer,
   Box,
@@ -14,9 +14,10 @@ import {
   FormControl,
   Alert,
   Stack,
+  CircularProgress,
 } from '@mui/material';
 import { Close as CloseIcon, Save as SaveIcon } from '@mui/icons-material';
-import { MissingPersonRequest, RequestStatus } from '@/lib/types/database';
+import { MissingPersonRequest, RequestStatus, FoundUpdate } from '@/lib/types/database';
 
 interface PersonDetailDrawerProps {
   request: MissingPersonRequest | null;
@@ -36,13 +37,45 @@ export default function PersonDetailDrawer({
   const [editingMessage, setEditingMessage] = useState(false);
   const [message, setMessage] = useState('');
   const [saveSuccess, setSaveSuccess] = useState(false);
+  const [foundUpdates, setFoundUpdates] = useState<FoundUpdate[]>([]);
+  const [loadingUpdates, setLoadingUpdates] = useState(false);
 
-  const handleMessageSave = () => {
+  useEffect(() => {
+    if (request?.id && open) {
+      fetchFoundUpdates();
+    }
+  }, [request?.id, open]);
+
+  const fetchFoundUpdates = async () => {
+    if (!request?.id) return;
+    
+    try {
+      setLoadingUpdates(true);
+      const { supabase } = await import('@/lib/supabase');
+      const { data, error } = await supabase
+        .from('found_updates')
+        .select('*')
+        .eq('request_id', request.id)
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+      setFoundUpdates(data || []);
+    } catch (err) {
+      console.error('Error fetching found updates:', err);
+    } finally {
+      setLoadingUpdates(false);
+    }
+  };
+
+  const handleMessageSave = async () => {
     if (request?.id) {
-      onMessageUpdate(request.id, message);
+      await onMessageUpdate(request.id, message);
       setEditingMessage(false);
+      setMessage('');
       setSaveSuccess(true);
       setTimeout(() => setSaveSuccess(false), 3000);
+      // Refresh the updates list
+      await fetchFoundUpdates();
     }
   };
 
@@ -86,50 +119,31 @@ export default function PersonDetailDrawer({
                 <Typography variant="body2" color="text.secondary">
                   First Name
                 </Typography>
-                <Typography variant="body1">{request.first_name}</Typography>
+                <Typography variant="body1">{request.target_first_name}</Typography>
               </Box>
               <Box sx={{ flex: 1 }}>
                 <Typography variant="body2" color="text.secondary">
                   Last Name
                 </Typography>
-                <Typography variant="body1">{request.last_name}</Typography>
+                <Typography variant="body1">{request.target_last_name}</Typography>
               </Box>
             </Box>
-            <Box sx={{ display: 'flex', gap: 2 }}>
-              <Box sx={{ flex: 1 }}>
-                <Typography variant="body2" color="text.secondary">
-                  Age
-                </Typography>
-                <Typography variant="body1">{request.age || 'N/A'}</Typography>
-              </Box>
-              <Box sx={{ flex: 1 }}>
-                <Typography variant="body2" color="text.secondary">
-                  Status
-                </Typography>
-                <FormControl fullWidth size="small">
-                  <Select
-                    value={request.status}
-                    onChange={(e) => handleStatusChange(e.target.value as RequestStatus)}
-                  >
-                    <MenuItem value="missing">Missing</MenuItem>
-                    <MenuItem value="in_progress">In Progress</MenuItem>
-                    <MenuItem value="found">Found</MenuItem>
-                  </Select>
-                </FormControl>
-              </Box>
+            <Box>
+              <Typography variant="body2" color="text.secondary">
+                Status
+              </Typography>
+              <FormControl fullWidth size="small">
+                <Select
+                  value={request.status}
+                  onChange={(e) => handleStatusChange(e.target.value as RequestStatus)}
+                >
+                  <MenuItem value="open">Open</MenuItem>
+                  <MenuItem value="closed">Closed</MenuItem>
+                </Select>
+              </FormControl>
             </Box>
           </Stack>
         </Box>
-
-        {/* Description */}
-        {request.description && (
-          <Box sx={{ mb: 3 }}>
-            <Typography variant="h6" gutterBottom>
-              Description
-            </Typography>
-            <Typography variant="body1">{request.description}</Typography>
-          </Box>
-        )}
 
         {/* Location Information */}
         <Box sx={{ mb: 3 }}>
@@ -145,84 +159,97 @@ export default function PersonDetailDrawer({
             </Box>
             <Box>
               <Typography variant="body2" color="text.secondary">
-                Last Seen Location
+                Last Known Address
               </Typography>
-              <Typography variant="body1">{request.last_seen_location}</Typography>
+              <Typography variant="body1">{request.last_known_address}</Typography>
             </Box>
-            {request.last_seen_date && (
-              <Box>
-                <Typography variant="body2" color="text.secondary">
-                  Last Seen Date
-                </Typography>
-                <Typography variant="body1">
-                  {new Date(request.last_seen_date).toLocaleDateString()}
-                </Typography>
-              </Box>
-            )}
           </Stack>
         </Box>
 
         {/* Contact Information */}
         <Box sx={{ mb: 3 }}>
           <Typography variant="h6" gutterBottom>
-            Contact Information
+            Requester Information
           </Typography>
           <Stack spacing={2}>
             <Box>
               <Typography variant="body2" color="text.secondary">
-                Contact Name
+                Requester Name
               </Typography>
-              <Typography variant="body1">{request.contact_name}</Typography>
+              <Typography variant="body1">
+                {request.requester_first_name} {request.requester_last_name}
+              </Typography>
             </Box>
-            {request.contact_phone && (
+            {request.requester_phone && (
               <Box>
                 <Typography variant="body2" color="text.secondary">
                   Phone
                 </Typography>
-                <Typography variant="body1">{request.contact_phone}</Typography>
+                <Typography variant="body1">{request.requester_phone}</Typography>
               </Box>
             )}
-            {request.contact_email && (
-              <Box>
-                <Typography variant="body2" color="text.secondary">
-                  Email
-                </Typography>
-                <Typography variant="body1">{request.contact_email}</Typography>
-              </Box>
-            )}
+            <Box>
+              <Typography variant="body2" color="text.secondary">
+                Email
+              </Typography>
+              <Typography variant="body1">{request.requester_email}</Typography>
+            </Box>
           </Stack>
         </Box>
 
-        {/* Notes */}
-        {request.notes && (
+        {/* Message to Person */}
+        {request.message_to_person && (
           <Box sx={{ mb: 3 }}>
             <Typography variant="h6" gutterBottom>
-              Additional Notes
+              Message to Person
             </Typography>
-            <Typography variant="body1">{request.notes}</Typography>
+            <Typography variant="body1">{request.message_to_person}</Typography>
           </Box>
         )}
 
-        {/* Message from Found Party */}
+        {/* Messages from Found Party */}
         <Box sx={{ mb: 3 }}>
           <Typography variant="h6" gutterBottom>
-            Message from Found Party
+            Updates from Found Party
           </Typography>
+          {loadingUpdates ? (
+            <CircularProgress size={24} />
+          ) : foundUpdates.length > 0 ? (
+            <Stack spacing={2}>
+              {foundUpdates.map((update) => (
+                <Box
+                  key={update.id}
+                  sx={{
+                    p: 2,
+                    bgcolor: 'background.paper',
+                    border: '1px solid',
+                    borderColor: 'divider',
+                    borderRadius: 1,
+                  }}
+                >
+                  <Typography variant="body2" sx={{ whiteSpace: 'pre-wrap' }}>
+                    {update.message_from_found_party}
+                  </Typography>
+                  <Typography variant="caption" color="text.secondary" sx={{ mt: 1, display: 'block' }}>
+                    {new Date(update.created_at).toLocaleString()}
+                  </Typography>
+                </Box>
+              ))}
+            </Stack>
+          ) : (
+            <Typography variant="body2" color="text.secondary">
+              No updates yet
+            </Typography>
+          )}
+          
           {!editingMessage ? (
-            <>
-              <Typography variant="body1" sx={{ mb: 2, whiteSpace: 'pre-wrap' }}>
-                {request.message_from_found || 'No message yet'}
-              </Typography>
-              <Button
-                variant="outlined"
-                onClick={() => {
-                  setMessage(request.message_from_found || '');
-                  setEditingMessage(true);
-                }}
-              >
-                {request.message_from_found ? 'Edit Message' : 'Add Message'}
-              </Button>
-            </>
+            <Button
+              variant="outlined"
+              onClick={() => setEditingMessage(true)}
+              sx={{ mt: 2 }}
+            >
+              Add Update
+            </Button>
           ) : (
             <>
               <TextField
@@ -231,12 +258,12 @@ export default function PersonDetailDrawer({
                 rows={4}
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
-                placeholder="Enter message from the found party..."
-                sx={{ mb: 2 }}
+                placeholder="Enter update from the found party..."
+                sx={{ mt: 2 }}
               />
-              <Box sx={{ display: 'flex', gap: 1 }}>
+              <Box sx={{ display: 'flex', gap: 1, mt: 2 }}>
                 <Button variant="contained" startIcon={<SaveIcon />} onClick={handleMessageSave}>
-                  Save Message
+                  Save Update
                 </Button>
                 <Button
                   variant="outlined"
@@ -254,23 +281,13 @@ export default function PersonDetailDrawer({
 
         {/* Timestamps */}
         <Divider sx={{ my: 3 }} />
-        <Box sx={{ display: 'flex', gap: 2 }}>
-          <Box sx={{ flex: 1 }}>
-            <Typography variant="body2" color="text.secondary">
-              Created
-            </Typography>
-            <Typography variant="body2">
-              {request.created_at ? new Date(request.created_at).toLocaleString() : 'N/A'}
-            </Typography>
-          </Box>
-          <Box sx={{ flex: 1 }}>
-            <Typography variant="body2" color="text.secondary">
-              Last Updated
-            </Typography>
-            <Typography variant="body2">
-              {request.updated_at ? new Date(request.updated_at).toLocaleString() : 'N/A'}
-            </Typography>
-          </Box>
+        <Box>
+          <Typography variant="body2" color="text.secondary">
+            Created
+          </Typography>
+          <Typography variant="body2">
+            {request.created_at ? new Date(request.created_at).toLocaleString() : 'N/A'}
+          </Typography>
         </Box>
       </Box>
     </Drawer>

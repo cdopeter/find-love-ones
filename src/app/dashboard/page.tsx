@@ -61,7 +61,7 @@ function DashboardContent() {
       // Lazy load supabase to avoid build-time errors
       const { supabase } = await import('@/lib/supabase');
       const { data, error: fetchError } = await supabase
-        .from('missing_person_requests')
+        .from('requests')
         .select('*')
         .order('created_at', { ascending: false });
 
@@ -99,7 +99,7 @@ function DashboardContent() {
 
   const handleStatusUpdate = async (
     id: string,
-    newStatus: 'missing' | 'found' | 'in_progress'
+    newStatus: 'open' | 'closed'
   ) => {
     try {
       // Find the current request to get old status
@@ -108,8 +108,8 @@ function DashboardContent() {
 
       const { supabase } = await import('@/lib/supabase');
       const { error: updateError } = await supabase
-        .from('missing_person_requests')
-        .update({ status: newStatus, updated_at: new Date().toISOString() })
+        .from('requests')
+        .update({ status: newStatus })
         .eq('id', id);
 
       if (updateError) throw updateError;
@@ -118,7 +118,6 @@ function DashboardContent() {
       const updatedRequest = {
         ...currentRequest!,
         status: newStatus,
-        updated_at: new Date().toISOString(),
       };
 
       setRequests((prev) =>
@@ -127,7 +126,6 @@ function DashboardContent() {
             ? {
                 ...req,
                 status: newStatus,
-                updated_at: new Date().toISOString(),
               }
             : req
         )
@@ -150,38 +148,28 @@ function DashboardContent() {
   const handleMessageUpdate = async (id: string, message: string) => {
     try {
       const { supabase } = await import('@/lib/supabase');
-      const { error: updateError } = await supabase
-        .from('missing_person_requests')
-        .update({
-          message_from_found: message,
-          updated_at: new Date().toISOString(),
-        })
-        .eq('id', id);
+      
+      // Insert a new found_update record
+      const { error: insertError } = await supabase
+        .from('found_updates')
+        .insert({
+          request_id: id,
+          message_from_found_party: message,
+          created_by: 'anonymous', // TODO: Use actual user ID when auth is implemented
+        });
 
-      if (updateError) throw updateError;
+      if (insertError) throw insertError;
 
-      // Update local state
-      setRequests((prev) =>
-        prev.map((req) =>
-          req.id === id
-            ? {
-                ...req,
-                message_from_found: message,
-                updated_at: new Date().toISOString(),
-              }
-            : req
-        )
-      );
       setSnackbar({
         open: true,
-        message: 'Message updated successfully',
+        message: 'Message added successfully',
         severity: 'success',
       });
     } catch (err) {
-      console.error('Error updating message:', err);
+      console.error('Error adding message:', err);
       setSnackbar({
         open: true,
-        message: 'Failed to update message',
+        message: 'Failed to add message',
         severity: 'error',
       });
     }

@@ -32,17 +32,15 @@ export default function RequestForm({ onSuccess }: RequestFormProps) {
   } = useForm<RequestFormData>({
     resolver: zodResolver(requestFormSchema),
     defaultValues: {
-      first_name: '',
-      last_name: '',
-      age: undefined,
-      description: '',
-      last_seen_location: '',
-      last_seen_date: '',
+      target_first_name: '',
+      target_last_name: '',
+      last_known_address: '',
       parish: undefined,
-      contact_name: '',
-      contact_phone: '',
-      contact_email: '',
-      notes: '',
+      requester_first_name: '',
+      requester_last_name: '',
+      requester_phone: '',
+      requester_email: '',
+      message_to_person: '',
     },
   });
 
@@ -56,23 +54,21 @@ export default function RequestForm({ onSuccess }: RequestFormProps) {
 
       // Prepare the data for submission
       const requestData = {
-        first_name: data.first_name,
-        last_name: data.last_name,
-        age: data.age || null,
-        description: data.description || null,
-        last_seen_location: data.last_seen_location,
-        last_seen_date: data.last_seen_date || null,
+        target_first_name: data.target_first_name,
+        target_last_name: data.target_last_name,
+        last_known_address: data.last_known_address,
         parish: data.parish,
-        contact_name: data.contact_name,
-        contact_phone: data.contact_phone || null,
-        contact_email: data.contact_email || null,
-        notes: data.notes || null,
-        status: 'missing' as const,
+        requester_first_name: data.requester_first_name,
+        requester_last_name: data.requester_last_name,
+        requester_email: data.requester_email,
+        requester_phone: data.requester_phone || null,
+        message_to_person: data.message_to_person || null,
+        status: 'open' as const,
       };
 
       // Insert into Supabase
       const { data: insertedData, error: insertError } = await supabase
-        .from('missing_person_requests')
+        .from('requests')
         .insert([requestData])
         .select()
         .single();
@@ -124,7 +120,7 @@ export default function RequestForm({ onSuccess }: RequestFormProps) {
 
           <Grid size={{ xs: 12, sm: 6 }}>
             <Controller
-              name="first_name"
+              name="target_first_name"
               control={control}
               render={({ field }) => (
                 <TextField
@@ -132,8 +128,8 @@ export default function RequestForm({ onSuccess }: RequestFormProps) {
                   label="First Name"
                   fullWidth
                   required
-                  error={!!errors.first_name}
-                  helperText={errors.first_name?.message}
+                  error={!!errors.target_first_name}
+                  helperText={errors.target_first_name?.message}
                 />
               )}
             />
@@ -141,7 +137,7 @@ export default function RequestForm({ onSuccess }: RequestFormProps) {
 
           <Grid size={{ xs: 12, sm: 6 }}>
             <Controller
-              name="last_name"
+              name="target_last_name"
               control={control}
               render={({ field }) => (
                 <TextField
@@ -149,67 +145,8 @@ export default function RequestForm({ onSuccess }: RequestFormProps) {
                   label="Last Name"
                   fullWidth
                   required
-                  error={!!errors.last_name}
-                  helperText={errors.last_name?.message}
-                />
-              )}
-            />
-          </Grid>
-
-          <Grid size={{ xs: 12, sm: 6 }}>
-            <Controller
-              name="age"
-              control={control}
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  label="Age (Optional)"
-                  type="number"
-                  fullWidth
-                  value={field.value ?? ''}
-                  onChange={(e) => {
-                    const value = e.target.value;
-                    field.onChange(value === '' ? undefined : Number(value));
-                  }}
-                  error={!!errors.age}
-                  helperText={errors.age?.message}
-                />
-              )}
-            />
-          </Grid>
-
-          <Grid size={{ xs: 12, sm: 6 }}>
-            <Controller
-              name="last_seen_date"
-              control={control}
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  label="Last Seen Date (Optional)"
-                  type="date"
-                  fullWidth
-                  InputLabelProps={{ shrink: true }}
-                  error={!!errors.last_seen_date}
-                  helperText={errors.last_seen_date?.message}
-                />
-              )}
-            />
-          </Grid>
-
-          <Grid size={12}>
-            <Controller
-              name="description"
-              control={control}
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  label="Description (Optional)"
-                  fullWidth
-                  multiline
-                  rows={2}
-                  placeholder="Physical description, clothing, distinguishing features, etc."
-                  error={!!errors.description}
-                  helperText={errors.description?.message}
+                  error={!!errors.target_last_name}
+                  helperText={errors.target_last_name?.message}
                 />
               )}
             />
@@ -224,17 +161,17 @@ export default function RequestForm({ onSuccess }: RequestFormProps) {
 
           <Grid size={{ xs: 12, sm: 6 }}>
             <Controller
-              name="last_seen_location"
+              name="last_known_address"
               control={control}
               render={({ field }) => (
                 <TextField
                   {...field}
-                  label="Last Seen Location"
+                  label="Last Known Address"
                   fullWidth
                   required
                   placeholder="e.g., Main Street, Downtown Kingston"
-                  error={!!errors.last_seen_location}
-                  helperText={errors.last_seen_location?.message}
+                  error={!!errors.last_known_address}
+                  helperText={errors.last_known_address?.message}
                 />
               )}
             />
@@ -275,18 +212,18 @@ export default function RequestForm({ onSuccess }: RequestFormProps) {
             </Typography>
           </Grid>
 
-          <Grid size={12}>
+          <Grid size={{ xs: 12, sm: 6 }}>
             <Controller
-              name="contact_name"
+              name="requester_first_name"
               control={control}
               render={({ field }) => (
                 <TextField
                   {...field}
-                  label="Your Name"
+                  label="Your First Name"
                   fullWidth
                   required
-                  error={!!errors.contact_name}
-                  helperText={errors.contact_name?.message}
+                  error={!!errors.requester_first_name}
+                  helperText={errors.requester_first_name?.message}
                 />
               )}
             />
@@ -294,7 +231,24 @@ export default function RequestForm({ onSuccess }: RequestFormProps) {
 
           <Grid size={{ xs: 12, sm: 6 }}>
             <Controller
-              name="contact_phone"
+              name="requester_last_name"
+              control={control}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  label="Your Last Name"
+                  fullWidth
+                  required
+                  error={!!errors.requester_last_name}
+                  helperText={errors.requester_last_name?.message}
+                />
+              )}
+            />
+          </Grid>
+
+          <Grid size={{ xs: 12, sm: 6 }}>
+            <Controller
+              name="requester_phone"
               control={control}
               render={({ field }) => (
                 <TextField
@@ -302,8 +256,8 @@ export default function RequestForm({ onSuccess }: RequestFormProps) {
                   label="Phone Number (Optional)"
                   fullWidth
                   placeholder="876-123-4567"
-                  error={!!errors.contact_phone}
-                  helperText={errors.contact_phone?.message}
+                  error={!!errors.requester_phone}
+                  helperText={errors.requester_phone?.message}
                 />
               )}
             />
@@ -311,17 +265,18 @@ export default function RequestForm({ onSuccess }: RequestFormProps) {
 
           <Grid size={{ xs: 12, sm: 6 }}>
             <Controller
-              name="contact_email"
+              name="requester_email"
               control={control}
               render={({ field }) => (
                 <TextField
                   {...field}
-                  label="Email (Optional)"
+                  label="Email"
                   fullWidth
+                  required
                   type="email"
                   placeholder="your.email@example.com"
-                  error={!!errors.contact_email}
-                  helperText={errors.contact_email?.message}
+                  error={!!errors.requester_email}
+                  helperText={errors.requester_email?.message}
                 />
               )}
             />
@@ -336,18 +291,18 @@ export default function RequestForm({ onSuccess }: RequestFormProps) {
 
           <Grid size={12}>
             <Controller
-              name="notes"
+              name="message_to_person"
               control={control}
               render={({ field }) => (
                 <TextField
                   {...field}
-                  label="Additional Notes (Optional)"
+                  label="Message to Person (Optional)"
                   fullWidth
                   multiline
                   rows={4}
-                  placeholder="Any additional information that might help locate this person..."
-                  error={!!errors.notes}
-                  helperText={errors.notes?.message}
+                  placeholder="Any message you would like to send to the person..."
+                  error={!!errors.message_to_person}
+                  helperText={errors.message_to_person?.message}
                 />
               )}
             />

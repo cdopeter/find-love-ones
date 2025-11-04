@@ -29,11 +29,17 @@ describe('RequestForm', () => {
   it('renders form fields', () => {
     render(<RequestForm onSuccess={mockOnSuccess} />);
     
+    // Target person fields
     expect(screen.getByLabelText(/first name/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/last name/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/last seen location/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/last known address/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/parish/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/your name/i)).toBeInTheDocument();
+    
+    // Requester fields
+    expect(screen.getByLabelText(/your first name/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/your last name/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/email/i)).toBeInTheDocument();
+    
     expect(screen.getByRole('button', { name: /submit request/i })).toBeInTheDocument();
   });
 
@@ -53,17 +59,24 @@ describe('RequestForm', () => {
     const user = userEvent.setup();
     render(<RequestForm onSuccess={mockOnSuccess} />);
 
-    // Fill in required fields
-    await user.type(screen.getByLabelText(/first name/i), 'John');
-    await user.type(screen.getByLabelText(/last name/i), 'Doe');
-    await user.type(screen.getByLabelText(/last seen location/i), 'Kingston Downtown');
-    await user.type(screen.getByLabelText(/your name/i), 'Jane Smith');
+    // Fill in required fields for target person
+    const firstNameInputs = screen.getAllByLabelText(/first name/i);
+    const lastNameInputs = screen.getAllByLabelText(/last name/i);
+    
+    await user.type(firstNameInputs[0], 'John');
+    await user.type(lastNameInputs[0], 'Doe');
+    await user.type(screen.getByLabelText(/last known address/i), 'Kingston Downtown');
 
     // Select parish
     const parishSelect = screen.getByLabelText(/parish/i);
     await user.click(parishSelect);
     const kingstonOption = await screen.findByRole('option', { name: 'Kingston' });
     await user.click(kingstonOption);
+
+    // Fill in requester information
+    await user.type(screen.getByLabelText(/your first name/i), 'Jane');
+    await user.type(screen.getByLabelText(/your last name/i), 'Smith');
+    await user.type(screen.getByLabelText(/email/i), 'jane@example.com');
 
     // Submit form
     const submitButton = screen.getByRole('button', { name: /submit request/i });
@@ -93,17 +106,24 @@ describe('RequestForm', () => {
 
     render(<RequestForm onSuccess={mockOnSuccess} />);
 
-    // Fill in required fields
-    await user.type(screen.getByLabelText(/first name/i), 'John');
-    await user.type(screen.getByLabelText(/last name/i), 'Doe');
-    await user.type(screen.getByLabelText(/last seen location/i), 'Kingston Downtown');
-    await user.type(screen.getByLabelText(/your name/i), 'Jane Smith');
+    // Fill in required fields for target person
+    const firstNameInputs = screen.getAllByLabelText(/first name/i);
+    const lastNameInputs = screen.getAllByLabelText(/last name/i);
+    
+    await user.type(firstNameInputs[0], 'John');
+    await user.type(lastNameInputs[0], 'Doe');
+    await user.type(screen.getByLabelText(/last known address/i), 'Kingston Downtown');
 
     // Select parish
     const parishSelect = screen.getByLabelText(/parish/i);
     await user.click(parishSelect);
     const kingstonOption = await screen.findByRole('option', { name: 'Kingston' });
     await user.click(kingstonOption);
+
+    // Fill in requester information
+    await user.type(screen.getByLabelText(/your first name/i), 'Jane');
+    await user.type(screen.getByLabelText(/your last name/i), 'Smith');
+    await user.type(screen.getByLabelText(/email/i), 'jane@example.com');
 
     // Submit form
     const submitButton = screen.getByRole('button', { name: /submit request/i });

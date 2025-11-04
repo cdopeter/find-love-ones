@@ -4,24 +4,33 @@ import userEvent from '@testing-library/user-event';
 import PersonDetailDrawer from '@/components/PersonDetailDrawer';
 import { MissingPersonRequest } from '@/lib/types/database';
 
+// Mock the supabase module
+vi.mock('@/lib/supabase', () => ({
+  supabase: {
+    from: vi.fn(() => ({
+      select: vi.fn(() => ({
+        eq: vi.fn(() => ({
+          order: vi.fn(() => Promise.resolve({ data: [], error: null })),
+        })),
+      })),
+    })),
+  },
+}));
+
 describe('PersonDetailDrawer', () => {
   const mockRequest: MissingPersonRequest = {
     id: '123',
-    first_name: 'John',
-    last_name: 'Doe',
-    age: 45,
-    description: 'Test description',
-    last_seen_location: 'Kingston Downtown',
-    last_seen_date: '2024-01-01',
+    target_first_name: 'John',
+    target_last_name: 'Doe',
+    last_known_address: 'Kingston Downtown',
     parish: 'Kingston',
-    contact_name: 'Jane Smith',
-    contact_phone: '876-123-4567',
-    contact_email: 'jane@example.com',
-    notes: 'Test notes',
-    status: 'missing',
-    message_from_found: '',
+    requester_first_name: 'Jane',
+    requester_last_name: 'Smith',
+    requester_phone: '876-123-4567',
+    requester_email: 'jane@example.com',
+    message_to_person: 'Test message',
+    status: 'open',
     created_at: '2024-01-01T00:00:00Z',
-    updated_at: '2024-01-01T00:00:00Z',
   };
 
   const mockOnClose = vi.fn();
@@ -109,12 +118,12 @@ describe('PersonDetailDrawer', () => {
     const statusSelect = screen.getByRole('combobox');
     await user.click(statusSelect);
     
-    // Select 'found' status
-    const foundOption = await screen.findByRole('option', { name: /found/i });
-    await user.click(foundOption);
+    // Select 'closed' status
+    const closedOption = await screen.findByRole('option', { name: /closed/i });
+    await user.click(closedOption);
 
     await waitFor(() => {
-      expect(mockOnStatusUpdate).toHaveBeenCalledWith('123', 'found');
+      expect(mockOnStatusUpdate).toHaveBeenCalledWith('123', 'closed');
     });
   });
 });
