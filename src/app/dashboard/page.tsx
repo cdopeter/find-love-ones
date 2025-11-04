@@ -32,9 +32,9 @@ function DashboardContent() {
   const [requests, setRequests] = useState<MissingPersonRequest[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [selectedParish, setSelectedParish] = useState<string>('all');
-  const [selectedRequest, setSelectedRequest] =
-    useState<MissingPersonRequest | null>(null);
+  // const [selectedParish, setSelectedParish] = useState<string>('all');
+  // const [selectedRequest, setSelectedRequest] =
+  //   useState<MissingPersonRequest | null>(null);
   const [selectedRequest, setSelectedRequest] = useState<MissingPersonRequest | null>(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [snackbar, setSnackbar] = useState<{
