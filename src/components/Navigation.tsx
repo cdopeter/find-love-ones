@@ -18,11 +18,9 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import { useThemeContext } from './ThemeProvider';
 
 const pages = [
-  { label: 'About', href: '#about' },
-  { label: 'Search', href: '#search' },
+  { label: 'Home', href: '/' },
   { label: 'Submit Request', href: '/request' },
-  { label: 'Dashboard', href: '/dashboard' },
-  { label: 'Contact', href: '#contact' },
+  { label: 'Tracker', href: '/tracker' },
 ];
 
 function Navigation() {
