@@ -8,21 +8,17 @@ export function exportToCSV(requests: MissingPersonRequest[]) {
   // Prepare data for CSV export
   const csvData = requests.map((request) => ({
     'ID': request.id || '',
-    'First Name': request.first_name,
-    'Last Name': request.last_name,
-    'Age': request.age || '',
-    'Description': request.description || '',
+    'Target First Name': request.target_first_name,
+    'Target Last Name': request.target_last_name,
     'Parish': request.parish,
-    'Last Seen Location': request.last_seen_location,
-    'Last Seen Date': request.last_seen_date || '',
+    'Last Known Address': request.last_known_address,
     'Status': request.status,
-    'Contact Name': request.contact_name,
-    'Contact Phone': request.contact_phone || '',
-    'Contact Email': request.contact_email || '',
-    'Notes': request.notes || '',
-    'Message from Found': request.message_from_found || '',
+    'Requester First Name': request.requester_first_name,
+    'Requester Last Name': request.requester_last_name,
+    'Requester Phone': request.requester_phone || '',
+    'Requester Email': request.requester_email,
+    'Message to Person': request.message_to_person || '',
     'Created At': request.created_at || '',
-    'Updated At': request.updated_at || '',
   }));
 
   // Convert to CSV

@@ -49,24 +49,20 @@ export default function DashboardTable({ requests, onStatusUpdate, onRowClick }:
 
   const columns = useMemo(
     () => [
-      columnHelper.accessor('first_name', {
+      columnHelper.accessor('target_first_name', {
         header: 'First Name',
         cell: (info) => info.getValue(),
       }),
-      columnHelper.accessor('last_name', {
+      columnHelper.accessor('target_last_name', {
         header: 'Last Name',
         cell: (info) => info.getValue(),
-      }),
-      columnHelper.accessor('age', {
-        header: 'Age',
-        cell: (info) => info.getValue() || 'N/A',
       }),
       columnHelper.accessor('parish', {
         header: 'Parish',
         cell: (info) => info.getValue(),
       }),
-      columnHelper.accessor('last_seen_location', {
-        header: 'Last Seen',
+      columnHelper.accessor('last_known_address', {
+        header: 'Last Known Address',
         cell: (info) => info.getValue(),
       }),
       columnHelper.accessor('status', {
@@ -87,21 +83,19 @@ export default function DashboardTable({ requests, onStatusUpdate, onRowClick }:
               sx={{ minWidth: 120 }}
               onClick={(e) => e.stopPropagation()}
             >
-              <MenuItem value="missing">
-                <Chip label="Missing" color="error" size="small" />
+              <MenuItem value="open">
+                <Chip label="Open" color="warning" size="small" />
               </MenuItem>
-              <MenuItem value="in_progress">
-                <Chip label="In Progress" color="warning" size="small" />
-              </MenuItem>
-              <MenuItem value="found">
-                <Chip label="Found" color="success" size="small" />
+              <MenuItem value="closed">
+                <Chip label="Closed" color="success" size="small" />
               </MenuItem>
             </Select>
           );
         },
       }),
-      columnHelper.accessor('contact_name', {
-        header: 'Contact',
+      columnHelper.accessor((row) => `${row.requester_first_name} ${row.requester_last_name}`, {
+        id: 'requester_name',
+        header: 'Requester',
         cell: (info) => info.getValue(),
       }),
       columnHelper.accessor('created_at', {

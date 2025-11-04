@@ -93,34 +93,6 @@ const LOCATIONS_BY_PARISH: Record<string, string[]> = {
   'St. Catherine': ['Spanish Town', 'Portmore', 'Old Harbour', 'Linstead'],
 };
 
-// Sample descriptions
-const DESCRIPTIONS = [
-  'Last seen wearing blue jeans and white t-shirt',
-  'Wearing glasses, medium build',
-  'Tall, athletic build, short hair',
-  'Medium height, wearing red shirt',
-  'Short hair, carrying black backpack',
-  'Long hair, wearing floral dress',
-  'Wearing school uniform',
-  'Elderly, walking with a cane',
-];
-
-// Sample contact names (family members)
-const CONTACT_RELATIONS = [
-  'Mother',
-  'Father',
-  'Sister',
-  'Brother',
-  'Wife',
-  'Husband',
-  'Daughter',
-  'Son',
-  'Aunt',
-  'Uncle',
-  'Cousin',
-  'Friend',
-];
-
 /**
  * Generate a random item from an array
  */
@@ -133,16 +105,6 @@ function randomItem<T>(array: T[]): T {
  */
 function randomInt(min: number, max: number): number {
   return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
-/**
- * Generate a random date within the last 30 days
- */
-function randomRecentDate(): string {
-  const now = new Date();
-  const daysAgo = randomInt(1, 30);
-  const date = new Date(now.getTime() - daysAgo * 24 * 60 * 60 * 1000);
-  return date.toISOString();
 }
 
 /**
@@ -160,30 +122,28 @@ function generatePhoneNumber(): string {
 function generateSampleRequest(parish: string): MissingPersonRequest {
   const firstName = randomItem(FIRST_NAMES);
   const lastName = randomItem(LAST_NAMES);
+  const requesterFirstName = randomItem(FIRST_NAMES);
+  const requesterLastName = randomItem(LAST_NAMES);
   const locations = LOCATIONS_BY_PARISH[parish] || [parish];
   const location = randomItem(locations);
-  const contactRelation = randomItem(CONTACT_RELATIONS);
-  const statuses: Array<'missing' | 'found' | 'in_progress'> = [
-    'missing',
-    'missing',
-    'missing',
-    'in_progress',
-    'found',
+  const statuses: Array<'open' | 'closed'> = [
+    'open',
+    'open',
+    'open',
+    'closed',
   ];
 
   return {
-    first_name: firstName,
-    last_name: lastName,
-    age: randomInt(5, 85),
-    description: randomItem(DESCRIPTIONS),
-    last_seen_location: location,
-    last_seen_date: randomRecentDate(),
+    target_first_name: firstName,
+    target_last_name: lastName,
+    last_known_address: location,
     parish: parish,
-    contact_name: `${randomItem(FIRST_NAMES)} ${randomItem(LAST_NAMES)} (${contactRelation})`,
-    contact_phone: generatePhoneNumber(),
-    contact_email: `${firstName.toLowerCase()}.${lastName.toLowerCase()}@example.com`,
+    requester_first_name: requesterFirstName,
+    requester_last_name: requesterLastName,
+    requester_email: `${requesterFirstName.toLowerCase()}.${requesterLastName.toLowerCase()}@example.com`,
+    requester_phone: generatePhoneNumber(),
     status: randomItem(statuses),
-    notes: `Last seen in ${location}, ${parish}. Family is very concerned.`,
+    message_to_person: `Please contact us. Family is very concerned.`,
   };
 }
 
@@ -240,14 +200,14 @@ async function seedDatabase() {
 
   try {
     const { data, error } = await supabase
-      .from('missing_person_requests')
+      .from('requests')
       .insert(requests)
       .select();
 
     if (error) {
       console.error('❌ Error inserting data:', error.message);
       console.error(
-        '\nMake sure you have created the missing_person_requests table in Supabase.'
+        '\nMake sure you have created the requests table in Supabase.'
       );
       console.error('See the database schema in the project documentation.\n');
       process.exit(1);

@@ -220,11 +220,10 @@ function MarkerClusterLayer({
         const marker = L.marker([lat, lng], { icon });
         marker.bindPopup(`
           <div>
-            <strong>${request.first_name} ${request.last_name}</strong><br />
-            Age: ${request.age || 'N/A'}<br />
+            <strong>${request.target_first_name} ${request.target_last_name}</strong><br />
             Parish: ${request.parish}<br />
-            Status: <span style="text-transform: capitalize">${request.status.replace('_', ' ')}</span><br />
-            Last seen: ${request.last_seen_location}
+            Status: <span style="text-transform: capitalize">${request.status}</span><br />
+            Last known address: ${request.last_known_address}
           </div>
         `);
 

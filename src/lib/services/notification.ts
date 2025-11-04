@@ -3,41 +3,24 @@
  */
 
 import { MissingPersonRequest } from '@/lib/types/database';
-import { logStatusChange } from '@/lib/utils/audit';
 
 export interface StatusChangeNotification {
   request: MissingPersonRequest;
   oldStatus: string | null;
   newStatus: string;
-  changedBy?: string;
 }
 
 /**
- * Handle status change notification - logs audit and triggers email if status is "found"
+ * Handle status change notification - triggers email if status is "closed"
  */
 export async function handleStatusChangeNotification({
   request,
   oldStatus,
   newStatus,
-  changedBy,
 }: StatusChangeNotification): Promise<void> {
   try {
-    // Log the status change to audit table
-    if (request.id) {
-      await logStatusChange({
-        requestId: request.id,
-        oldStatus,
-        newStatus,
-        changedBy,
-        metadata: {
-          timestamp: new Date().toISOString(),
-          userAgent: typeof window !== 'undefined' ? window.navigator.userAgent : 'server',
-        },
-      });
-    }
-
-    // If status changed to "found", trigger email notification
-    if (newStatus === 'found' && oldStatus !== 'found' && request.contact_email) {
+    // If status changed to "closed", trigger email notification
+    if (newStatus === 'closed' && oldStatus !== 'closed' && request.requester_email) {
       await sendFoundNotification(request);
     }
   } catch (error) {
@@ -63,6 +46,26 @@ async function sendFoundNotification(request: MissingPersonRequest): Promise<voi
       console.warn('EDGE_FUNCTION_SECRET not configured - email notification may fail');
     }
 
+    // Fetch the most recent found update message if available
+    let latestMessage = '';
+    try {
+      const { supabase } = await import('@/lib/supabase');
+      const { data } = await supabase
+        .from('found_updates')
+        .select('message_from_found_party')
+        .eq('request_id', request.id!)
+        .order('created_at', { ascending: false })
+        .limit(1)
+        .single();
+      
+      if (data) {
+        latestMessage = data.message_from_found_party;
+      }
+    } catch (err) {
+      // If we can't fetch the message, continue without it
+      console.warn('Could not fetch found update message:', err);
+    }
+
     const response = await fetch(apiUrl, {
       method: 'POST',
       headers: {
@@ -71,13 +74,13 @@ async function sendFoundNotification(request: MissingPersonRequest): Promise<voi
       },
       body: JSON.stringify({
         requestId: request.id,
-        contactName: request.contact_name,
-        contactEmail: request.contact_email,
-        firstName: request.first_name,
-        lastName: request.last_name,
-        lastSeenLocation: request.last_seen_location,
+        contactName: `${request.requester_first_name} ${request.requester_last_name}`,
+        contactEmail: request.requester_email,
+        firstName: request.target_first_name,
+        lastName: request.target_last_name,
+        lastSeenLocation: request.last_known_address,
         parish: request.parish,
-        messageFromFound: request.message_from_found,
+        messageFromFound: latestMessage,
       }),
     });
 
@@ -86,7 +89,7 @@ async function sendFoundNotification(request: MissingPersonRequest): Promise<voi
       throw new Error(`Failed to send notification: ${error.error || error.details || 'Unknown error'}`);
     }
 
-    console.log(`Successfully sent found notification for ${request.first_name} ${request.last_name}`);
+    console.log(`Successfully sent found notification for ${request.target_first_name} ${request.target_last_name}`);
   } catch (error) {
     console.error('Error sending found notification:', error);
     // Log but don't throw - we want the status update to succeed even if email fails
