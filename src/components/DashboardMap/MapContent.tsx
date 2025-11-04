@@ -101,16 +101,14 @@ export default function MapContent({ requests, onMarkerClick }: MapContentProps)
             <Popup>
               <div>
                 <strong>
-                  {request.first_name} {request.last_name}
+                  {request.target_first_name} {request.target_last_name}
                 </strong>
-                <br />
-                Age: {request.age || 'N/A'}
                 <br />
                 Parish: {request.parish}
                 <br />
-                Status: <span style={{ textTransform: 'capitalize' }}>{request.status.replace('_', ' ')}</span>
+                Status: <span style={{ textTransform: 'capitalize' }}>{request.status}</span>
                 <br />
-                Last seen: {request.last_seen_location}
+                Last known address: {request.last_known_address}
               </div>
             </Popup>
           </Marker>

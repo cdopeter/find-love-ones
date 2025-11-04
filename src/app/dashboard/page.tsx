@@ -32,9 +32,6 @@ function DashboardContent() {
   const [requests, setRequests] = useState<MissingPersonRequest[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  // const [selectedParish, setSelectedParish] = useState<string>('all');
-  // const [selectedRequest, setSelectedRequest] =
-  //   useState<MissingPersonRequest | null>(null);
   const [selectedRequest, setSelectedRequest] = useState<MissingPersonRequest | null>(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [snackbar, setSnackbar] = useState<{
@@ -61,7 +58,7 @@ function DashboardContent() {
       // Lazy load supabase to avoid build-time errors
       const { supabase } = await import('@/lib/supabase');
       const { data, error: fetchError } = await supabase
-        .from('missing_person_requests')
+        .from('requests')
         .select('*')
         .order('created_at', { ascending: false });
 
@@ -99,35 +96,24 @@ function DashboardContent() {
 
   const handleStatusUpdate = async (
     id: string,
-    newStatus: 'missing' | 'found' | 'in_progress'
+    newStatus: 'open' | 'closed'
   ) => {
     try {
-      // Find the current request to get old status
-      const currentRequest = requests.find((req) => req.id === id);
-      const oldStatus = currentRequest?.status || null;
-
       const { supabase } = await import('@/lib/supabase');
       const { error: updateError } = await supabase
-        .from('missing_person_requests')
-        .update({ status: newStatus, updated_at: new Date().toISOString() })
+        .from('requests')
+        .update({ status: newStatus })
         .eq('id', id);
 
       if (updateError) throw updateError;
 
       // Update local state
-      const updatedRequest = {
-        ...currentRequest!,
-        status: newStatus,
-        updated_at: new Date().toISOString(),
-      };
-
       setRequests((prev) =>
         prev.map((req) =>
           req.id === id
             ? {
                 ...req,
                 status: newStatus,
-                updated_at: new Date().toISOString(),
               }
             : req
         )
@@ -150,38 +136,29 @@ function DashboardContent() {
   const handleMessageUpdate = async (id: string, message: string) => {
     try {
       const { supabase } = await import('@/lib/supabase');
-      const { error: updateError } = await supabase
-        .from('missing_person_requests')
-        .update({
-          message_from_found: message,
-          updated_at: new Date().toISOString(),
-        })
-        .eq('id', id);
+      
+      // Insert a new found_update record
+      // TODO: Replace with actual user ID when authentication is implemented
+      const { error: insertError } = await supabase
+        .from('found_updates')
+        .insert({
+          request_id: id,
+          message_from_found_party: message,
+          created_by: '00000000-0000-0000-0000-000000000000', // Placeholder UUID for anonymous users
+        });
 
-      if (updateError) throw updateError;
+      if (insertError) throw insertError;
 
-      // Update local state
-      setRequests((prev) =>
-        prev.map((req) =>
-          req.id === id
-            ? {
-                ...req,
-                message_from_found: message,
-                updated_at: new Date().toISOString(),
-              }
-            : req
-        )
-      );
       setSnackbar({
         open: true,
-        message: 'Message updated successfully',
+        message: 'Message added successfully',
         severity: 'success',
       });
     } catch (err) {
-      console.error('Error updating message:', err);
+      console.error('Error adding message:', err);
       setSnackbar({
         open: true,
-        message: 'Failed to update message',
+        message: 'Failed to add message',
         severity: 'error',
       });
     }
