@@ -4,9 +4,9 @@ import ThemeProvider from '@/components/ThemeProvider';
 import Layout from '@/components/Layout';
 
 export const metadata: Metadata = {
-  title: 'HopeNet - Find Your Loved Ones',
+  title: 'Human Rights in Action - Office of the Public Defender Jamaica',
   description:
-    'A community-powered platform that helps families and organizations locate missing loved ones after natural disasters.',
+    'Helping Jamaicans reconnect after Hurricane Melissa. Report missing persons and receive verified updates through official emergency channels.',
 };
 
 export default function RootLayout({

@@ -14,13 +14,12 @@ import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
-import FavoriteIcon from '@mui/icons-material/Favorite';
+import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 import { useThemeContext } from './ThemeProvider';
 
 const pages = [
   { label: 'About', href: '#about' },
-  { label: 'Search', href: '#search' },
-  { label: 'Submit Request', href: '/request' },
+  { label: 'Submit Report', href: '/request' },
   { label: 'Dashboard', href: '/dashboard' },
   { label: 'Contact', href: '#contact' },
 ];
@@ -43,7 +42,7 @@ function Navigation() {
     <AppBar position="static">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <FavoriteIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
+          <AccountBalanceIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
           <Typography
             variant="h6"
             noWrap
@@ -57,7 +56,7 @@ function Navigation() {
               textDecoration: 'none',
             }}
           >
-            HopeNet
+            Human Rights in Action
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
@@ -101,7 +100,7 @@ function Navigation() {
               ))}
             </Menu>
           </Box>
-          <FavoriteIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
+          <AccountBalanceIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
           <Typography
             variant="h5"
             noWrap
@@ -116,7 +115,7 @@ function Navigation() {
               textDecoration: 'none',
             }}
           >
-            HopeNet
+            Human Rights in Action
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pages.map((page) => (
