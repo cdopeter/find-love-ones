@@ -553,7 +553,7 @@ async function logAuditEvent(params: {
       .insert({
         actor: params.actor,
         action: params.action,
-        table: params.table,
+        table_name: params.table,
         record_id: params.recordId,
         payload: params.payload,
         ip: params.ip,

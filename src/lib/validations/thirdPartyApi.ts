@@ -75,7 +75,7 @@ export function validateThirdPartyRequest(body: unknown): {
 
   if (!result.success) {
     const errorMessages = result.error.issues?.map((e) => 
-      `${String(e.path.join('.'))}: ${e.message}`
+      `${e.path.join('.')}: ${e.message}`
     ).join(', ') || 'Validation error';
     
     return {
