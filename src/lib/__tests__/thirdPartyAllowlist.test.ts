@@ -30,6 +30,9 @@ describe('Third Party Allowlist', () => {
       expect(isFieldAllowed('requests', 'id')).toBe(true);
       expect(isFieldAllowed('requests', 'target_first_name')).toBe(true);
       expect(isFieldAllowed('requests', 'target_last_name')).toBe(true);
+      expect(isFieldAllowed('requests', 'age')).toBe(true);
+      expect(isFieldAllowed('requests', 'gender')).toBe(true);
+      expect(isFieldAllowed('requests', 'nickname')).toBe(true);
       expect(isFieldAllowed('requests', 'parish')).toBe(true);
       expect(isFieldAllowed('requests', 'status')).toBe(true);
     });
@@ -156,6 +159,9 @@ describe('Third Party Allowlist', () => {
         const patch = {
           target_first_name: 'John',
           target_last_name: 'Doe',
+          age: 30,
+          gender: 'Male',
+          nickname: 'Johnny',
           status: 'closed',
         };
 
@@ -211,6 +217,9 @@ describe('Third Party Allowlist', () => {
         const patch = {
           target_first_name: 'John',
           target_last_name: 'Doe',
+          age: 25,
+          gender: 'Female',
+          nickname: 'JD',
           status: 'open',
           parish: 'Kingston',
           requester_email: 'blocked@example.com',
@@ -223,6 +232,9 @@ describe('Third Party Allowlist', () => {
         expect(result.allowed).toEqual({
           target_first_name: 'John',
           target_last_name: 'Doe',
+          age: 25,
+          gender: 'Female',
+          nickname: 'JD',
           status: 'open',
           parish: 'Kingston',
         });
