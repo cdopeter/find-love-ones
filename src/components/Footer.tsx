@@ -115,35 +115,35 @@ function Footer() {
             <Typography variant="h6" gutterBottom>
               Our Partners
             </Typography>
-            <Stack spacing={2} sx={{ mb: 2 }}>
+            <Stack direction="row" spacing={2} sx={{ mb: 2, alignItems: 'center' }} >
               <Box
-                component="img"
-                src="/logos/odpem.png"
-                alt="ODPEM Logo"
-                sx={{
-                  height: 60,
-                  width: 'auto',
-                  objectFit: 'contain',
-                }}
+              component="img"
+              src="/logos/odpem.png"
+              alt="ODPEM Logo"
+              sx={{
+                height: 60,
+                width: 'auto',
+                objectFit: 'contain',
+              }}
               />
               <Box
-                component="img"
-                src="/logos/design_privacy_logo.png"
-                alt="Design Privacy Logo"
-                sx={{
-                  height: 60,
-                  width: 'auto',
-                  objectFit: 'contain',
-                }}
+              component="img"
+              src="/logos/design_privacy_logo.png"
+              alt="Design Privacy Logo"
+              sx={{
+                height: 60,
+                width: 'auto',
+                objectFit: 'contain',
+              }}
               />
               <Typography
-                variant="h6"
-                sx={{
-                  fontWeight: 'bold',
-                  letterSpacing: 1,
-                }}
+              variant="h6"
+              sx={{
+                fontWeight: 'bold',
+                letterSpacing: 1,
+              }}
               >
-                YASSUH
+              YASSUH
               </Typography>
             </Stack>
             <Divider sx={{ my: 2, borderColor: 'rgba(255, 255, 255, 0.12)' }} />
