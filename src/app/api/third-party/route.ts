@@ -409,8 +409,12 @@ export async function POST(request: NextRequest) {
         userAgent: request.headers.get('user-agent') || undefined,
       });
     } else if (action === 'read') {
-      // READ operation
-      let query = supabaseAdmin.from(table).select('*');
+      // READ operation - exclude sensitive fields
+      const selectFields = table === 'requests' 
+        ? 'id,target_first_name,target_last_name,last_known_address,parish,message_to_person,requester_first_name,requester_last_name,status,lat,lng,created_by,created_at,nickname,location_status,age,gender'
+        : '*';
+      
+      let query = supabaseAdmin.from(table).select(selectFields);
 
       // Apply filters if provided
       if (filters) {

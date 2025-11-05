@@ -214,6 +214,8 @@ Main endpoint for all third-party API operations.
 - `lat` (number, nullable)
 - `lng` (number, nullable)
 - `status` (string, enum: 'open' | 'closed')
+- `gender` (string, enum: 'male' | 'female' | 'other' |'unspecified')
+- `location_status` (string enum: 'unknown' |  'missing' | 'found' )
 - `message_to_person` (string, nullable)
 - `email_sent_at` (timestamp, read-only)
 

@@ -75,25 +75,6 @@ Expected: `200 OK` with JSON response containing request data.
 - Use constant-time comparison for signature verification
 - Include `Idempotency-Key` headers for important operations
 
----
-
-## 📞 Support & Contacts
-
-### Technical Support
-- **Primary Contact:** [Name] - [email@domain.com]
-- **Secondary Contact:** [Name] - [email@domain.com]
-- **GitHub Issues:** https://github.com/cdopeter/find-love-ones/issues
-
-### Emergency Contact
-- **24/7 Support:** [phone] or [emergency-email@domain.com]
-- **Use for:** API outages, security incidents, critical bugs
-
-### Response Times
-- **Critical Issues:** 1 hour
-- **General Support:** 24 hours
-- **Feature Requests:** 1 week
-
----
 
 ## 📅 Implementation Timeline
 
