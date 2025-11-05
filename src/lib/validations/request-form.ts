@@ -18,6 +18,26 @@ export const requestFormSchema = z.object({
     .min(2, 'Last name must be at least 2 characters')
     .max(100, 'Last name must be less than 100 characters'),
 
+  age: z
+    .number()
+    .int('Age must be a whole number')
+    .min(0, 'Age must be 0 or greater')
+    .max(150, 'Age must be 150 or less')
+    .optional()
+    .nullable(),
+
+  gender: z
+    .string()
+    .max(50, 'Gender must be less than 50 characters')
+    .optional()
+    .or(z.literal('')),
+
+  nickname: z
+    .string()
+    .max(100, 'Nickname must be less than 100 characters')
+    .optional()
+    .or(z.literal('')),
+
   // Location information
   last_known_address: z
     .string()
