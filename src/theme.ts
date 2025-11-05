@@ -4,6 +4,7 @@ import { createTheme } from '@mui/material/styles';
 const tokens = {
   colors: {
     primary: '#1b8f4b',
+    primaryDark: '#157a3f', // Darker for better contrast
     primaryLight: '#dff3e8',
     bg: '#f6f8f5',
     text: '#0a2415',
@@ -40,6 +41,7 @@ const theme = createTheme({
     mode: 'light',
     primary: {
       main: tokens.colors.primary,
+      dark: tokens.colors.primaryDark,
       light: tokens.colors.primaryLight,
     },
     background: {
@@ -112,6 +114,12 @@ const theme = createTheme({
           textTransform: 'none',
           borderRadius: tokens.radii.card,
           fontWeight: 600,
+        },
+        contained: {
+          backgroundColor: tokens.colors.primaryDark,
+          '&:hover': {
+            backgroundColor: '#0f5e2f',
+          },
         },
       },
     },
