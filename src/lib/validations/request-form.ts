@@ -11,39 +11,43 @@ export const requestFormSchema = z.object({
     .min(1, 'First name is required')
     .min(2, 'First name must be at least 2 characters')
     .max(100, 'First name must be less than 100 characters'),
-  
+
   target_last_name: z
     .string()
     .min(1, 'Last name is required')
     .min(2, 'Last name must be at least 2 characters')
     .max(100, 'Last name must be less than 100 characters'),
-  
+
   // Location information
   last_known_address: z
     .string()
     .min(1, 'Last known address is required')
     .max(200, 'Address must be less than 200 characters'),
-  
+
   parish: z
     .string()
     .min(1, 'Parish is required')
-    .refine((val) => JAMAICAN_PARISHES.includes(val as typeof JAMAICAN_PARISHES[number]), {
-      message: 'Please select a valid parish',
-    }),
-  
+    .refine(
+      (val) =>
+        JAMAICAN_PARISHES.includes(val as (typeof JAMAICAN_PARISHES)[number]),
+      {
+        message: 'Please select a valid parish',
+      }
+    ),
+
   // Requester information
   requester_first_name: z
     .string()
     .min(1, 'Your first name is required')
     .min(2, 'Your first name must be at least 2 characters')
     .max(100, 'Your first name must be less than 100 characters'),
-  
+
   requester_last_name: z
     .string()
     .min(1, 'Your last name is required')
     .min(2, 'Your last name must be at least 2 characters')
     .max(100, 'Your last name must be less than 100 characters'),
-  
+
   requester_phone: z
     .string()
     .regex(
@@ -52,11 +56,9 @@ export const requestFormSchema = z.object({
     )
     .optional()
     .or(z.literal('')),
-  
-  requester_email: z
-    .string()
-    .email('Please enter a valid email address'),
-  
+
+  requester_email: z.string().email('Please enter a valid email address'),
+
   // Optional message
   message_to_person: z
     .string()

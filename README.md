@@ -5,7 +5,7 @@ HopeNet — a community-powered platform that helps families and organizations l
 > **📸 Screenshots**: See actual screenshots in the [docs/screenshots](./docs/screenshots/) directory once available.
 
 ![HopeNet Screenshot](./docs/screenshots/homepage.png)
-*Screenshot: HopeNet homepage showing the main interface*
+_Screenshot: HopeNet homepage showing the main interface_
 
 ## Table of Contents
 
@@ -133,7 +133,8 @@ EDGE_FUNCTION_SECRET=your_secret_key
 See `.env.example` for all available options.
 
 4. Run the development server:
-**Where to find these values:**
+   **Where to find these values:**
+
 - Log in to your [Supabase Dashboard](https://app.supabase.com)
 - Select your project
 - Go to **Settings** → **API**
@@ -224,12 +225,13 @@ npm run dev
 Navigate to [http://localhost:3000](http://localhost:3000)
 
 You should see the HopeNet homepage. You can now:
+
 - Browse the homepage
 - Submit a request at `/request`
 - View the dashboard at `/dashboard` (requires seeded data)
 
 ![Dashboard Screenshot](./docs/screenshots/dashboard.png)
-*Screenshot: Responder dashboard showing map and table views*
+_Screenshot: Responder dashboard showing map and table views_
 
 3. **Build for production:**
 
@@ -248,25 +250,25 @@ The application uses a PostgreSQL database (via Supabase) with the following mai
 
 #### `missing_person_requests`
 
-| Column | Type | Description |
-|--------|------|-------------|
-| `id` | UUID | Primary key (auto-generated) |
-| `created_at` | TIMESTAMP | Record creation time (auto-set) |
-| `updated_at` | TIMESTAMP | Last update time (auto-set) |
-| `first_name` | TEXT | Missing person's first name |
-| `last_name` | TEXT | Missing person's last name |
-| `age` | INTEGER | Age of missing person |
-| `description` | TEXT | Physical description |
-| `last_seen_location` | TEXT | Last known location |
-| `last_seen_date` | TIMESTAMP | When they were last seen |
-| `parish` | TEXT | Jamaican parish (one of 14) |
-| `contact_name` | TEXT | Contact person's name |
-| `contact_phone` | TEXT | Contact phone number |
-| `contact_email` | TEXT | Contact email |
-| `status` | TEXT | Status: 'missing', 'found', or 'in_progress' |
-| `photo_url` | TEXT | URL to person's photo |
-| `notes` | TEXT | Additional notes |
-| `message_from_found` | TEXT | Message when person is found |
+| Column               | Type      | Description                                  |
+| -------------------- | --------- | -------------------------------------------- |
+| `id`                 | UUID      | Primary key (auto-generated)                 |
+| `created_at`         | TIMESTAMP | Record creation time (auto-set)              |
+| `updated_at`         | TIMESTAMP | Last update time (auto-set)                  |
+| `first_name`         | TEXT      | Missing person's first name                  |
+| `last_name`          | TEXT      | Missing person's last name                   |
+| `age`                | INTEGER   | Age of missing person                        |
+| `description`        | TEXT      | Physical description                         |
+| `last_seen_location` | TEXT      | Last known location                          |
+| `last_seen_date`     | TIMESTAMP | When they were last seen                     |
+| `parish`             | TEXT      | Jamaican parish (one of 14)                  |
+| `contact_name`       | TEXT      | Contact person's name                        |
+| `contact_phone`      | TEXT      | Contact phone number                         |
+| `contact_email`      | TEXT      | Contact email                                |
+| `status`             | TEXT      | Status: 'missing', 'found', or 'in_progress' |
+| `photo_url`          | TEXT      | URL to person's photo                        |
+| `notes`              | TEXT      | Additional notes                             |
+| `message_from_found` | TEXT      | Message when person is found                 |
 
 ### Migrations
 
@@ -275,6 +277,7 @@ The database schema is version-controlled through SQL scripts. When making schem
 1. **Create a new migration file** in your Supabase Dashboard under **SQL Editor**
 
 2. **Name your migration** with a timestamp and description:
+
    ```
    YYYYMMDD_description_of_change.sql
    ```
@@ -289,8 +292,8 @@ The database schema is version-controlled through SQL scripts. When making schem
 -- Migration: 20250103_add_verification_status.sql
 -- Add verification status field
 
-ALTER TABLE missing_person_requests 
-ADD COLUMN verification_status TEXT DEFAULT 'pending' 
+ALTER TABLE missing_person_requests
+ADD COLUMN verification_status TEXT DEFAULT 'pending'
 CHECK (verification_status IN ('pending', 'verified', 'flagged'));
 
 -- Add index
@@ -306,12 +309,14 @@ npm run seed
 ```
 
 **What this does:**
+
 - Generates 2-4 sample missing person requests for each of Jamaica's 14 parishes
 - Creates realistic test data with names, locations, and contact information
 - Assigns random statuses (weighted toward 'missing')
 - Inserts all records into your Supabase database
 
 **Sample Output:**
+
 ```
 🌱 Starting database seed...
 📊 Generated 42 sample requests across 14 parishes
@@ -321,6 +326,7 @@ npm run seed
 ```
 
 **Customizing the seed data:**
+
 - Edit `scripts/seed.ts` to modify sample data
 - Adjust the number of requests per parish in the seed function
 - Add or modify sample names, descriptions, and locations
@@ -367,19 +373,18 @@ This creates a new function in `supabase/functions/my-function/index.ts`
 
 ```typescript
 // supabase/functions/notify-on-update/index.ts
-import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
+import { serve } from 'https://deno.land/std@0.168.0/http/server.ts';
 
 serve(async (req) => {
-  const { record } = await req.json()
-  
+  const { record } = await req.json();
+
   // Send email notification logic here
-  console.log('New update:', record)
-  
-  return new Response(
-    JSON.stringify({ success: true }),
-    { headers: { "Content-Type": "application/json" } },
-  )
-})
+  console.log('New update:', record);
+
+  return new Response(JSON.stringify({ success: true }), {
+    headers: { 'Content-Type': 'application/json' },
+  });
+});
 ```
 
 4. **Deploy the Edge Function:**
@@ -442,6 +447,7 @@ vercel
 4. **Set environment variables in Vercel:**
 
 Go to your project settings on Vercel and add:
+
 - `NEXT_PUBLIC_SUPABASE_URL`
 - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
 
@@ -517,7 +523,7 @@ CREATE TABLE user_roles (
 );
 
 -- Grant responder access
-INSERT INTO user_roles (user_id, role) 
+INSERT INTO user_roles (user_id, role)
 VALUES ('user-uuid-here', 'responder');
 ```
 
@@ -526,11 +532,11 @@ VALUES ('user-uuid-here', 'responder');
 ```sql
 -- Responders can update any request
 CREATE POLICY "Responders can update" ON missing_person_requests
-  FOR UPDATE 
+  FOR UPDATE
   USING (
     EXISTS (
-      SELECT 1 FROM user_roles 
-      WHERE user_id = auth.uid() 
+      SELECT 1 FROM user_roles
+      WHERE user_id = auth.uid()
       AND role IN ('responder', 'admin')
     )
   );
@@ -572,6 +578,7 @@ HopeNet takes privacy seriously. Here's how we protect sensitive information:
 #### Privacy Policy
 
 Organizations deploying HopeNet should:
+
 - Create a comprehensive privacy policy
 - Obtain consent before collecting data
 - Implement data retention policies
@@ -596,8 +603,8 @@ CREATE POLICY "Responders can update" ON missing_person_requests
   FOR UPDATE USING (
     auth.role() = 'authenticated' AND
     EXISTS (
-      SELECT 1 FROM user_roles 
-      WHERE user_id = auth.uid() 
+      SELECT 1 FROM user_roles
+      WHERE user_id = auth.uid()
       AND role IN ('responder', 'admin')
     )
   );
@@ -606,8 +613,8 @@ CREATE POLICY "Responders can update" ON missing_person_requests
 CREATE POLICY "Admins can delete" ON missing_person_requests
   FOR DELETE USING (
     EXISTS (
-      SELECT 1 FROM user_roles 
-      WHERE user_id = auth.uid() 
+      SELECT 1 FROM user_roles
+      WHERE user_id = auth.uid()
       AND role = 'admin'
     )
   );
@@ -711,12 +718,14 @@ const kingstonData = PARISH_METADATA['Kingston']; // { name, county, capital, la
 ### Parish List
 
 **Surrey County:**
+
 - Kingston
 - St. Andrew
 - St. Thomas
 - Portland
 
 **Middlesex County:**
+
 - St. Mary
 - St. Ann
 - Trelawny
@@ -726,6 +735,7 @@ const kingstonData = PARISH_METADATA['Kingston']; // { name, county, capital, la
 - St. Catherine
 
 **Cornwall County:**
+
 - Hanover
 - Westmoreland
 - St. Elizabeth
@@ -733,6 +743,7 @@ const kingstonData = PARISH_METADATA['Kingston']; // { name, county, capital, la
 ## Roadmap
 
 ### Phase 1: Core Features ✅ (Complete)
+
 - [x] Basic search and submit functionality
 - [x] Responder dashboard with map and table views
 - [x] Parish-based organization
@@ -742,6 +753,7 @@ const kingstonData = PARISH_METADATA['Kingston']; // { name, county, capital, la
 - [x] Database seeding
 
 ### Phase 2: Enhanced Features 🚧 (In Progress)
+
 - [ ] User authentication and accounts
 - [ ] Photo upload functionality
 - [ ] Advanced search filters (date range, age, status)
@@ -749,6 +761,7 @@ const kingstonData = PARISH_METADATA['Kingston']; // { name, county, capital, la
 - [ ] Print-friendly views for offline distribution
 
 ### Phase 3: Communication 📋 (Planned)
+
 - [ ] Email notifications when status changes
 - [ ] SMS alerts for critical updates
 - [ ] In-app messaging between contacts and responders
@@ -756,6 +769,7 @@ const kingstonData = PARISH_METADATA['Kingston']; // { name, county, capital, la
 - [ ] Webhook integrations for external systems
 
 ### Phase 4: Advanced Features 📋 (Planned)
+
 - [ ] Multi-language support (English, Jamaican Patois)
 - [ ] Offline mode with service workers
 - [ ] Mobile app (React Native)
@@ -764,6 +778,7 @@ const kingstonData = PARISH_METADATA['Kingston']; // { name, county, capital, la
 - [ ] Analytics dashboard for administrators
 
 ### Phase 5: Scale & Performance 📋 (Future)
+
 - [ ] Elasticsearch integration for advanced search
 - [ ] CDN for faster global access
 - [ ] Load testing and optimization
@@ -771,6 +786,7 @@ const kingstonData = PARISH_METADATA['Kingston']; // { name, county, capital, la
 - [ ] API rate limiting and security enhancements
 
 ### Community Requests
+
 Have a feature idea? [Open an issue](https://github.com/cdopeter/find-love-ones/issues) with the `feature-request` label!
 
 ## Contributing
@@ -782,12 +798,14 @@ We welcome contributions from the community! Whether you're fixing bugs, adding 
 1. **Fork the repository**
 
 2. **Clone your fork:**
+
    ```bash
    git clone https://github.com/YOUR_USERNAME/find-love-ones.git
    cd find-love-ones
    ```
 
 3. **Create a new branch:**
+
    ```bash
    git checkout -b feature/your-feature-name
    ```
@@ -798,6 +816,7 @@ We welcome contributions from the community! Whether you're fixing bugs, adding 
    - Update documentation
 
 5. **Test your changes:**
+
    ```bash
    npm run lint
    npm run format:check
@@ -805,12 +824,14 @@ We welcome contributions from the community! Whether you're fixing bugs, adding 
    ```
 
 6. **Commit your changes:**
+
    ```bash
    git add .
    git commit -m "Add: brief description of your changes"
    ```
 
 7. **Push to your fork:**
+
    ```bash
    git push origin feature/your-feature-name
    ```
@@ -854,6 +875,7 @@ We welcome contributions from the community! Whether you're fixing bugs, adding 
 **Problem**: Application fails to start with environment variable error.
 
 **Solution**:
+
 1. Ensure `.env.local` exists in the project root
 2. Verify `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` are set
 3. Restart the development server after adding variables
@@ -863,6 +885,7 @@ We welcome contributions from the community! Whether you're fixing bugs, adding 
 **Problem**: Cannot connect to Supabase database.
 
 **Solution**:
+
 1. Check your Supabase project is active
 2. Verify credentials in `.env.local` are correct
 3. Ensure your IP is not blocked (check Supabase dashboard)
@@ -873,6 +896,7 @@ We welcome contributions from the community! Whether you're fixing bugs, adding 
 **Problem**: Seed script fails with table not found error.
 
 **Solution**:
+
 1. Run the database schema SQL in Supabase SQL Editor
 2. Verify the table was created: `SELECT * FROM missing_person_requests LIMIT 1;`
 3. Check RLS policies are enabled
@@ -882,6 +906,7 @@ We welcome contributions from the community! Whether you're fixing bugs, adding 
 **Problem**: `npm run build` fails.
 
 **Solution**:
+
 1. Delete `.next` folder: `rm -rf .next`
 2. Clear node_modules: `rm -rf node_modules`
 3. Reinstall dependencies: `npm install`
@@ -892,6 +917,7 @@ We welcome contributions from the community! Whether you're fixing bugs, adding 
 **Problem**: `npm run lint` fails with "eslint: not found".
 
 **Solution**:
+
 1. Install dependencies: `npm install`
 2. Verify eslint is in node_modules: `ls node_modules/.bin/eslint`
 3. Run with npx: `npx eslint .`
@@ -901,6 +927,7 @@ We welcome contributions from the community! Whether you're fixing bugs, adding 
 **Problem**: Dashboard map is blank or not loading.
 
 **Solution**:
+
 1. Check browser console for errors
 2. Ensure Leaflet CSS is loaded
 3. Verify GeoJSON data exists in `public/data/`
@@ -911,6 +938,7 @@ We welcome contributions from the community! Whether you're fixing bugs, adding 
 **Problem**: Theme toggle doesn't switch modes.
 
 **Solution**:
+
 1. Clear browser cache and cookies
 2. Check localStorage for theme preference
 3. Verify ThemeProvider is wrapping the app
@@ -932,6 +960,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 **Built with ❤️ for communities in need**
 
 If HopeNet has helped you or your organization, please consider:
+
 - ⭐ Starring the repository
 - 🐛 Reporting bugs
 - 💡 Suggesting features

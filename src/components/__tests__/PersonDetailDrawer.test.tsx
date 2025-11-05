@@ -117,7 +117,7 @@ describe('PersonDetailDrawer', () => {
     // Find and click status select
     const statusSelect = screen.getByRole('combobox');
     await user.click(statusSelect);
-    
+
     // Select 'closed' status
     const closedOption = await screen.findByRole('option', { name: /closed/i });
     await user.click(closedOption);

@@ -1,13 +1,6 @@
 'use client';
 
-import {
-  Box,
-  Typography,
-  Paper,
-  Button,
-  Alert,
-  Divider,
-} from '@mui/material';
+import { Box, Typography, Paper, Button, Alert, Divider } from '@mui/material';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import HomeIcon from '@mui/icons-material/Home';
@@ -47,10 +40,7 @@ export default function RequestSuccess({ trackingCode }: RequestSuccessProps) {
       }}
     >
       <Box sx={{ mb: 3 }}>
-        <CheckCircleOutlineIcon
-          color="success"
-          sx={{ fontSize: 80, mb: 2 }}
-        />
+        <CheckCircleOutlineIcon color="success" sx={{ fontSize: 80, mb: 2 }} />
         <Typography variant="h4" gutterBottom>
           Request Submitted Successfully!
         </Typography>

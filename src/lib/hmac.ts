@@ -24,7 +24,11 @@ export function generateHmacSignature(payload: string, secret: string): string {
  * @param secret - The secret key
  * @returns true if signature is valid
  */
-export function verifyHmacSignature(signature: string, payload: string, secret: string): boolean {
+export function verifyHmacSignature(
+  signature: string,
+  payload: string,
+  secret: string
+): boolean {
   try {
     const expectedSignature = generateHmacSignature(payload, secret);
 
@@ -79,7 +83,9 @@ export function verifyHmacSignatureWithRotation(
  * - sha256=<signature>
  * - <signature>
  */
-export function extractSignatureFromHeader(header: string | null): string | null {
+export function extractSignatureFromHeader(
+  header: string | null
+): string | null {
   if (!header) return null;
 
   // Remove 'sha256=' prefix if present

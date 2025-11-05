@@ -64,12 +64,20 @@ export const REQUESTS_ALLOWLIST: TableAllowlist = {
  */
 export const FOUND_UPDATES_ALLOWLIST: TableAllowlist = {
   table: 'found_updates',
-  allowedFields: ['id', 'request_id', 'message_from_found_party', 'created_by', 'created_at'],
+  allowedFields: [
+    'id',
+    'request_id',
+    'message_from_found_party',
+    'created_by',
+    'created_at',
+  ],
   requiredFields: ['request_id', 'message_from_found_party'],
   readOnlyFields: ['id', 'created_at'],
   validators: {
     message_from_found_party: (value: unknown) => {
-      return typeof value === 'string' && value.length > 0 && value.length <= 5000;
+      return (
+        typeof value === 'string' && value.length > 0 && value.length <= 5000
+      );
     },
   },
 };
@@ -110,7 +118,11 @@ export function isFieldReadOnly(table: string, field: string): boolean {
 /**
  * Validate field value using custom validator if available
  */
-export function validateFieldValue(table: string, field: string, value: unknown): boolean {
+export function validateFieldValue(
+  table: string,
+  field: string,
+  value: unknown
+): boolean {
   const allowlist = TABLE_ALLOWLISTS[table];
   if (!allowlist) return false;
 
@@ -166,13 +178,20 @@ export function filterPatch(
 /**
  * Check if all required fields are present in the patch
  */
-export function validateRequiredFields(table: string, patch: Record<string, unknown>): string[] {
+export function validateRequiredFields(
+  table: string,
+  patch: Record<string, unknown>
+): string[] {
   const allowlist = TABLE_ALLOWLISTS[table];
   if (!allowlist) return [];
 
   const missing: string[] = [];
   for (const field of allowlist.requiredFields) {
-    if (!(field in patch) || patch[field] === null || patch[field] === undefined) {
+    if (
+      !(field in patch) ||
+      patch[field] === null ||
+      patch[field] === undefined
+    ) {
       missing.push(field);
     }
   }

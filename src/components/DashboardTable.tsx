@@ -39,7 +39,11 @@ interface DashboardTableProps {
 
 const columnHelper = createColumnHelper<MissingPersonRequest>();
 
-export default function DashboardTable({ requests, onStatusUpdate, onRowClick }: DashboardTableProps) {
+export default function DashboardTable({
+  requests,
+  onStatusUpdate,
+  onRowClick,
+}: DashboardTableProps) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [globalFilter, setGlobalFilter] = useState('');
   const [pagination, setPagination] = useState({
@@ -93,11 +97,14 @@ export default function DashboardTable({ requests, onStatusUpdate, onRowClick }:
           );
         },
       }),
-      columnHelper.accessor((row) => `${row.requester_first_name} ${row.requester_last_name}`, {
-        id: 'requester_name',
-        header: 'Requester',
-        cell: (info) => info.getValue(),
-      }),
+      columnHelper.accessor(
+        (row) => `${row.requester_first_name} ${row.requester_last_name}`,
+        {
+          id: 'requester_name',
+          header: 'Requester',
+          cell: (info) => info.getValue(),
+        }
+      ),
       columnHelper.accessor('created_at', {
         header: 'Reported',
         cell: (info) => {
@@ -148,13 +155,18 @@ export default function DashboardTable({ requests, onStatusUpdate, onRowClick }:
                     key={header.id}
                     onClick={header.column.getToggleSortingHandler()}
                     sx={{
-                      cursor: header.column.getCanSort() ? 'pointer' : 'default',
+                      cursor: header.column.getCanSort()
+                        ? 'pointer'
+                        : 'default',
                       fontWeight: 'bold',
                       backgroundColor: 'action.hover',
                     }}
                   >
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                      {flexRender(header.column.columnDef.header, header.getContext())}
+                      {flexRender(
+                        header.column.columnDef.header,
+                        header.getContext()
+                      )}
                       {header.column.getIsSorted() && (
                         <IconButton size="small">
                           {header.column.getIsSorted() === 'asc' ? (
@@ -193,10 +205,16 @@ export default function DashboardTable({ requests, onStatusUpdate, onRowClick }:
         component="div"
         count={table.getFilteredRowModel().rows.length}
         page={pagination.pageIndex}
-        onPageChange={(_, page) => setPagination((prev) => ({ ...prev, pageIndex: page }))}
+        onPageChange={(_, page) =>
+          setPagination((prev) => ({ ...prev, pageIndex: page }))
+        }
         rowsPerPage={pagination.pageSize}
         onRowsPerPageChange={(e) =>
-          setPagination((prev) => ({ ...prev, pageSize: parseInt(e.target.value, 10), pageIndex: 0 }))
+          setPagination((prev) => ({
+            ...prev,
+            pageSize: parseInt(e.target.value, 10),
+            pageIndex: 0,
+          }))
         }
         rowsPerPageOptions={[5, 10, 25, 50]}
       />

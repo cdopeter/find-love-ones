@@ -85,14 +85,13 @@ export async function POST(request: NextRequest) {
         status: 400,
         error: 'Invalid JSON in request body',
       });
-      return NextResponse.json(
-        { error: 'Invalid JSON' },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: 'Invalid JSON' }, { status: 400 });
     }
 
     // 5. HMAC Authentication
-    const signature = extractSignatureFromHeader(request.headers.get('x-signature'));
+    const signature = extractSignatureFromHeader(
+      request.headers.get('x-signature')
+    );
     if (!signature) {
       logError({
         action: 'third_party_api',
@@ -100,7 +99,10 @@ export async function POST(request: NextRequest) {
         error: 'Missing X-Signature header',
       });
       return NextResponse.json(
-        { error: 'Authentication required', message: 'Missing X-Signature header' },
+        {
+          error: 'Authentication required',
+          message: 'Missing X-Signature header',
+        },
         { status: 401 }
       );
     }
@@ -145,10 +147,7 @@ export async function POST(request: NextRequest) {
         status: 401,
         error: 'Invalid signature',
       });
-      return NextResponse.json(
-        { error: 'Invalid signature' },
-        { status: 401 }
-      );
+      return NextResponse.json({ error: 'Invalid signature' }, { status: 401 });
     }
 
     // 6. Rate Limiting
@@ -208,7 +207,12 @@ export async function POST(request: NextRequest) {
         );
       }
 
-      const idempotencyCheck = checkIdempotency(idempotencyKey, table, id, bodyText);
+      const idempotencyCheck = checkIdempotency(
+        idempotencyKey,
+        table,
+        id,
+        bodyText
+      );
       if (idempotencyCheck.processed) {
         if (idempotencyCheck.conflict) {
           logError({
@@ -216,12 +220,14 @@ export async function POST(request: NextRequest) {
             table,
             id,
             status: 409,
-            error: 'Idempotency key conflict - same key used with different data',
+            error:
+              'Idempotency key conflict - same key used with different data',
           });
           return NextResponse.json(
             {
               error: 'Idempotency key conflict',
-              message: 'This idempotency key was used with different request data',
+              message:
+                'This idempotency key was used with different request data',
             },
             { status: 409 }
           );
@@ -302,7 +308,10 @@ export async function POST(request: NextRequest) {
       }
 
       recordId = data?.id;
-      result = { data, rejectedFields: rejected.length > 0 ? rejected : undefined };
+      result = {
+        data,
+        rejectedFields: rejected.length > 0 ? rejected : undefined,
+      };
 
       // Log to audit table
       auditEventId = await logAuditEvent({
@@ -314,7 +323,6 @@ export async function POST(request: NextRequest) {
         ip: clientIp,
         userAgent: request.headers.get('user-agent') || undefined,
       });
-
     } else if (action === 'update') {
       // UPDATE operation
       if (!id) {
@@ -385,7 +393,10 @@ export async function POST(request: NextRequest) {
       }
 
       recordId = id;
-      result = { data, rejectedFields: rejected.length > 0 ? rejected : undefined };
+      result = {
+        data,
+        rejectedFields: rejected.length > 0 ? rejected : undefined,
+      };
 
       // Log to audit table
       auditEventId = await logAuditEvent({
@@ -397,7 +408,6 @@ export async function POST(request: NextRequest) {
         ip: clientIp,
         userAgent: request.headers.get('user-agent') || undefined,
       });
-
     } else if (action === 'read') {
       // READ operation
       let query = supabaseAdmin.from(table).select('*');
@@ -412,7 +422,7 @@ export async function POST(request: NextRequest) {
       // Apply ID filter if provided
       if (id) {
         const { data, error } = await query.eq('id', id).single();
-        
+
         if (error) {
           // Check if record not found
           if (error.code === 'PGRST116') {
@@ -446,7 +456,7 @@ export async function POST(request: NextRequest) {
         result = { data };
       } else {
         const { data, error } = await query;
-        
+
         if (error) {
           logError({
             action: 'read',
@@ -477,7 +487,13 @@ export async function POST(request: NextRequest) {
 
     // 10. Store idempotency response if key was provided
     if (idempotencyKey && recordId) {
-      storeIdempotencyResponse(idempotencyKey, table, recordId, bodyText, result);
+      storeIdempotencyResponse(
+        idempotencyKey,
+        table,
+        recordId,
+        bodyText,
+        result
+      );
     }
 
     // 11. Log success
@@ -526,9 +542,12 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(
       {
         error: 'Internal server error',
-        message: process.env.NODE_ENV === 'development' 
-          ? (error instanceof Error ? error.message : 'Unknown error')
-          : 'An unexpected error occurred',
+        message:
+          process.env.NODE_ENV === 'development'
+            ? error instanceof Error
+              ? error.message
+              : 'Unknown error'
+            : 'An unexpected error occurred',
       },
       { status: 500 }
     );

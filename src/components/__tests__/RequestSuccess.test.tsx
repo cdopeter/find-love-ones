@@ -13,14 +13,16 @@ vi.mock('next/navigation', () => ({
 describe('RequestSuccess', () => {
   it('renders tracking code', () => {
     render(<RequestSuccess trackingCode="TEST1234" />);
-    
-    expect(screen.getByText('Request Submitted Successfully!')).toBeInTheDocument();
+
+    expect(
+      screen.getByText('Request Submitted Successfully!')
+    ).toBeInTheDocument();
     expect(screen.getByText('TEST1234')).toBeInTheDocument();
   });
 
   it('copies tracking code to clipboard', async () => {
     const user = userEvent.setup();
-    
+
     // Mock clipboard API
     const writeTextMock = vi.fn(() => Promise.resolve());
     Object.defineProperty(navigator, 'clipboard', {
@@ -32,8 +34,10 @@ describe('RequestSuccess', () => {
     });
 
     render(<RequestSuccess trackingCode="TEST1234" />);
-    
-    const copyButton = screen.getByRole('button', { name: /copy tracking code/i });
+
+    const copyButton = screen.getByRole('button', {
+      name: /copy tracking code/i,
+    });
     await user.click(copyButton);
 
     await waitFor(() => {
@@ -44,15 +48,19 @@ describe('RequestSuccess', () => {
 
   it('displays success message and next steps', () => {
     render(<RequestSuccess trackingCode="TEST1234" />);
-    
-    expect(screen.getByText(/your request will be reviewed/i)).toBeInTheDocument();
-    expect(screen.getByText(/shared with trusted community partners/i)).toBeInTheDocument();
+
+    expect(
+      screen.getByText(/your request will be reviewed/i)
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(/shared with trusted community partners/i)
+    ).toBeInTheDocument();
     expect(screen.getByText(/use your tracking code/i)).toBeInTheDocument();
   });
 
   it('has a return to home button', () => {
     render(<RequestSuccess trackingCode="TEST1234" />);
-    
+
     const homeButton = screen.getByRole('button', { name: /return to home/i });
     expect(homeButton).toBeInTheDocument();
   });

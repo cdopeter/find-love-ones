@@ -1,7 +1,13 @@
 'use client';
 
 import { useMemo } from 'react';
-import { MapContainer, TileLayer, Marker, Popup, CircleMarker } from 'react-leaflet';
+import {
+  MapContainer,
+  TileLayer,
+  Marker,
+  Popup,
+  CircleMarker,
+} from 'react-leaflet';
 import L from 'leaflet';
 import { MissingPersonRequest } from '@/lib/types/database';
 import { PARISH_METADATA } from '@/lib/constants/parishes';
@@ -15,7 +21,8 @@ interface MapContentProps {
 // Fix for default marker icons in Leaflet
 const icon = L.icon({
   iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
-  iconRetinaUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
+  iconRetinaUrl:
+    'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
   shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
   iconSize: [25, 41],
   iconAnchor: [12, 41],
@@ -23,7 +30,10 @@ const icon = L.icon({
   shadowSize: [41, 41],
 });
 
-export default function MapContent({ requests, onMarkerClick }: MapContentProps) {
+export default function MapContent({
+  requests,
+  onMarkerClick,
+}: MapContentProps) {
   // Calculate parish counts for heatmap
   const parishCounts = useMemo(() => {
     const counts = new Map<string, number>();
@@ -50,7 +60,8 @@ export default function MapContent({ requests, onMarkerClick }: MapContentProps)
 
       {/* Heatmap circles for each parish */}
       {Array.from(parishCounts.entries()).map(([parish, count]) => {
-        const metadata = PARISH_METADATA[parish as keyof typeof PARISH_METADATA];
+        const metadata =
+          PARISH_METADATA[parish as keyof typeof PARISH_METADATA];
         if (!metadata) return null;
 
         const color = count > 5 ? '#d32f2f' : count > 2 ? '#f57c00' : '#fbc02d';
@@ -81,7 +92,8 @@ export default function MapContent({ requests, onMarkerClick }: MapContentProps)
 
       {/* Individual markers for each request */}
       {requests.map((request) => {
-        const metadata = PARISH_METADATA[request.parish as keyof typeof PARISH_METADATA];
+        const metadata =
+          PARISH_METADATA[request.parish as keyof typeof PARISH_METADATA];
         if (!metadata) return null;
 
         // Use consistent offset based on ID to prevent markers from stacking
@@ -106,7 +118,10 @@ export default function MapContent({ requests, onMarkerClick }: MapContentProps)
                 <br />
                 Parish: {request.parish}
                 <br />
-                Status: <span style={{ textTransform: 'capitalize' }}>{request.status}</span>
+                Status:{' '}
+                <span style={{ textTransform: 'capitalize' }}>
+                  {request.status}
+                </span>
                 <br />
                 Last known address: {request.last_known_address}
               </div>

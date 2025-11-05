@@ -39,8 +39,8 @@ const payload = JSON.stringify({
   action: 'create',
   patch: {
     request_id: 'uuid-here',
-    message_from_found_party: 'Person has been found safe'
-  }
+    message_from_found_party: 'Person has been found safe',
+  },
 });
 
 const signature = crypto
@@ -150,8 +150,12 @@ Main endpoint for all third-party API operations.
   "table": "requests | found_updates",
   "action": "create | read | update",
   "id": "uuid (required for update, optional for read)",
-  "patch": { /* data to create/update */ },
-  "filters": { /* filters for read operations */ }
+  "patch": {
+    /* data to create/update */
+  },
+  "filters": {
+    /* filters for read operations */
+  }
 }
 ```
 
@@ -170,7 +174,9 @@ Main endpoint for all third-party API operations.
 ```json
 {
   "success": true,
-  "data": { /* created/updated/read record(s) */ },
+  "data": {
+    /* created/updated/read record(s) */
+  },
   "rejectedFields": ["field1", "field2"], // Optional: fields that were rejected
   "meta": {
     "auditEventId": "uuid",
@@ -198,6 +204,7 @@ Main endpoint for all third-party API operations.
 **Access Level:** Read-only for most fields, limited update access
 
 **Allowed Fields for Read:**
+
 - `id` (UUID, read-only)
 - `created_at` (timestamp, read-only)
 - `target_first_name` (string)
@@ -211,12 +218,14 @@ Main endpoint for all third-party API operations.
 - `email_sent_at` (timestamp, read-only)
 
 **Restricted Fields** (not accessible):
+
 - `requester_email` - Protected for privacy
 - `requester_phone` - Protected for privacy
 - `requester_first_name` - Protected for privacy
 - `requester_last_name` - Protected for privacy
 
 **Allowed Fields for Update:**
+
 - `target_first_name`
 - `target_last_name`
 - `last_known_address`
@@ -227,6 +236,7 @@ Main endpoint for all third-party API operations.
 - `message_to_person`
 
 **Field Validation:**
+
 - `parish`: Must be one of the 14 Jamaican parishes
 - `status`: Must be 'open' or 'closed'
 - `lat`: Must be between -90 and 90
@@ -239,6 +249,7 @@ Main endpoint for all third-party API operations.
 **Access Level:** Full read/write access
 
 **Allowed Fields:**
+
 - `id` (UUID, read-only)
 - `request_id` (UUID, required for create)
 - `message_from_found_party` (string, required, 1-5000 chars)
@@ -246,23 +257,25 @@ Main endpoint for all third-party API operations.
 - `created_at` (timestamp, read-only)
 
 **Required Fields for Create:**
+
 - `request_id`
 - `message_from_found_party`
 
 **Field Validation:**
+
 - `message_from_found_party`: 1-5000 characters
 
 ## Error Codes
 
-| Status Code | Error | Description |
-|-------------|-------|-------------|
-| 400 | Bad Request | Invalid request format, missing fields, or validation error |
-| 401 | Unauthorized | Missing or invalid signature |
-| 404 | Not Found | Record with specified ID not found |
-| 409 | Conflict | Idempotency key conflict |
-| 429 | Too Many Requests | Rate limit exceeded |
-| 500 | Internal Server Error | Server error occurred |
-| 503 | Service Unavailable | API is disabled for maintenance |
+| Status Code | Error                 | Description                                                 |
+| ----------- | --------------------- | ----------------------------------------------------------- |
+| 400         | Bad Request           | Invalid request format, missing fields, or validation error |
+| 401         | Unauthorized          | Missing or invalid signature                                |
+| 404         | Not Found             | Record with specified ID not found                          |
+| 409         | Conflict              | Idempotency key conflict                                    |
+| 429         | Too Many Requests     | Rate limit exceeded                                         |
+| 500         | Internal Server Error | Server error occurred                                       |
+| 503         | Service Unavailable   | API is disabled for maintenance                             |
 
 ## Examples
 

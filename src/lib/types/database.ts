@@ -59,4 +59,3 @@ export interface StatusChangeAudit {
   changed_at: string;
   metadata?: Record<string, unknown>;
 }
-

@@ -28,29 +28,33 @@ describe('RequestForm', () => {
 
   it('renders form fields', () => {
     render(<RequestForm onSuccess={mockOnSuccess} />);
-    
+
     // Check that we have multiple first/last name fields (target + requester)
     const firstNameInputs = screen.getAllByLabelText(/first name/i);
     const lastNameInputs = screen.getAllByLabelText(/last name/i);
-    
+
     expect(firstNameInputs).toHaveLength(2); // Target and requester
     expect(lastNameInputs).toHaveLength(2); // Target and requester
     expect(screen.getByLabelText(/last known address/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/parish/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/email/i)).toBeInTheDocument();
-    
-    expect(screen.getByRole('button', { name: /submit request/i })).toBeInTheDocument();
+
+    expect(
+      screen.getByRole('button', { name: /submit request/i })
+    ).toBeInTheDocument();
   });
 
   it('validates required fields', async () => {
     const user = userEvent.setup();
     render(<RequestForm onSuccess={mockOnSuccess} />);
-    
-    const submitButton = screen.getByRole('button', { name: /submit request/i });
+
+    const submitButton = screen.getByRole('button', {
+      name: /submit request/i,
+    });
     await user.click(submitButton);
 
     // Form should not call onSuccess when required fields are empty
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    await new Promise((resolve) => setTimeout(resolve, 1000));
     expect(mockOnSuccess).not.toHaveBeenCalled();
   });
 
@@ -61,15 +65,20 @@ describe('RequestForm', () => {
     // Fill in required fields for target person
     const firstNameInputs = screen.getAllByLabelText(/first name/i);
     const lastNameInputs = screen.getAllByLabelText(/last name/i);
-    
+
     await user.type(firstNameInputs[0], 'John');
     await user.type(lastNameInputs[0], 'Doe');
-    await user.type(screen.getByLabelText(/last known address/i), 'Kingston Downtown');
+    await user.type(
+      screen.getByLabelText(/last known address/i),
+      'Kingston Downtown'
+    );
 
     // Select parish
     const parishSelect = screen.getByLabelText(/parish/i);
     await user.click(parishSelect);
-    const kingstonOption = await screen.findByRole('option', { name: 'Kingston' });
+    const kingstonOption = await screen.findByRole('option', {
+      name: 'Kingston',
+    });
     await user.click(kingstonOption);
 
     // Fill in requester information
@@ -78,17 +87,22 @@ describe('RequestForm', () => {
     await user.type(screen.getByLabelText(/email/i), 'jane@example.com');
 
     // Submit form
-    const submitButton = screen.getByRole('button', { name: /submit request/i });
+    const submitButton = screen.getByRole('button', {
+      name: /submit request/i,
+    });
     await user.click(submitButton);
 
-    await waitFor(() => {
-      expect(mockOnSuccess).toHaveBeenCalled();
-    }, { timeout: 3000 });
+    await waitFor(
+      () => {
+        expect(mockOnSuccess).toHaveBeenCalled();
+      },
+      { timeout: 3000 }
+    );
   });
 
   it('displays error on submission failure', async () => {
     const user = userEvent.setup();
-    
+
     // Mock supabase to return an error
     const { supabase } = await import('@/lib/supabase');
     vi.mocked(supabase.from).mockReturnValueOnce({
@@ -100,7 +114,7 @@ describe('RequestForm', () => {
           })),
         })),
       })),
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } as any);
 
     render(<RequestForm onSuccess={mockOnSuccess} />);
@@ -108,15 +122,20 @@ describe('RequestForm', () => {
     // Fill in required fields for target person
     const firstNameInputs = screen.getAllByLabelText(/first name/i);
     const lastNameInputs = screen.getAllByLabelText(/last name/i);
-    
+
     await user.type(firstNameInputs[0], 'John');
     await user.type(lastNameInputs[0], 'Doe');
-    await user.type(screen.getByLabelText(/last known address/i), 'Kingston Downtown');
+    await user.type(
+      screen.getByLabelText(/last known address/i),
+      'Kingston Downtown'
+    );
 
     // Select parish
     const parishSelect = screen.getByLabelText(/parish/i);
     await user.click(parishSelect);
-    const kingstonOption = await screen.findByRole('option', { name: 'Kingston' });
+    const kingstonOption = await screen.findByRole('option', {
+      name: 'Kingston',
+    });
     await user.click(kingstonOption);
 
     // Fill in requester information
@@ -125,11 +144,16 @@ describe('RequestForm', () => {
     await user.type(screen.getByLabelText(/email/i), 'jane@example.com');
 
     // Submit form
-    const submitButton = screen.getByRole('button', { name: /submit request/i });
+    const submitButton = screen.getByRole('button', {
+      name: /submit request/i,
+    });
     await user.click(submitButton);
 
-    await waitFor(() => {
-      expect(screen.getByText(/database error/i)).toBeInTheDocument();
-    }, { timeout: 3000 });
+    await waitFor(
+      () => {
+        expect(screen.getByText(/database error/i)).toBeInTheDocument();
+      },
+      { timeout: 3000 }
+    );
   });
 });

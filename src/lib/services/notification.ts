@@ -20,7 +20,11 @@ export async function handleStatusChangeNotification({
 }: StatusChangeNotification): Promise<void> {
   try {
     // If status changed to "closed", trigger email notification
-    if (newStatus === 'closed' && oldStatus !== 'closed' && request.requester_email) {
+    if (
+      newStatus === 'closed' &&
+      oldStatus !== 'closed' &&
+      request.requester_email
+    ) {
       await sendFoundNotification(request);
     }
   } catch (error) {
@@ -32,7 +36,9 @@ export async function handleStatusChangeNotification({
 /**
  * Send email notification when person is found
  */
-async function sendFoundNotification(request: MissingPersonRequest): Promise<void> {
+async function sendFoundNotification(
+  request: MissingPersonRequest
+): Promise<void> {
   try {
     const apiUrl =
       typeof window !== 'undefined'
@@ -43,7 +49,9 @@ async function sendFoundNotification(request: MissingPersonRequest): Promise<voi
     // Client-side calls will need to go through a server action or API route
     const secret = process.env.EDGE_FUNCTION_SECRET;
     if (!secret) {
-      console.warn('EDGE_FUNCTION_SECRET not configured - email notification may fail');
+      console.warn(
+        'EDGE_FUNCTION_SECRET not configured - email notification may fail'
+      );
     }
 
     // Fetch the most recent found update message if available
@@ -57,7 +65,7 @@ async function sendFoundNotification(request: MissingPersonRequest): Promise<voi
         .order('created_at', { ascending: false })
         .limit(1)
         .single();
-      
+
       if (data) {
         latestMessage = data.message_from_found_party;
       }
@@ -86,10 +94,14 @@ async function sendFoundNotification(request: MissingPersonRequest): Promise<voi
 
     if (!response.ok) {
       const error = await response.json();
-      throw new Error(`Failed to send notification: ${error.error || error.details || 'Unknown error'}`);
+      throw new Error(
+        `Failed to send notification: ${error.error || error.details || 'Unknown error'}`
+      );
     }
 
-    console.log(`Successfully sent found notification for ${request.target_first_name} ${request.target_last_name}`);
+    console.log(
+      `Successfully sent found notification for ${request.target_first_name} ${request.target_last_name}`
+    );
   } catch (error) {
     console.error('Error sending found notification:', error);
     // Log but don't throw - we want the status update to succeed even if email fails
@@ -100,7 +112,9 @@ async function sendFoundNotification(request: MissingPersonRequest): Promise<voi
  * Test hook for email notifications (for testing/development)
  * This can be used to test email sending without actually changing status
  */
-export async function testFoundNotification(request: MissingPersonRequest): Promise<{
+export async function testFoundNotification(
+  request: MissingPersonRequest
+): Promise<{
   success: boolean;
   error?: string;
 }> {

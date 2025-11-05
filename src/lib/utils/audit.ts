@@ -17,7 +17,9 @@ export interface AuditLogEntry {
  */
 export async function logStatusChange(entry: AuditLogEntry): Promise<void> {
   try {
-    console.log(`Status change: ${entry.oldStatus} -> ${entry.newStatus} for request ${entry.requestId}`);
+    console.log(
+      `Status change: ${entry.oldStatus} -> ${entry.newStatus} for request ${entry.requestId}`
+    );
     // Future implementation could use a separate audit table or logging service
   } catch (error) {
     console.error('Error in logStatusChange:', error);

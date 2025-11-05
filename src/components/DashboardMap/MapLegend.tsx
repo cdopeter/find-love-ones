@@ -12,7 +12,10 @@ interface MapLegendProps {
 /**
  * Accessible map legend explaining symbols and colors
  */
-export default function MapLegend({ totalRequests, showHeatmap }: MapLegendProps) {
+export default function MapLegend({
+  totalRequests,
+  showHeatmap,
+}: MapLegendProps) {
   return (
     <Paper
       sx={{
@@ -44,7 +47,9 @@ export default function MapLegend({ totalRequests, showHeatmap }: MapLegendProps
         <Box>
           <Box sx={{ display: 'flex', alignItems: 'center', mb: 0.5 }}>
             <GroupWorkIcon sx={{ fontSize: 20, color: '#f57c00', mr: 1 }} />
-            <Typography variant="body2">Cluster ({totalRequests} total)</Typography>
+            <Typography variant="body2">
+              Cluster ({totalRequests} total)
+            </Typography>
           </Box>
           <Typography variant="caption" color="text.secondary" sx={{ ml: 3.5 }}>
             Click to zoom and expand
@@ -56,12 +61,15 @@ export default function MapLegend({ totalRequests, showHeatmap }: MapLegendProps
             <Typography variant="body2" gutterBottom>
               Heatmap Density:
             </Typography>
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, ml: 0.5 }}>
+            <Box
+              sx={{ display: 'flex', alignItems: 'center', gap: 0.5, ml: 0.5 }}
+            >
               <Box
                 sx={{
                   width: 30,
                   height: 12,
-                  background: 'linear-gradient(to right, #fbc02d, #f57c00, #d32f2f)',
+                  background:
+                    'linear-gradient(to right, #fbc02d, #f57c00, #d32f2f)',
                   borderRadius: 1,
                 }}
                 role="img"
@@ -100,7 +108,11 @@ export default function MapLegend({ totalRequests, showHeatmap }: MapLegendProps
               }}
             />
           </Box>
-          <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mt: 0.5 }}>
+          <Typography
+            variant="caption"
+            color="text.secondary"
+            sx={{ display: 'block', mt: 0.5 }}
+          >
             Click parish boundary to filter
           </Typography>
         </Box>

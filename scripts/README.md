@@ -68,6 +68,7 @@ CREATE POLICY "Allow authenticated insert" ON missing_person_requests
 ### Audit Logging Table
 
 For tracking status changes, also run the SQL in `scripts/schema-updates.sql` to create the audit logging table and triggers. This enables:
+
 - Tracking who changed status and when
 - Automatic email notifications when status changes to "found"
 - Full audit trail of all status changes

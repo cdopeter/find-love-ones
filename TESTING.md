@@ -69,6 +69,7 @@ npm run lighthouse
 ### Component Tests
 
 Located in `src/components/__tests__/`, component tests verify:
+
 - Component rendering
 - User interactions
 - Props handling
@@ -76,6 +77,7 @@ Located in `src/components/__tests__/`, component tests verify:
 - Error states
 
 **Example:**
+
 ```typescript
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
@@ -90,6 +92,7 @@ test('renders component', () => {
 ### E2E Tests
 
 Located in `e2e/`, end-to-end tests verify:
+
 - Complete user flows
 - Multi-page interactions
 - Form submissions
@@ -97,6 +100,7 @@ Located in `e2e/`, end-to-end tests verify:
 - Accessibility compliance
 
 **Example:**
+
 ```typescript
 import { test, expect } from '@playwright/test';
 
@@ -132,6 +136,7 @@ See `.github/workflows/ci.yml` for the complete CI configuration.
 ### Required Secrets
 
 The following secrets must be configured in GitHub:
+
 - `NEXT_PUBLIC_SUPABASE_URL` - Supabase project URL
 - `NEXT_PUBLIC_SUPABASE_ANON_KEY` - Supabase anonymous key
 - `CODECOV_TOKEN` (optional) - For coverage reporting
@@ -139,14 +144,17 @@ The following secrets must be configured in GitHub:
 ## Test Files
 
 ### Component Tests
+
 - `src/components/__tests__/RequestForm.test.tsx` - Form validation and submission
 - `src/components/__tests__/RequestSuccess.test.tsx` - Success message display
 - `src/components/__tests__/PersonDetailDrawer.test.tsx` - Detail drawer functionality
 
 ### E2E Tests
+
 - `e2e/submit-update-notify.spec.ts` - Complete submit→update→notify flow
 
 ### Configuration Files
+
 - `vitest.config.ts` - Vitest configuration
 - `playwright.config.ts` - Playwright configuration
 - `lighthouserc.json` - Lighthouse CI configuration
@@ -171,7 +179,7 @@ describe('MyComponent', () => {
   it('handles user interaction', async () => {
     const user = userEvent.setup();
     render(<MyComponent />);
-    
+
     await user.click(screen.getByRole('button'));
     expect(screen.getByText('Clicked')).toBeInTheDocument();
   });
@@ -186,11 +194,11 @@ import { test, expect } from '@playwright/test';
 test.describe('Feature Name', () => {
   test('should complete user flow', async ({ page }) => {
     await page.goto('/page');
-    
+
     // Interact with page
     await page.fill('input[name="field"]', 'value');
     await page.click('button[type="submit"]');
-    
+
     // Assert results
     await expect(page.getByText('Success')).toBeVisible();
   });
@@ -210,6 +218,7 @@ test.describe('Feature Name', () => {
 ## Debugging Tests
 
 ### Component Tests
+
 ```bash
 # Run specific test file
 npm test -- RequestForm.test.tsx
@@ -219,6 +228,7 @@ npm run test:ui
 ```
 
 ### E2E Tests
+
 ```bash
 # Run with visible browser
 npm run test:e2e:debug
@@ -230,16 +240,19 @@ npx playwright test submit-update-notify.spec.ts
 ## Troubleshooting
 
 ### Tests timing out
+
 - Increase timeout in test configuration
 - Check for async operations not being awaited
 - Verify mocks are set up correctly
 
 ### Accessibility violations
+
 - Review Lighthouse CI report
 - Use axe DevTools browser extension
 - Check ARIA labels and semantic HTML
 
 ### Flaky tests
+
 - Add proper wait conditions
 - Avoid hardcoded timeouts
 - Ensure test isolation

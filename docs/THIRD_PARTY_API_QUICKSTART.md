@@ -17,6 +17,7 @@ Run the SQL script in your Supabase SQL Editor:
 ```
 
 This creates:
+
 - ✅ `audit_events` table for tracking all API operations
 - ✅ `found_updates` table (if not exists)
 - ✅ Database constraints and validation
@@ -100,7 +101,7 @@ async function makeRequest(payload) {
 makeRequest({
   table: 'requests',
   action: 'read',
-  filters: { parish: 'Kingston', status: 'open' }
+  filters: { parish: 'Kingston', status: 'open' },
 }).then(console.log);
 
 // Example: Create a found update
@@ -110,8 +111,8 @@ makeRequest({
   patch: {
     request_id: 'your-request-uuid',
     message_from_found_party: 'Person found safe and well',
-    created_by: 'my_app_v1'
-  }
+    created_by: 'my_app_v1',
+  },
 }).then(console.log);
 
 // Example: Update request status
@@ -119,7 +120,7 @@ makeRequest({
   table: 'requests',
   action: 'update',
   id: 'request-uuid',
-  patch: { status: 'closed' }
+  patch: { status: 'closed' },
 }).then(console.log);
 ```
 
@@ -141,7 +142,7 @@ def make_request(payload):
         body_text.encode('utf-8'),
         hashlib.sha256
     ).hexdigest()
-    
+
     response = requests.post(
         API_URL,
         headers={
@@ -151,7 +152,7 @@ def make_request(payload):
         },
         data=body_text
     )
-    
+
     return response.json()
 
 # Example: Read open requests
@@ -179,6 +180,7 @@ print(result)
 ### Requests Table
 
 **You CAN access:**
+
 - ✅ `id`, `created_at`
 - ✅ `target_first_name`, `target_last_name`
 - ✅ `last_known_address`, `parish`
@@ -187,6 +189,7 @@ print(result)
 - ✅ `message_to_person`
 
 **You CANNOT access (privacy protected):**
+
 - ❌ `requester_email`
 - ❌ `requester_phone`
 - ❌ `requester_first_name`, `requester_last_name`
@@ -194,6 +197,7 @@ print(result)
 ### Found Updates Table
 
 **Full access to all fields:**
+
 - ✅ `id`, `created_at`
 - ✅ `request_id`
 - ✅ `message_from_found_party`
@@ -206,6 +210,7 @@ print(result)
 - **Status:** Check `X-RateLimit-*` headers in responses
 
 When rate limited:
+
 ```json
 {
   "error": "Rate limit exceeded",
@@ -220,20 +225,20 @@ async function makeRequestWithRetry(payload, maxRetries = 3) {
   for (let i = 0; i < maxRetries; i++) {
     try {
       const result = await makeRequest(payload);
-      
+
       if (result.error) {
         if (result.error === 'Rate limit exceeded') {
           const delay = result.retryAfter * 1000 || 60000;
-          await new Promise(resolve => setTimeout(resolve, delay));
+          await new Promise((resolve) => setTimeout(resolve, delay));
           continue;
         }
         throw new Error(result.error);
       }
-      
+
       return result;
     } catch (error) {
       if (i === maxRetries - 1) throw error;
-      await new Promise(resolve => setTimeout(resolve, 1000 * (i + 1)));
+      await new Promise((resolve) => setTimeout(resolve, 1000 * (i + 1)));
     }
   }
 }
@@ -248,21 +253,21 @@ async function makeRequestWithRetry(payload, maxRetries = 3) {
 makeRequest({
   table: 'requests',
   action: 'read',
-  filters: { parish: 'Kingston' }
+  filters: { parish: 'Kingston' },
 });
 
 // By status
 makeRequest({
   table: 'requests',
   action: 'read',
-  filters: { status: 'open' }
+  filters: { status: 'open' },
 });
 
 // Get specific request
 makeRequest({
   table: 'requests',
   action: 'read',
-  id: 'request-uuid-here'
+  id: 'request-uuid-here',
 });
 ```
 
@@ -276,8 +281,8 @@ makeRequest({
   patch: {
     request_id: 'request-uuid',
     message_from_found_party: 'Found safe at local shelter. Family notified.',
-    created_by: 'RedCross_App'
-  }
+    created_by: 'RedCross_App',
+  },
 });
 
 // 2. Update request status to closed
@@ -285,7 +290,7 @@ makeRequest({
   table: 'requests',
   action: 'update',
   id: 'request-uuid',
-  patch: { status: 'closed' }
+  patch: { status: 'closed' },
 });
 ```
 
@@ -298,14 +303,15 @@ makeRequest({
   id: 'request-uuid',
   patch: {
     last_known_address: 'Updated location',
-    parish: 'St. Andrew'
-  }
+    parish: 'St. Andrew',
+  },
 });
 ```
 
 ## 8. Security Best Practices
 
 1. **Never commit tokens to version control**
+
    ```bash
    # Add to .gitignore
    .env.local
@@ -313,19 +319,23 @@ makeRequest({
    ```
 
 2. **Use environment variables**
+
    ```javascript
    const API_TOKEN = process.env.THIRD_PARTY_TOKEN;
    if (!API_TOKEN) throw new Error('API_TOKEN not configured');
    ```
 
 3. **Use HTTPS in production**
+
    ```javascript
-   const API_URL = process.env.NODE_ENV === 'production'
-     ? 'https://hopenet.example.com/api/third-party'
-     : 'http://localhost:3000/api/third-party';
+   const API_URL =
+     process.env.NODE_ENV === 'production'
+       ? 'https://hopenet.example.com/api/third-party'
+       : 'http://localhost:3000/api/third-party';
    ```
 
 4. **Use idempotency keys for writes**
+
    ```javascript
    headers: {
      'Idempotency-Key': `${operation}-${uniqueId}-${timestamp}`
@@ -343,7 +353,7 @@ makeRequest({
 
 ```sql
 -- View recent API activity
-SELECT 
+SELECT
   created_at,
   actor,
   action,
@@ -365,21 +375,25 @@ LIMIT 100;
 ## 10. Troubleshooting
 
 ### "Invalid signature" Error
+
 - ✅ Verify token matches `THIRD_PARTY_TOKEN_ACTIVE`
 - ✅ Ensure body is not modified between signing and sending
 - ✅ Check for extra whitespace in JSON
 
 ### "Rate limit exceeded" Error
+
 - ✅ Implement exponential backoff
 - ✅ Batch operations when possible
 - ✅ Use caching for frequently accessed data
 
 ### "Record not found" Error
+
 - ✅ Verify UUID format is correct
 - ✅ Check that record exists in database
 - ✅ Ensure using correct table name
 
 ### "Missing required fields" Error
+
 - ✅ Check `found_updates` requires `request_id` and `message_from_found_party`
 - ✅ Verify all required fields are present
 
@@ -388,6 +402,7 @@ LIMIT 100;
 For complete API documentation, see: `docs/third-party-api.md`
 
 Includes:
+
 - Complete header reference
 - All error codes
 - Advanced examples
@@ -404,6 +419,7 @@ Includes:
 ---
 
 **Quick Links:**
+
 - [Full API Documentation](../docs/third-party-api.md)
 - [Database Schema](../scripts/third-party-api-schema.sql)
 - [Environment Setup](../.env.example)

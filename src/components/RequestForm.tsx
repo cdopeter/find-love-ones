@@ -14,7 +14,10 @@ import {
   Alert,
   CircularProgress,
 } from '@mui/material';
-import { requestFormSchema, type RequestFormData } from '@/lib/validations/request-form';
+import {
+  requestFormSchema,
+  type RequestFormData,
+} from '@/lib/validations/request-form';
 import { JAMAICAN_PARISHES } from '@/lib/constants/parishes';
 
 interface RequestFormProps {
@@ -82,7 +85,7 @@ export default function RequestForm({ onSuccess }: RequestFormProps) {
       const trackingCode = insertedData.id
         ? String(insertedData.id).substring(0, 8).toUpperCase()
         : 'REQ' + Date.now().toString(36).toUpperCase().substring(0, 8);
-      
+
       // Call success callback with tracking code
       onSuccess(trackingCode);
     } catch (err) {
@@ -102,7 +105,7 @@ export default function RequestForm({ onSuccess }: RequestFormProps) {
       <Typography variant="h5" gutterBottom sx={{ mb: 3 }}>
         Submit a Missing Person Request
       </Typography>
-      
+
       {error && (
         <Alert severity="error" sx={{ mb: 3 }} onClose={() => setError(null)}>
           {error}

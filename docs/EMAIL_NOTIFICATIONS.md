@@ -46,6 +46,7 @@ This document describes the email notification system that triggers when a perso
 ### 1. Database Setup
 
 Run the SQL in `scripts/schema-updates.sql` in your Supabase SQL editor to create:
+
 - `status_change_audit` table
 - Add `email_sent_at` field to `missing_person_requests`
 - Optional: Database triggers for automatic notifications
@@ -76,14 +77,17 @@ NEXT_PUBLIC_DASHBOARD_URL=http://localhost:3000/dashboard
 ### 3. Email Provider Setup
 
 #### Test Mode (Default)
+
 Set `EMAIL_PROVIDER=test` to log emails to console without sending.
 
 #### Resend
+
 1. Sign up at https://resend.com
 2. Get your API key
 3. Set `EMAIL_PROVIDER=resend` and `RESEND_API_KEY=your_key`
 
 #### SendGrid
+
 1. Sign up at https://sendgrid.com
 2. Get your API key
 3. Set `EMAIL_PROVIDER=sendgrid` and `SENDGRID_API_KEY=your_key`
@@ -170,6 +174,7 @@ console.log('Recent audit logs:', recentLogs);
 ## Email Template
 
 The email template includes:
+
 - Professional header with celebration emoji
 - Person details (name, location, parish)
 - Optional message from the found party
@@ -181,6 +186,7 @@ The email template includes:
 Subject: `Great News - John Doe Has Been Found`
 
 Body includes:
+
 - Personalized greeting to the contact
 - Information about the found person
 - Any message left by the found party

@@ -48,7 +48,9 @@ describe('Third Party Allowlist', () => {
     it('allows all defined fields', () => {
       expect(isFieldAllowed('found_updates', 'id')).toBe(true);
       expect(isFieldAllowed('found_updates', 'request_id')).toBe(true);
-      expect(isFieldAllowed('found_updates', 'message_from_found_party')).toBe(true);
+      expect(isFieldAllowed('found_updates', 'message_from_found_party')).toBe(
+        true
+      );
       expect(isFieldAllowed('found_updates', 'created_by')).toBe(true);
     });
 
@@ -79,7 +81,9 @@ describe('Third Party Allowlist', () => {
     });
 
     it('allows modification of message_from_found_party', () => {
-      expect(isFieldReadOnly('found_updates', 'message_from_found_party')).toBe(false);
+      expect(isFieldReadOnly('found_updates', 'message_from_found_party')).toBe(
+        false
+      );
     });
   });
 
@@ -94,24 +98,54 @@ describe('Third Party Allowlist', () => {
 
       it('validates parish field', () => {
         expect(validateFieldValue('requests', 'parish', 'Kingston')).toBe(true);
-        expect(validateFieldValue('requests', 'parish', 'St. Andrew')).toBe(true);
-        expect(validateFieldValue('requests', 'parish', 'Invalid Parish')).toBe(false);
+        expect(validateFieldValue('requests', 'parish', 'St. Andrew')).toBe(
+          true
+        );
+        expect(validateFieldValue('requests', 'parish', 'Invalid Parish')).toBe(
+          false
+        );
         expect(validateFieldValue('requests', 'parish', 123)).toBe(false);
       });
 
       it('accepts any value for fields without validators', () => {
-        expect(validateFieldValue('requests', 'target_first_name', 'John')).toBe(true);
-        expect(validateFieldValue('requests', 'target_last_name', 'Doe')).toBe(true);
+        expect(
+          validateFieldValue('requests', 'target_first_name', 'John')
+        ).toBe(true);
+        expect(validateFieldValue('requests', 'target_last_name', 'Doe')).toBe(
+          true
+        );
       });
     });
 
     describe('found_updates table', () => {
       it('validates message_from_found_party length', () => {
-        expect(validateFieldValue('found_updates', 'message_from_found_party', 'Valid message')).toBe(true);
-        expect(validateFieldValue('found_updates', 'message_from_found_party', 'A'.repeat(5000))).toBe(true);
-        expect(validateFieldValue('found_updates', 'message_from_found_party', '')).toBe(false);
-        expect(validateFieldValue('found_updates', 'message_from_found_party', 'A'.repeat(5001))).toBe(false);
-        expect(validateFieldValue('found_updates', 'message_from_found_party', 123)).toBe(false);
+        expect(
+          validateFieldValue(
+            'found_updates',
+            'message_from_found_party',
+            'Valid message'
+          )
+        ).toBe(true);
+        expect(
+          validateFieldValue(
+            'found_updates',
+            'message_from_found_party',
+            'A'.repeat(5000)
+          )
+        ).toBe(true);
+        expect(
+          validateFieldValue('found_updates', 'message_from_found_party', '')
+        ).toBe(false);
+        expect(
+          validateFieldValue(
+            'found_updates',
+            'message_from_found_party',
+            'A'.repeat(5001)
+          )
+        ).toBe(false);
+        expect(
+          validateFieldValue('found_updates', 'message_from_found_party', 123)
+        ).toBe(false);
       });
     });
   });
@@ -221,7 +255,9 @@ describe('Third Party Allowlist', () => {
 
         const result = filterPatch('found_updates', patch);
 
-        expect(result.allowed).toEqual({ message_from_found_party: 'Valid message' });
+        expect(result.allowed).toEqual({
+          message_from_found_party: 'Valid message',
+        });
         expect(result.rejected).toContain('id');
         expect(result.rejected).toContain('created_at');
       });

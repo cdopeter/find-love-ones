@@ -29,34 +29,36 @@ describe('TrackingResult', () => {
 
   it('displays loading state initially', async () => {
     const { supabase } = await import('@/lib/supabase');
-    
+
     (supabase.single as ReturnType<typeof vi.fn>).mockReturnValue(
       new Promise(() => {}) // Never resolves to keep loading state
     );
 
     render(<TrackingResult trackingCode="ABC12345" onReset={mockOnReset} />);
-    
+
     expect(screen.getByText(/looking up your request/i)).toBeInTheDocument();
   });
 
   it('displays error when request not found', async () => {
     const { supabase } = await import('@/lib/supabase');
-    
+
     (supabase.single as ReturnType<typeof vi.fn>).mockResolvedValue({
       data: null,
       error: { code: 'PGRST116', message: 'No rows found' },
     });
 
     render(<TrackingResult trackingCode="ABC12345" onReset={mockOnReset} />);
-    
+
     await waitFor(() => {
-      expect(screen.getByText(/no request found with this tracking number/i)).toBeInTheDocument();
+      expect(
+        screen.getByText(/no request found with this tracking number/i)
+      ).toBeInTheDocument();
     });
   });
 
   it('displays request details when found', async () => {
     const { supabase } = await import('@/lib/supabase');
-    
+
     const mockRequest = {
       id: 'abc12345-1234-5678-90ab-cdef12345678',
       target_first_name: 'John',
@@ -68,20 +70,18 @@ describe('TrackingResult', () => {
       created_at: '2025-01-01T00:00:00Z',
     };
 
-    (supabase.single as ReturnType<typeof vi.fn>)
-      .mockResolvedValueOnce({
-        data: mockRequest,
-        error: null,
-      });
+    (supabase.single as ReturnType<typeof vi.fn>).mockResolvedValueOnce({
+      data: mockRequest,
+      error: null,
+    });
 
-    (supabase.order as ReturnType<typeof vi.fn>)
-      .mockResolvedValueOnce({
-        data: [],
-        error: null,
-      });
+    (supabase.order as ReturnType<typeof vi.fn>).mockResolvedValueOnce({
+      data: [],
+      error: null,
+    });
 
     render(<TrackingResult trackingCode="ABC12345" onReset={mockOnReset} />);
-    
+
     await waitFor(() => {
       expect(screen.getByText('John Doe')).toBeInTheDocument();
       expect(screen.getByText(/open/i)).toBeInTheDocument();
@@ -92,7 +92,7 @@ describe('TrackingResult', () => {
 
   it('displays found updates when available', async () => {
     const { supabase } = await import('@/lib/supabase');
-    
+
     const mockRequest = {
       id: 'abc12345-1234-5678-90ab-cdef12345678',
       target_first_name: 'John',
@@ -120,20 +120,18 @@ describe('TrackingResult', () => {
       },
     ];
 
-    (supabase.single as ReturnType<typeof vi.fn>)
-      .mockResolvedValueOnce({
-        data: mockRequest,
-        error: null,
-      });
+    (supabase.single as ReturnType<typeof vi.fn>).mockResolvedValueOnce({
+      data: mockRequest,
+      error: null,
+    });
 
-    (supabase.order as ReturnType<typeof vi.fn>)
-      .mockResolvedValueOnce({
-        data: mockUpdates,
-        error: null,
-      });
+    (supabase.order as ReturnType<typeof vi.fn>).mockResolvedValueOnce({
+      data: mockUpdates,
+      error: null,
+    });
 
     render(<TrackingResult trackingCode="ABC12345" onReset={mockOnReset} />);
-    
+
     await waitFor(() => {
       expect(screen.getByText('I am safe')).toBeInTheDocument();
       expect(screen.getByText('With family now')).toBeInTheDocument();
@@ -143,19 +141,21 @@ describe('TrackingResult', () => {
   it('allows user to search another tracking code', async () => {
     const { supabase } = await import('@/lib/supabase');
     const user = userEvent.setup();
-    
+
     (supabase.single as ReturnType<typeof vi.fn>).mockResolvedValue({
       data: null,
       error: { code: 'PGRST116', message: 'No rows found' },
     });
 
     render(<TrackingResult trackingCode="ABC12345" onReset={mockOnReset} />);
-    
+
     await waitFor(() => {
       expect(screen.getByText(/no request found/i)).toBeInTheDocument();
     });
 
-    const searchAnotherButton = screen.getByRole('button', { name: /try another tracking number/i });
+    const searchAnotherButton = screen.getByRole('button', {
+      name: /try another tracking number/i,
+    });
     await user.click(searchAnotherButton);
 
     expect(mockOnReset).toHaveBeenCalled();

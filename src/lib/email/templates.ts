@@ -15,7 +15,9 @@ export interface FoundNotificationData {
 /**
  * Generate HTML email template for found notification
  */
-export function generateFoundNotificationHTML(data: FoundNotificationData): string {
+export function generateFoundNotificationHTML(
+  data: FoundNotificationData
+): string {
   const {
     contactName,
     firstName,
@@ -138,7 +140,9 @@ export function generateFoundNotificationHTML(data: FoundNotificationData): stri
 /**
  * Generate plain text email template for found notification (fallback)
  */
-export function generateFoundNotificationText(data: FoundNotificationData): string {
+export function generateFoundNotificationText(
+  data: FoundNotificationData
+): string {
   const {
     contactName,
     firstName,
@@ -187,6 +191,9 @@ You received this email because you submitted a search request through our platf
 /**
  * Get email subject for found notification
  */
-export function getFoundNotificationSubject(firstName: string, lastName: string): string {
+export function getFoundNotificationSubject(
+  firstName: string,
+  lastName: string
+): string {
   return `Great News - ${firstName} ${lastName} Has Been Found`;
 }

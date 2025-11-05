@@ -92,7 +92,8 @@ export function checkRateLimit(
     return {
       allowed: true,
       remaining: Math.floor(bucket.tokens),
-      resetAt: now + ((bucket.capacity - bucket.tokens) / bucket.refillRate) * 1000,
+      resetAt:
+        now + ((bucket.capacity - bucket.tokens) / bucket.refillRate) * 1000,
     };
   } else {
     // Not enough tokens - calculate retry time
@@ -102,7 +103,8 @@ export function checkRateLimit(
     return {
       allowed: false,
       remaining: 0,
-      resetAt: now + ((bucket.capacity - bucket.tokens) / bucket.refillRate) * 1000,
+      resetAt:
+        now + ((bucket.capacity - bucket.tokens) / bucket.refillRate) * 1000,
       retryAfter: retryAfterSeconds,
     };
   }
@@ -145,7 +147,8 @@ export function getRateLimitStatus(
   return {
     tokens: Math.floor(currentTokens),
     capacity: bucket.capacity,
-    resetAt: now + ((bucket.capacity - currentTokens) / bucket.refillRate) * 1000,
+    resetAt:
+      now + ((bucket.capacity - currentTokens) / bucket.refillRate) * 1000,
   };
 }
 

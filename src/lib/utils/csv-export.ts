@@ -7,12 +7,12 @@ import Papa from 'papaparse';
 export function exportToCSV(requests: MissingPersonRequest[]) {
   // Prepare data for CSV export
   const csvData = requests.map((request) => ({
-    'ID': request.id || '',
+    ID: request.id || '',
     'Target First Name': request.target_first_name,
     'Target Last Name': request.target_last_name,
-    'Parish': request.parish,
+    Parish: request.parish,
     'Last Known Address': request.last_known_address,
-    'Status': request.status,
+    Status: request.status,
     'Requester First Name': request.requester_first_name,
     'Requester Last Name': request.requester_last_name,
     'Requester Phone': request.requester_phone || '',

@@ -17,7 +17,11 @@ import {
   CircularProgress,
 } from '@mui/material';
 import { Close as CloseIcon, Save as SaveIcon } from '@mui/icons-material';
-import { MissingPersonRequest, RequestStatus, FoundUpdate } from '@/lib/types/database';
+import {
+  MissingPersonRequest,
+  RequestStatus,
+  FoundUpdate,
+} from '@/lib/types/database';
 
 interface PersonDetailDrawerProps {
   request: MissingPersonRequest | null;
@@ -42,7 +46,7 @@ export default function PersonDetailDrawer({
 
   const fetchFoundUpdates = useCallback(async () => {
     if (!request?.id) return;
-    
+
     try {
       setLoadingUpdates(true);
       const { supabase } = await import('@/lib/supabase');
@@ -91,7 +95,14 @@ export default function PersonDetailDrawer({
     <Drawer anchor="right" open={open} onClose={onClose}>
       <Box sx={{ width: { xs: '100vw', sm: 500 }, p: 3 }}>
         {/* Header */}
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            mb: 2,
+          }}
+        >
           <Typography variant="h5" component="h2">
             Person Details
           </Typography>
@@ -119,13 +130,17 @@ export default function PersonDetailDrawer({
                 <Typography variant="body2" color="text.secondary">
                   First Name
                 </Typography>
-                <Typography variant="body1">{request.target_first_name}</Typography>
+                <Typography variant="body1">
+                  {request.target_first_name}
+                </Typography>
               </Box>
               <Box sx={{ flex: 1 }}>
                 <Typography variant="body2" color="text.secondary">
                   Last Name
                 </Typography>
-                <Typography variant="body1">{request.target_last_name}</Typography>
+                <Typography variant="body1">
+                  {request.target_last_name}
+                </Typography>
               </Box>
             </Box>
             <Box>
@@ -135,7 +150,9 @@ export default function PersonDetailDrawer({
               <FormControl fullWidth size="small">
                 <Select
                   value={request.status}
-                  onChange={(e) => handleStatusChange(e.target.value as RequestStatus)}
+                  onChange={(e) =>
+                    handleStatusChange(e.target.value as RequestStatus)
+                  }
                 >
                   <MenuItem value="open">Open</MenuItem>
                   <MenuItem value="closed">Closed</MenuItem>
@@ -161,7 +178,9 @@ export default function PersonDetailDrawer({
               <Typography variant="body2" color="text.secondary">
                 Last Known Address
               </Typography>
-              <Typography variant="body1">{request.last_known_address}</Typography>
+              <Typography variant="body1">
+                {request.last_known_address}
+              </Typography>
             </Box>
           </Stack>
         </Box>
@@ -185,7 +204,9 @@ export default function PersonDetailDrawer({
                 <Typography variant="body2" color="text.secondary">
                   Phone
                 </Typography>
-                <Typography variant="body1">{request.requester_phone}</Typography>
+                <Typography variant="body1">
+                  {request.requester_phone}
+                </Typography>
               </Box>
             )}
             <Box>
@@ -230,7 +251,11 @@ export default function PersonDetailDrawer({
                   <Typography variant="body2" sx={{ whiteSpace: 'pre-wrap' }}>
                     {update.message_from_found_party}
                   </Typography>
-                  <Typography variant="caption" color="text.secondary" sx={{ mt: 1, display: 'block' }}>
+                  <Typography
+                    variant="caption"
+                    color="text.secondary"
+                    sx={{ mt: 1, display: 'block' }}
+                  >
                     {new Date(update.created_at).toLocaleString()}
                   </Typography>
                 </Box>
@@ -241,7 +266,7 @@ export default function PersonDetailDrawer({
               No updates yet
             </Typography>
           )}
-          
+
           {!editingMessage ? (
             <Button
               variant="outlined"
@@ -262,7 +287,11 @@ export default function PersonDetailDrawer({
                 sx={{ mt: 2 }}
               />
               <Box sx={{ display: 'flex', gap: 1, mt: 2 }}>
-                <Button variant="contained" startIcon={<SaveIcon />} onClick={handleMessageSave}>
+                <Button
+                  variant="contained"
+                  startIcon={<SaveIcon />}
+                  onClick={handleMessageSave}
+                >
                   Save Update
                 </Button>
                 <Button
@@ -286,7 +315,9 @@ export default function PersonDetailDrawer({
             Created
           </Typography>
           <Typography variant="body2">
-            {request.created_at ? new Date(request.created_at).toLocaleString() : 'N/A'}
+            {request.created_at
+              ? new Date(request.created_at).toLocaleString()
+              : 'N/A'}
           </Typography>
         </Box>
       </Box>

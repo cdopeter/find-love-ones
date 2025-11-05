@@ -33,12 +33,22 @@ export async function POST(request: NextRequest) {
     }
 
     const body: SendNotificationRequest = await request.json();
-    const { contactEmail, contactName, firstName, lastName, lastSeenLocation, parish, messageFromFound } =
-      body;
+    const {
+      contactEmail,
+      contactName,
+      firstName,
+      lastName,
+      lastSeenLocation,
+      parish,
+      messageFromFound,
+    } = body;
 
     // Validate required fields
     if (!contactEmail || !contactName || !firstName || !lastName) {
-      return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
+      return NextResponse.json(
+        { error: 'Missing required fields' },
+        { status: 400 }
+      );
     }
 
     // Prepare email data
@@ -49,7 +59,9 @@ export async function POST(request: NextRequest) {
       lastSeenLocation,
       parish,
       messageFromFound,
-      dashboardUrl: process.env.NEXT_PUBLIC_DASHBOARD_URL || 'https://hopenet.example.com/dashboard',
+      dashboardUrl:
+        process.env.NEXT_PUBLIC_DASHBOARD_URL ||
+        'https://hopenet.example.com/dashboard',
     };
 
     const htmlContent = generateFoundNotificationHTML(emailData);
@@ -70,7 +82,9 @@ export async function POST(request: NextRequest) {
     }
 
     // Log success
-    console.log(`Email sent successfully to ${contactEmail} for ${firstName} ${lastName}`);
+    console.log(
+      `Email sent successfully to ${contactEmail} for ${firstName} ${lastName}`
+    );
 
     return NextResponse.json({
       success: true,
@@ -133,7 +147,8 @@ async function sendEmailViaResend({
   text: string;
 }): Promise<boolean> {
   const apiKey = process.env.RESEND_API_KEY;
-  const fromEmail = process.env.EMAIL_FROM || 'notifications@hopenet.example.com';
+  const fromEmail =
+    process.env.EMAIL_FROM || 'notifications@hopenet.example.com';
 
   if (!apiKey) {
     throw new Error('RESEND_API_KEY is not configured');
@@ -177,7 +192,8 @@ async function sendEmailViaSendGrid({
   text: string;
 }): Promise<boolean> {
   const apiKey = process.env.SENDGRID_API_KEY;
-  const fromEmail = process.env.EMAIL_FROM || 'notifications@hopenet.example.com';
+  const fromEmail =
+    process.env.EMAIL_FROM || 'notifications@hopenet.example.com';
 
   if (!apiKey) {
     throw new Error('SENDGRID_API_KEY is not configured');

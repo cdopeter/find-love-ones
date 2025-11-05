@@ -19,7 +19,10 @@ const trackingCodeSchema = z.object({
     .string()
     .min(1, 'Tracking number is required')
     .min(8, 'Tracking number must be at least 8 characters')
-    .regex(/^[A-Z0-9]+$/i, 'Tracking number must contain only letters and numbers'),
+    .regex(
+      /^[A-Z0-9]+$/i,
+      'Tracking number must contain only letters and numbers'
+    ),
 });
 
 type TrackingCodeFormData = z.infer<typeof trackingCodeSchema>;
@@ -28,7 +31,9 @@ interface TrackingCodeInputProps {
   onSubmit: (code: string) => void;
 }
 
-export default function TrackingCodeInput({ onSubmit }: TrackingCodeInputProps) {
+export default function TrackingCodeInput({
+  onSubmit,
+}: TrackingCodeInputProps) {
   const [error, setError] = useState<string | null>(null);
 
   const {
@@ -79,7 +84,10 @@ export default function TrackingCodeInput({ onSubmit }: TrackingCodeInputProps) 
               required
               placeholder="e.g., ABC12345"
               error={!!errors.trackingCode}
-              helperText={errors.trackingCode?.message || 'Enter the 8-character tracking code'}
+              helperText={
+                errors.trackingCode?.message ||
+                'Enter the 8-character tracking code'
+              }
               sx={{ mb: 3 }}
               inputProps={{
                 style: { textTransform: 'uppercase' },

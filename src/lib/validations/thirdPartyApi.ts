@@ -74,10 +74,11 @@ export function validateThirdPartyRequest(body: unknown): {
   const result = ThirdPartyApiRequestSchema.safeParse(body);
 
   if (!result.success) {
-    const errorMessages = result.error.issues?.map((e) => 
-      `${e.path.join('.')}: ${e.message}`
-    ).join(', ') || 'Validation error';
-    
+    const errorMessages =
+      result.error.issues
+        ?.map((e) => `${e.path.join('.')}: ${e.message}`)
+        .join(', ') || 'Validation error';
+
     return {
       success: false,
       error: `Invalid request format: ${errorMessages}`,

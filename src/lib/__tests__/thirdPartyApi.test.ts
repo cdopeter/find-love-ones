@@ -296,7 +296,7 @@ describe('Third Party API Validation Schemas', () => {
       };
 
       const result = validateThirdPartyRequest(body);
-      
+
       expect(result.success).toBe(true);
       expect(result.data).toEqual(body);
     });
@@ -312,7 +312,7 @@ describe('Third Party API Validation Schemas', () => {
       };
 
       const result = validateThirdPartyRequest(body);
-      
+
       expect(result.success).toBe(true);
       expect(result.data).toEqual(body);
     });
@@ -327,7 +327,7 @@ describe('Third Party API Validation Schemas', () => {
       };
 
       const result = validateThirdPartyRequest(body);
-      
+
       expect(result.success).toBe(false);
       expect(result.error).toContain('ID is required');
     });
@@ -339,7 +339,7 @@ describe('Third Party API Validation Schemas', () => {
       };
 
       const result = validateThirdPartyRequest(body);
-      
+
       expect(result.success).toBe(false);
       expect(result.error).toContain('Patch data is required');
     });
@@ -355,7 +355,7 @@ describe('Third Party API Validation Schemas', () => {
       };
 
       const result = validateThirdPartyRequest(body);
-      
+
       // Should pass basic validation, field-level validation happens in allowlist
       expect(result.success).toBe(true);
     });
@@ -371,7 +371,7 @@ describe('Third Party API Validation Schemas', () => {
       };
 
       const result = validateThirdPartyRequest(body);
-      
+
       // Should pass basic validation, field-level validation happens in allowlist
       expect(result.success).toBe(true);
     });
@@ -386,7 +386,7 @@ describe('Third Party API Validation Schemas', () => {
       };
 
       const result = validateThirdPartyRequest(body);
-      
+
       expect(result.success).toBe(true);
     });
   });

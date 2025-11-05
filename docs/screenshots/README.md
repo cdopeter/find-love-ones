@@ -7,13 +7,17 @@ This directory contains screenshots of the HopeNet application for documentation
 > **Note**: Currently, placeholder files exist. Actual screenshots need to be added by running the application and capturing screenshots.
 
 ### Homepage
+
 **File**: `homepage.png` (placeholder: `homepage.png.placeholder`)
+
 - Main landing page
 - Features overview
 - Call-to-action buttons
 
 ### Dashboard
+
 **File**: `dashboard.png` (placeholder: `dashboard.png.placeholder`)
+
 - Responder dashboard view
 - Interactive map showing missing persons by parish
 - Data table with filtering options
@@ -23,12 +27,16 @@ This directory contains screenshots of the HopeNet application for documentation
 The following screenshots should be added once the application is running:
 
 ### Request Form
+
 **File**: `request-form.png`
+
 - Missing person submission form
 - Form validation examples
 
 ### Map View
+
 **File**: `map-view.png`
+
 - Detailed map view
 - Parish boundaries
 - Marker clustering
@@ -53,6 +61,7 @@ To add screenshots to the documentation:
 ## Generating Screenshots
 
 You can use the following tools:
+
 - **Browser DevTools**: Built-in screenshot feature (F12 → ⌘+Shift+P → "Capture screenshot")
 - **macOS**: ⌘+Shift+4 (select area) or ⌘+Shift+3 (full screen)
 - **Windows**: Windows+Shift+S
@@ -61,6 +70,7 @@ You can use the following tools:
 ## Optimization
 
 Optimize screenshots before committing:
+
 ```bash
 # Using ImageMagick
 convert screenshot.png -quality 85 -resize 1280x screenshot-optimized.png

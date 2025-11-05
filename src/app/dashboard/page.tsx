@@ -32,7 +32,8 @@ function DashboardContent() {
   const [requests, setRequests] = useState<MissingPersonRequest[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [selectedRequest, setSelectedRequest] = useState<MissingPersonRequest | null>(null);
+  const [selectedRequest, setSelectedRequest] =
+    useState<MissingPersonRequest | null>(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [snackbar, setSnackbar] = useState<{
     open: boolean;
@@ -136,7 +137,7 @@ function DashboardContent() {
   const handleMessageUpdate = async (id: string, message: string) => {
     try {
       const { supabase } = await import('@/lib/supabase');
-      
+
       // Insert a new found_update record
       // TODO: Replace with actual user ID when authentication is implemented
       const { error: insertError } = await supabase
@@ -308,7 +309,14 @@ export default function DashboardPage() {
     <Suspense
       fallback={
         <Container maxWidth="xl">
-          <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '400px' }}>
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              minHeight: '400px',
+            }}
+          >
             <CircularProgress />
           </Box>
         </Container>

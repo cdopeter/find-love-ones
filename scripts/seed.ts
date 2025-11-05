@@ -126,12 +126,7 @@ function generateSampleRequest(parish: string): MissingPersonRequest {
   const requesterLastName = randomItem(LAST_NAMES);
   const locations = LOCATIONS_BY_PARISH[parish] || [parish];
   const location = randomItem(locations);
-  const statuses: Array<'open' | 'closed'> = [
-    'open',
-    'open',
-    'open',
-    'closed',
-  ];
+  const statuses: Array<'open' | 'closed'> = ['open', 'open', 'open', 'closed'];
 
   return {
     target_first_name: firstName,

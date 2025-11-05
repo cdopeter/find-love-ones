@@ -35,7 +35,8 @@ export default function TrackerPage() {
           paragraph
           sx={{ mb: 4 }}
         >
-          Enter your tracking number to view the status and any updates for your missing person request.
+          Enter your tracking number to view the status and any updates for your
+          missing person request.
         </Typography>
 
         {!trackingCode ? (

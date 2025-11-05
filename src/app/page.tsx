@@ -22,7 +22,8 @@ export default function Home() {
           textAlign: 'center',
           py: 8,
           px: 3,
-          background: 'linear-gradient(135deg, rgba(0,71,125,0.05) 0%, rgba(255,215,0,0.05) 100%)',
+          background:
+            'linear-gradient(135deg, rgba(0,71,125,0.05) 0%, rgba(255,215,0,0.05) 100%)',
           borderRadius: 2,
         }}
       >

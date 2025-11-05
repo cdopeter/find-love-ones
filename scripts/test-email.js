@@ -2,13 +2,13 @@
 
 /**
  * Test script for email notification system
- * 
+ *
  * This script helps test the email notification functionality
  * without needing to change actual database records.
- * 
+ *
  * Usage:
  *   node scripts/test-email.js
- * 
+ *
  * Or with environment variables:
  *   EMAIL_PROVIDER=test node scripts/test-email.js
  */
@@ -56,12 +56,17 @@ const testEmailNotification = async () => {
           ? process.env.SENDGRID_API_KEY
           : null;
 
-    console.log(`   ${emailProvider.toUpperCase()} API Key:`, apiKey ? '✓ Set' : '✗ Not set');
+    console.log(
+      `   ${emailProvider.toUpperCase()} API Key:`,
+      apiKey ? '✓ Set' : '✗ Not set'
+    );
     console.log('');
 
     if (!apiKey) {
       console.log('⚠️  Warning: API key not set for', emailProvider);
-      console.log('   Email sending will fail. Set EMAIL_PROVIDER=test for testing.\n');
+      console.log(
+        '   Email sending will fail. Set EMAIL_PROVIDER=test for testing.\n'
+      );
     }
   }
 
@@ -85,7 +90,7 @@ const testEmailNotification = async () => {
       console.log('   Response:', result);
       console.log('');
       console.log('   In test mode, check the console logs for email content.');
-      console.log('   In production mode, check the recipient\'s inbox.');
+      console.log("   In production mode, check the recipient's inbox.");
     } else {
       console.log('❌ Failed!');
       console.log('   Status:', response.status);

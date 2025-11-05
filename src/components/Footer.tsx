@@ -123,7 +123,9 @@ function Footer() {
         </Grid>
 
         {/* Copyright */}
-        <Box sx={{ mt: 4, pt: 3, borderTop: '1px solid rgba(255,255,255,0.2)' }}>
+        <Box
+          sx={{ mt: 4, pt: 3, borderTop: '1px solid rgba(255,255,255,0.2)' }}
+        >
           <Typography variant="body2" align="center">
             {'Copyright © '}
             Office of the Public Defender - Human Rights in Action{' '}

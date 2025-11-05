@@ -48,12 +48,19 @@ export default function TrackingResult({
       //   .ilike('id::text', `${trackingCode.toLowerCase()}%`)
       //   .limit(1)
       //   .single();
-      const { data, error: fetchError } = await supabase.rpc('search_requests_by_id_pattern', { p_pattern: `${trackingCode.toLowerCase()}%` }).limit(1).single();
+      const { data, error: fetchError } = await supabase
+        .rpc('search_requests_by_id_pattern', {
+          p_pattern: `${trackingCode.toLowerCase()}%`,
+        })
+        .limit(1)
+        .single();
 
       if (fetchError) {
         if (fetchError.code === 'PGRST116') {
           // No rows found
-          setError('No request found with this tracking number. Please check and try again.');
+          setError(
+            'No request found with this tracking number. Please check and try again.'
+          );
         } else {
           throw fetchError;
         }
@@ -68,7 +75,9 @@ export default function TrackingResult({
       if (requestData.id) {
         const { data: updates, error: updatesError } = await supabase
           .from('found_updates')
-          .select('id, request_id, message_from_found_party, created_at, created_by')
+          .select(
+            'id, request_id, message_from_found_party, created_at, created_by'
+          )
           .eq('request_id', requestData.id)
           .order('created_at', { ascending: true });
 
@@ -166,7 +175,7 @@ export default function TrackingResult({
       {/* Person Information */}
       <Box sx={{ mb: 3 }}>
         <Typography variant="h6" gutterBottom>
-          Missing Person 
+          Missing Person
         </Typography>
         <Stack spacing={2}>
           <Box>
@@ -238,7 +247,10 @@ export default function TrackingResult({
                   bgcolor: 'background.default',
                 }}
               >
-                <Typography variant="body2" sx={{ whiteSpace: 'pre-wrap', mb: 1 }}>
+                <Typography
+                  variant="body2"
+                  sx={{ whiteSpace: 'pre-wrap', mb: 1 }}
+                >
                   {update.message_from_found_party}
                 </Typography>
                 <Typography variant="caption" color="text.secondary">

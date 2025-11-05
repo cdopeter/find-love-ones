@@ -1,12 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import {
-  MapContainer,
-  TileLayer,
-  GeoJSON,
-  useMap,
-} from 'react-leaflet';
+import { MapContainer, TileLayer, GeoJSON, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet.markercluster/dist/MarkerCluster.css';
 import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
@@ -39,7 +34,8 @@ interface MapContentProps {
 // Fix for default marker icons in Leaflet
 const icon = L.icon({
   iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
-  iconRetinaUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
+  iconRetinaUrl:
+    'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
   shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
   iconSize: [25, 41],
   iconAnchor: [12, 41],
@@ -59,7 +55,8 @@ function HeatmapLayer({ requests }: { requests: MissingPersonRequest[] }) {
     const locationCounts = new Map<string, number>();
 
     requests.forEach((req) => {
-      const metadata = PARISH_METADATA[req.parish as keyof typeof PARISH_METADATA];
+      const metadata =
+        PARISH_METADATA[req.parish as keyof typeof PARISH_METADATA];
       if (!metadata) return;
 
       const offset = getMarkerOffset(req.id);
@@ -72,17 +69,19 @@ function HeatmapLayer({ requests }: { requests: MissingPersonRequest[] }) {
     });
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const heatLayer = (L as any).heatLayer(points, {
-      radius: 25,
-      blur: 15,
-      maxZoom: 17,
-      max: 1.0,
-      gradient: {
-        0.0: '#fbc02d',
-        0.5: '#f57c00',
-        1.0: '#d32f2f',
-      },
-    }).addTo(map);
+    const heatLayer = (L as any)
+      .heatLayer(points, {
+        radius: 25,
+        blur: 15,
+        maxZoom: 17,
+        max: 1.0,
+        gradient: {
+          0.0: '#fbc02d',
+          0.5: '#f57c00',
+          1.0: '#d32f2f',
+        },
+      })
+      .addTo(map);
 
     return () => {
       map.removeLayer(heatLayer);
@@ -100,7 +99,9 @@ function ParishOverlay({
   onParishClick?: (parish: string) => void;
   selectedParish?: string;
 }) {
-  const [geojsonData, setGeojsonData] = useState<FeatureCollection | null>(null);
+  const [geojsonData, setGeojsonData] = useState<FeatureCollection | null>(
+    null
+  );
 
   useEffect(() => {
     fetch('/data/jamaica-parishes.geojson')
@@ -109,11 +110,20 @@ function ParishOverlay({
       .catch((err) => console.error('Error loading GeoJSON:', err));
   }, []);
 
-  const onEachFeature = (feature: Feature<Geometry, { parish?: string; name?: string; capital?: string; county?: string }>, layer: L.Layer) => {
+  const onEachFeature = (
+    feature: Feature<
+      Geometry,
+      { parish?: string; name?: string; capital?: string; county?: string }
+    >,
+    layer: L.Layer
+  ) => {
     const parishName = feature.properties?.parish || feature.properties?.name;
 
     // Style based on selection
-    const isSelected = selectedParish && selectedParish !== 'all' && selectedParish === parishName;
+    const isSelected =
+      selectedParish &&
+      selectedParish !== 'all' &&
+      selectedParish === parishName;
 
     if (layer instanceof L.Path) {
       layer.setStyle({
@@ -151,7 +161,9 @@ function ParishOverlay({
       mouseout: (e: L.LeafletMouseEvent) => {
         const target = e.target as L.Path;
         const isFeatureSelected =
-          selectedParish && selectedParish !== 'all' && selectedParish === parishName;
+          selectedParish &&
+          selectedParish !== 'all' &&
+          selectedParish === parishName;
         target.setStyle({
           fillOpacity: isFeatureSelected ? 0.4 : 0.2,
           weight: isFeatureSelected ? 3 : 2,
@@ -167,9 +179,12 @@ function ParishOverlay({
       key={`geojson-${selectedParish}`}
       data={geojsonData}
       style={(feature) => {
-        const parishName = feature?.properties?.parish || feature?.properties?.name;
+        const parishName =
+          feature?.properties?.parish || feature?.properties?.name;
         const isSelected =
-          selectedParish && selectedParish !== 'all' && selectedParish === parishName;
+          selectedParish &&
+          selectedParish !== 'all' &&
+          selectedParish === parishName;
         return {
           fillColor: isSelected ? '#1976d2' : '#4caf50',
           fillOpacity: isSelected ? 0.4 : 0.2,
@@ -210,7 +225,8 @@ function MarkerClusterLayer({
 
       // Add markers to cluster group
       requests.forEach((request) => {
-        const metadata = PARISH_METADATA[request.parish as keyof typeof PARISH_METADATA];
+        const metadata =
+          PARISH_METADATA[request.parish as keyof typeof PARISH_METADATA];
         if (!metadata || !markerClusterGroup) return;
 
         const offset = getMarkerOffset(request.id);
@@ -277,7 +293,10 @@ export default function MapContent({
 
       {/* Parish Overlay */}
       {showParishOverlay && (
-        <ParishOverlay onParishClick={onParishClick} selectedParish={selectedParish} />
+        <ParishOverlay
+          onParishClick={onParishClick}
+          selectedParish={selectedParish}
+        />
       )}
 
       {/* Heatmap Layer */}
