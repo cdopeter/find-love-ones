@@ -115,9 +115,38 @@ function Footer() {
             <Typography variant="h6" gutterBottom>
               Our Partners
             </Typography>
-            <Typography variant="body2" sx={{ mb: 2 }}>
-              ODPEM and partner organizations
-            </Typography>
+            <Stack spacing={2} sx={{ mb: 2 }}>
+              <Box
+                component="img"
+                src="/logos/odpem.png"
+                alt="ODPEM Logo"
+                sx={{
+                  height: 60,
+                  width: 'auto',
+                  objectFit: 'contain',
+                }}
+              />
+              <Box
+                component="img"
+                src="/logos/design_privacy_logo.png"
+                alt="Design Privacy Logo"
+                sx={{
+                  height: 60,
+                  width: 'auto',
+                  objectFit: 'contain',
+                }}
+              />
+              <Typography
+                variant="h6"
+                sx={{
+                  color: 'white',
+                  fontWeight: 'bold',
+                  letterSpacing: 1,
+                }}
+              >
+                YASSUH
+              </Typography>
+            </Stack>
             <Divider sx={{ my: 2, borderColor: 'rgba(255, 255, 255, 0.12)' }} />
             <Typography variant="h6" gutterBottom>
               Follow Us

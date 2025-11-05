@@ -75,9 +75,19 @@ describe('Footer', () => {
     render(<Footer />);
 
     expect(screen.getByText('Our Partners')).toBeInTheDocument();
-    expect(
-      screen.getByText('ODPEM and partner organizations')
-    ).toBeInTheDocument();
+
+    // Check for ODPEM logo
+    const odpemLogo = screen.getByAltText('ODPEM Logo');
+    expect(odpemLogo).toBeInTheDocument();
+    expect(odpemLogo).toHaveAttribute('src', '/logos/odpem.png');
+
+    // Check for Design Privacy logo
+    const designPrivacyLogo = screen.getByAltText('Design Privacy Logo');
+    expect(designPrivacyLogo).toBeInTheDocument();
+    expect(designPrivacyLogo).toHaveAttribute('src', '/logos/design_privacy_logo.png');
+
+    // Check for YASSUH text
+    expect(screen.getByText('YASSUH')).toBeInTheDocument();
   });
 
   it('renders copyright year', () => {
