@@ -20,7 +20,7 @@ const pages = [
   { label: 'Tracker', href: '/tracker' },
 ];
 
-function Navigation() {
+function SiteHeader() {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
   );
@@ -34,20 +34,27 @@ function Navigation() {
   };
 
   return (
-    <AppBar position="static">
+    <AppBar
+      position="absolute"
+      elevation={0}
+      sx={{
+        backgroundColor: 'transparent',
+        backdropFilter: 'blur(8px)',
+      }}
+    >
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <FavoriteIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
           <Typography
             variant="h6"
             noWrap
-            component="a"
+            component={Link}
             href="/"
             sx={{
               mr: 2,
               display: { xs: 'none', md: 'flex' },
               fontWeight: 700,
-              color: 'inherit',
+              color: 'white',
               textDecoration: 'none',
             }}
           >
@@ -61,7 +68,7 @@ function Navigation() {
               aria-controls="menu-appbar"
               aria-haspopup="true"
               onClick={handleOpenNavMenu}
-              color="inherit"
+              sx={{ color: 'white' }}
             >
               <MenuIcon />
             </IconButton>
@@ -95,31 +102,47 @@ function Navigation() {
               ))}
             </Menu>
           </Box>
-          <FavoriteIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
+          <FavoriteIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1, color: 'white' }} />
           <Typography
-            variant="h5"
+            variant="h6"
             noWrap
-            component="a"
+            component={Link}
             href="/"
             sx={{
               mr: 2,
               display: { xs: 'flex', md: 'none' },
               flexGrow: 1,
               fontWeight: 700,
-              color: 'inherit',
+              color: 'white',
               textDecoration: 'none',
+              fontSize: { xs: '1rem' },
             }}
           >
             Proof Of Wellness
           </Typography>
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+          <Box
+            sx={{
+              flexGrow: 1,
+              display: { xs: 'none', md: 'flex' },
+              justifyContent: 'flex-end',
+            }}
+          >
             {pages.map((page) => (
               <Button
                 key={page.label}
                 component={Link}
                 href={page.href}
                 onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: 'white', display: 'block' }}
+                sx={{
+                  my: 2,
+                  color: 'white',
+                  display: 'block',
+                  fontWeight: 600,
+                  '&:focus': {
+                    outline: '2px solid white',
+                    outlineOffset: '2px',
+                  },
+                }}
               >
                 {page.label}
               </Button>
@@ -131,4 +154,4 @@ function Navigation() {
   );
 }
 
-export default Navigation;
+export default SiteHeader;
