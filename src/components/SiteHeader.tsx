@@ -39,12 +39,12 @@ function SiteHeader() {
       elevation={0}
       sx={{
         backgroundColor: 'transparent',
-        backdropFilter: 'blur(8px)',
+        backdropFilter: 'blur(0.5px)',
       }}
     >
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <FavoriteIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
+          <FavoriteIcon  sx={{ display: { xs: 'none', md: 'flex' }, mr: 1, color: 'primary.main' }} />
           <Typography
             variant="h6"
             noWrap
@@ -54,7 +54,7 @@ function SiteHeader() {
               mr: 2,
               display: { xs: 'none', md: 'flex' },
               fontWeight: 700,
-              color: 'white',
+              color: 'primary.main',
               textDecoration: 'none',
             }}
           >

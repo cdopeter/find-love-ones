@@ -23,12 +23,29 @@ export default function Showcase() {
           <Grid size={{ xs: 12, md: 8 }}>
             <Card
               sx={{
-                height: { xs: 400, md: 500 },
+                height: { xs: 500, md: 500 },
                 boxShadow: tokens.shadows.large,
                 borderRadius: `${tokens.radii.card}px`,
                 position: 'relative',
                 overflow: 'hidden',
-                background: `linear-gradient(135deg, ${tokens.colors.primary} 0%, ${tokens.colors.primaryLight} 100%)`,
+                backgroundImage: 'url(/hero/volunteer.jpg)',
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                backgroundRepeat: 'no-repeat',
+                '&::after': {
+                  content: '""',
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  background: `linear-gradient(135deg, ${tokens.colors.primary}85 0%, ${tokens.colors.primary}95 30%, rgba(0,0,0,0.9) 100%)`,
+                  transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+                },
+                '&:hover::after': {
+                  background: `linear-gradient(135deg, ${tokens.colors.primary}90 0%, ${tokens.colors.primary}95 25%, rgba(0,0,0,0.75) 100%)`,
+                },
+                
                 '&:focus-within': {
                   outline: `3px solid ${tokens.colors.primary}`,
                   outlineOffset: '4px',
@@ -41,7 +58,7 @@ export default function Showcase() {
                   display: 'flex',
                   flexDirection: 'column',
                   justifyContent: 'flex-end',
-                  p: 4,
+                  p: { xs: 3, md: 4 },
                   position: 'relative',
                   zIndex: 1,
                 }}
@@ -54,9 +71,17 @@ export default function Showcase() {
                     fontWeight: 600,
                     mb: 2,
                     textShadow: '0px 2px 8px rgba(0, 0, 0, 0.2)',
+                    transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+                    transform: 'translateY(8px)',
+                    opacity: 0.9,
+                    '.MuiCard-root:hover &': {
+                      transform: 'translateY(0px)',
+                      opacity: 1,
+                      textShadow: '0px 4px 12px rgba(0, 0, 0, 0.4)',
+                    },
                   }}
                 >
-                  Every Connection Matters
+                  {`Together, We're Protecting Lives and Upholding Dignity`}
                 </Typography>
                 <Typography
                   variant="body1"
@@ -66,10 +91,19 @@ export default function Showcase() {
                     lineHeight: 1.6,
                     maxWidth: '600px',
                     textShadow: '0px 1px 4px rgba(0, 0, 0, 0.2)',
+                    transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+                    transform: 'translateY(12px)',
+                    opacity: 0.8,
+                    '.MuiCard-root:hover &': {
+                      transform: 'translateY(0px)',
+                      opacity: 1,
+                      textShadow: '0px 2px 8px rgba(0, 0, 0, 0.4)',
+                    },
                   }}
                 >
-                  In the aftermath of Hurricane Melissa, we work tirelessly to reunite
-                  families and protect the dignity of every person.
+                  The Human Rights in Action campaign is a national relief and accountability initiative by the Office of the Public Defender. In the aftermath of Hurricane Melissa, many families have lost communication with their loved ones across Jamaica.
+This platform allows Jamaicans at home and abroad to report missing persons, request welfare checks, and receive verified updates through official emergency channels.
+
                 </Typography>
               </CardContent>
             </Card>

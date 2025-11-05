@@ -36,7 +36,19 @@ export default function Hero() {
           bottom: 0,
           width: { xs: '100%', md: '50%' },
           zIndex: 0,
-          background: `linear-gradient(135deg, ${tokens.colors.primary}40 0%, ${tokens.colors.primary}60 100%)`,
+          backgroundImage: 'url(/hero/hands-together-unity.jpg)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+          '&::after': {
+            content: '""',
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            background: `linear-gradient(135deg, ${tokens.colors.primary}40 0%, ${tokens.colors.primary}60 100%)`,
+          },
         }}
       />
 
@@ -45,7 +57,8 @@ export default function Hero() {
         sx={{
           position: 'relative',
           zIndex: 2,
-          py: { xs: 12, md: 8 },
+          py: { xs: 12, md: 8, },
+          ml: {xs: 0, md: 0, lg: "auto", xl:10}
         }}
       >
         <Box
@@ -53,7 +66,7 @@ export default function Hero() {
             maxWidth: { xs: '100%', md: '50%' },
             backgroundColor: { xs: 'rgba(246, 248, 245, 0.95)', md: 'transparent' },
             borderRadius: { xs: tokens.radii.heroContainer / 8, md: 0 },
-            p: { xs: 3, md: 0 },
+            p: { xs: 3, md: 0, },
           }}
         >
           <Typography
@@ -65,7 +78,7 @@ export default function Hero() {
               fontWeight: 600,
             }}
           >
-            Reuniting Families After Hurricane Melissa
+            Human Rights in Action: Helping Jamaicans Reconnect After Hurricane Melissa
           </Typography>
           <Typography
             variant="body1"
@@ -77,8 +90,9 @@ export default function Hero() {
               opacity: 0.9,
             }}
           >
-            Through pixel and code, we bring hope. Report missing loved ones and
-            track their status with dignity and care.
+            In times of crisis, every voice matters. The Office of the Public Defender, 
+            in partnership with ODPEM and Jamaica’s emergency response agencies, 
+            is working to reunite families, protect rights, and restore hope.
           </Typography>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, flexWrap: 'wrap' }}>
             <Button
@@ -101,7 +115,7 @@ export default function Hero() {
                 },
               }}
             >
-              Submit a Report
+              Submit a Missing Person Report
             </Button>
             <KeyboardArrowDownIcon
               sx={{
