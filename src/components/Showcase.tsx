@@ -17,7 +17,7 @@ export default function Showcase() {
         backgroundColor: tokens.colors.bg,
       }}
     >
-      <Container maxWidth="lg">
+      <Container maxWidth="xl">
         <Grid container spacing={4}>
           {/* Wide Gradient Card with Portrait */}
           <Grid size={{ xs: 12, md: 8 }}>
@@ -39,11 +39,9 @@ export default function Showcase() {
                   left: 0,
                   right: 0,
                   bottom: 0,
-                  background: `linear-gradient(135deg, ${tokens.colors.primary}85 0%, ${tokens.colors.primary}95 30%, rgba(0,0,0,0.9) 100%)`,
+                  outlineOffset: '4px',
+                  background: `linear-gradient(135deg, ${tokens.colors.primary}85 0%, ${tokens.colors.text} 60%, ${tokens.colors.text} 80%)`,
                   transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
-                },
-                '&:hover::after': {
-                  background: `linear-gradient(135deg, ${tokens.colors.primary}90 0%, ${tokens.colors.primary}95 25%, rgba(0,0,0,0.75) 100%)`,
                 },
                 
                 '&:focus-within': {
@@ -59,6 +57,7 @@ export default function Showcase() {
                   flexDirection: 'column',
                   justifyContent: 'flex-end',
                   p: { xs: 3, md: 4 },
+                  pr: 0,
                   position: 'relative',
                   zIndex: 1,
                 }}
@@ -89,13 +88,13 @@ export default function Showcase() {
                     color: 'white',
                     fontSize: 18,
                     lineHeight: 1.6,
-                    maxWidth: '600px',
+                    maxWidth: '800px',
                     textShadow: '0px 1px 4px rgba(0, 0, 0, 0.2)',
                     transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
                     transform: 'translateY(12px)',
                     opacity: 0.8,
                     '.MuiCard-root:hover &': {
-                      transform: 'translateY(0px)',
+                      transform: 'translateY(10px)',
                       opacity: 1,
                       textShadow: '0px 2px 8px rgba(0, 0, 0, 0.4)',
                     },
@@ -118,7 +117,20 @@ This platform allows Jamaicans at home and abroad to report missing persons, req
                 borderRadius: `${tokens.radii.card}px`,
                 position: 'relative',
                 overflow: 'hidden',
-                background: `linear-gradient(180deg, ${tokens.colors.primaryLight} 0%, ${tokens.colors.primary} 100%)`,
+                backgroundImage: 'url(/hero/volunteer-2.jpg)',
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                backgroundRepeat: 'no-repeat',
+                '&::after': {
+                  content: '""',
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+                },
+
                 '&:focus-within': {
                   outline: `3px solid ${tokens.colors.primary}`,
                   outlineOffset: '4px',

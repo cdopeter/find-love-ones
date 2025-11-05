@@ -10,13 +10,15 @@ import PersonSearchIcon from '@mui/icons-material/PersonSearch';
 import VerifiedUserIcon from '@mui/icons-material/VerifiedUser';
 import GroupsIcon from '@mui/icons-material/Groups';
 import { tokens } from '@/theme';
+import Button from '@mui/material/Button';
+import Link from 'next/link';
 
 export default function FeatureGrid() {
   return (
     <Box
       component="section"
       sx={{
-        py: { xs: 8, md: 12 },
+        py: { xs: 8, md: 6 },
         backgroundColor: tokens.colors.bg,
       }}
     >
@@ -31,7 +33,7 @@ export default function FeatureGrid() {
             fontWeight: 600,
           }}
         >
-          Through Pixel and Code
+          How It Works
         </Typography>
 
         <Grid container spacing={4}>
@@ -177,12 +179,36 @@ export default function FeatureGrid() {
                   sx={{ color: 'text.secondary', lineHeight: 1.75 }}
                 >
                   Connect with trusted response teams and community members
-                  dedicated to reuniting families across Jamaica.
+                  dedicated to reuniting loved ones across Jamaica.
                 </Typography>
               </CardContent>
             </Card>
           </Grid>
         </Grid>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, flexWrap: 'wrap', mt: 5, justifyContent: 'center' }}>
+          <Button
+            component={Link}
+            href="/request"
+            variant="contained"
+            size="large"
+            sx={{
+              py: 2,
+              px: 4,
+              fontSize: 18,
+              fontWeight: 600,
+              boxShadow: tokens.shadows.large,
+              '&:hover': {
+                boxShadow: '0px 12px 32px rgba(0, 0, 0, 0.12), 0px 4px 12px rgba(0, 0, 0, 0.08)',
+              },
+              '&:focus': {
+                outline: `3px solid ${tokens.colors.primary}`,
+                outlineOffset: '4px',
+              },
+            }}
+          >
+            Submit a Missing Person Report
+          </Button>
+        </Box>
       </Container>
     </Box>
   );

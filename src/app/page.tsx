@@ -11,8 +11,9 @@ export default function Home() {
     <Box>
       <SiteHeader />
       <Hero />
-      <FeatureGrid />
       <Showcase />
+      <FeatureGrid />
+
     </Box>
   );
 }

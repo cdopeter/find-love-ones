@@ -19,6 +19,7 @@ export default function Hero() {
         alignItems: 'center',
         overflow: 'hidden',
         backgroundColor: tokens.colors.bg,
+
         '@media (prefers-reduced-motion: reduce)': {
           '& *': {
             animation: 'none !important',
@@ -38,6 +39,7 @@ export default function Hero() {
           zIndex: 0,
           backgroundImage: 'url(/hero/hands-together-unity.jpg)',
           backgroundSize: 'cover',
+          borderBottomLeftRadius: { xs: 0, md: tokens.radii.heroContainer },
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
           '&::after': {
@@ -47,6 +49,7 @@ export default function Hero() {
             left: 0,
             right: 0,
             bottom: 0,
+            borderBottomLeftRadius: { xs: 0, md: tokens.radii.heroContainer },
             background: `linear-gradient(135deg, ${tokens.colors.primary}40 0%, ${tokens.colors.primary}60 100%)`,
           },
         }}
