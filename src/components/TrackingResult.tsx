@@ -39,12 +39,16 @@ export default function TrackingResult({
 
       // The tracking code is the first 8 characters of the UUID in uppercase
       // We need to search for requests where the ID starts with these characters (case-insensitive)
-      const { data, error: fetchError } = await supabase
-        .from('requests')
-        .select('id, target_first_name, target_last_name, status, last_known_address, parish, message_to_person, created_at, requester_first_name, requester_last_name, requester_email')
-        .ilike('id', `${trackingCode.toLowerCase()}%`)
-        .limit(1)
-        .single();
+      // id is stored as a uuid type in Postgres. Using ILIKE on a uuid column
+      // causes Postgres to try uuid ~~* '...' which fails with operator does
+      // not exist. Cast the id to text so the ILIKE operator is valid.
+      // const { data, error: fetchError } = await supabase
+      //   .from('requests')
+      //   .select('id, target_first_name, target_last_name, status, last_known_address, parish, message_to_person, created_at, requester_first_name, requester_last_name, requester_email')
+      //   .ilike('id::text', `${trackingCode.toLowerCase()}%`)
+      //   .limit(1)
+      //   .single();
+      const { data, error: fetchError } = await supabase.rpc('search_requests_by_id_pattern', { p_pattern: `${trackingCode.toLowerCase()}%` }).limit(1).single();
 
       if (fetchError) {
         if (fetchError.code === 'PGRST116') {
@@ -57,14 +61,15 @@ export default function TrackingResult({
         return;
       }
 
-      setRequest(data);
+      const requestData = data as MissingPersonRequest;
+      setRequest(requestData);
 
       // Fetch found updates for this request
-      if (data.id) {
+      if (requestData.id) {
         const { data: updates, error: updatesError } = await supabase
           .from('found_updates')
           .select('id, request_id, message_from_found_party, created_at, created_by')
-          .eq('request_id', data.id)
+          .eq('request_id', requestData.id)
           .order('created_at', { ascending: true });
 
         if (updatesError) {
@@ -161,7 +166,7 @@ export default function TrackingResult({
       {/* Person Information */}
       <Box sx={{ mb: 3 }}>
         <Typography variant="h6" gutterBottom>
-          Missing Person
+          Missing Person 
         </Typography>
         <Stack spacing={2}>
           <Box>

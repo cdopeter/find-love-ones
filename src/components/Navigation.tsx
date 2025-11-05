@@ -16,6 +16,7 @@ import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
 import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 import { useThemeContext } from './ThemeProvider';
+import FavoriteIcon from '@mui/icons-material/Favorite';
 
 const pages = [
   { label: 'Home', href: '/' },
@@ -41,7 +42,7 @@ function Navigation() {
     <AppBar position="static">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <AccountBalanceIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
+          <FavoriteIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
           <Typography
             variant="h6"
             noWrap
@@ -55,7 +56,7 @@ function Navigation() {
               textDecoration: 'none',
             }}
           >
-            Human Rights in Action
+            Proof Of Wellness
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
