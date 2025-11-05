@@ -14,33 +14,53 @@ import {
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 
-const trackingCodeSchema = z.object({
-  trackingCode: z
-    .string()
-    .min(8, 'Tracking number must be at least 8 characters')
-    .regex(
-      /^[A-Z0-9]+$/i,
-      'Tracking number must contain only letters and numbers'
-    )
-    .optional()
-    .or(z.literal('')),
-  email: z
-    .string()
-    .email('Please enter a valid email address')
-    .optional()
-    .or(z.literal('')),
-}).refine(
-  (data) => {
-    // At least one field must be provided
-    const hasTrackingCode = data.trackingCode && data.trackingCode.length >= 8;
-    const hasEmail = data.email && data.email.length > 0;
-    return hasTrackingCode || hasEmail;
-  },
-  {
-    message: 'Please provide either a tracking number or an email address',
-    path: ['trackingCode'],
-  }
-);
+const trackingCodeSchema = z
+  .object({
+    trackingCode: z.string(),
+    email: z.string(),
+  })
+  .superRefine((data, ctx) => {
+    const trackingCodeProvided = data.trackingCode && data.trackingCode.length > 0;
+    const emailProvided = data.email && data.email.length > 0;
+
+    // Validate tracking code if provided
+    if (trackingCodeProvided) {
+      if (data.trackingCode.length < 8) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: ['trackingCode'],
+          message: 'Tracking number must be at least 8 characters',
+        });
+      } else if (!/^[A-Z0-9]+$/i.test(data.trackingCode)) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: ['trackingCode'],
+          message: 'Tracking number must contain only letters and numbers',
+        });
+      }
+    }
+
+    // Validate email if provided
+    if (emailProvided) {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(data.email)) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: ['email'],
+          message: 'Please enter a valid email address',
+        });
+      }
+    }
+
+    // Check that at least one field is provided and valid
+    if (!trackingCodeProvided && !emailProvided) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ['trackingCode'],
+        message: 'Please provide either a tracking number or an email address',
+      });
+    }
+  });
 
 type TrackingCodeFormData = z.infer<typeof trackingCodeSchema>;
 
@@ -59,6 +79,8 @@ export default function TrackingCodeInput({
     formState: { errors },
   } = useForm<TrackingCodeFormData>({
     resolver: zodResolver(trackingCodeSchema),
+    mode: 'onSubmit',
+    reValidateMode: 'onChange',
     defaultValues: {
       trackingCode: '',
       email: '',

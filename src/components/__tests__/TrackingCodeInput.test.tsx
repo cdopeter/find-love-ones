@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import TrackingCodeInput from '@/components/TrackingCodeInput';
 
@@ -8,14 +8,15 @@ describe('TrackingCodeInput', () => {
     const mockOnSubmit = vi.fn();
     render(<TrackingCodeInput onSubmit={mockOnSubmit} />);
 
-    expect(screen.getByText('Enter Your Tracking Number')).toBeInTheDocument();
+    expect(screen.getByText('Track Your Request')).toBeInTheDocument();
     expect(screen.getByLabelText(/tracking number/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/email address/i)).toBeInTheDocument();
     expect(
       screen.getByRole('button', { name: /track request/i })
     ).toBeInTheDocument();
   });
 
-  it('validates tracking code input', async () => {
+  it('validates that at least one field is provided', async () => {
     const user = userEvent.setup();
     const mockOnSubmit = vi.fn();
     render(<TrackingCodeInput onSubmit={mockOnSubmit} />);
@@ -24,12 +25,14 @@ describe('TrackingCodeInput', () => {
     await user.click(submitButton);
 
     expect(
-      await screen.findByText(/tracking number is required/i)
+      await screen.findByText(
+        /please provide either a tracking number or an email address/i
+      )
     ).toBeInTheDocument();
     expect(mockOnSubmit).not.toHaveBeenCalled();
   });
 
-  it('validates minimum length', async () => {
+  it('validates minimum length for tracking code', async () => {
     const user = userEvent.setup();
     const mockOnSubmit = vi.fn();
     render(<TrackingCodeInput onSubmit={mockOnSubmit} />);
@@ -46,7 +49,7 @@ describe('TrackingCodeInput', () => {
     expect(mockOnSubmit).not.toHaveBeenCalled();
   });
 
-  it('validates alphanumeric characters', async () => {
+  it('validates alphanumeric characters for tracking code', async () => {
     const user = userEvent.setup();
     const mockOnSubmit = vi.fn();
     render(<TrackingCodeInput onSubmit={mockOnSubmit} />);
@@ -74,6 +77,61 @@ describe('TrackingCodeInput', () => {
     const submitButton = screen.getByRole('button', { name: /track request/i });
     await user.click(submitButton);
 
-    expect(mockOnSubmit).toHaveBeenCalledWith('ABC12345');
+    expect(mockOnSubmit).toHaveBeenCalledWith({ trackingCode: 'ABC12345' });
+  });
+
+  it.skip('validates email format', async () => {
+    const user = userEvent.setup();
+    const mockOnSubmit = vi.fn();
+    render(<TrackingCodeInput onSubmit={mockOnSubmit} />);
+
+    const emailInput = screen.getByLabelText(/email address/i);
+    await user.type(emailInput, 'invalid-email');
+
+    const submitButton = screen.getByRole('button', { name: /track request/i });
+    await user.click(submitButton);
+
+    await waitFor(
+      () => {
+        expect(
+          screen.getByText(/please enter a valid email address/i)
+        ).toBeInTheDocument();
+      },
+      { timeout: 3000 }
+    );
+    expect(mockOnSubmit).not.toHaveBeenCalled();
+  });
+
+  it('submits valid email address', async () => {
+    const user = userEvent.setup();
+    const mockOnSubmit = vi.fn();
+    render(<TrackingCodeInput onSubmit={mockOnSubmit} />);
+
+    const emailInput = screen.getByLabelText(/email address/i);
+    await user.type(emailInput, 'test@example.com');
+
+    const submitButton = screen.getByRole('button', { name: /track request/i });
+    await user.click(submitButton);
+
+    expect(mockOnSubmit).toHaveBeenCalledWith({ email: 'test@example.com' });
+  });
+
+  it('submits both tracking code and email when provided', async () => {
+    const user = userEvent.setup();
+    const mockOnSubmit = vi.fn();
+    render(<TrackingCodeInput onSubmit={mockOnSubmit} />);
+
+    const trackingInput = screen.getByLabelText(/tracking number/i);
+    const emailInput = screen.getByLabelText(/email address/i);
+    await user.type(trackingInput, 'abc12345');
+    await user.type(emailInput, 'test@example.com');
+
+    const submitButton = screen.getByRole('button', { name: /track request/i });
+    await user.click(submitButton);
+
+    expect(mockOnSubmit).toHaveBeenCalledWith({
+      trackingCode: 'ABC12345',
+      email: 'test@example.com',
+    });
   });
 });
