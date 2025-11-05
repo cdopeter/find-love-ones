@@ -13,6 +13,7 @@ vi.mock('@/lib/supabase', () => {
     order: vi.fn().mockReturnThis(),
     limit: vi.fn().mockReturnThis(),
     single: vi.fn(),
+    rpc: vi.fn().mockReturnThis(),
   };
 
   return {
@@ -154,10 +155,77 @@ describe('TrackingResult', () => {
     });
 
     const searchAnotherButton = screen.getByRole('button', {
-      name: /try another tracking number/i,
+      name: /try another search/i,
     });
     await user.click(searchAnotherButton);
 
     expect(mockOnReset).toHaveBeenCalled();
+  });
+
+  it('searches by email address when provided', async () => {
+    const { supabase } = await import('@/lib/supabase');
+
+    const mockRequest = {
+      id: 'abc12345-1234-5678-90ab-cdef12345678',
+      target_first_name: 'Jane',
+      target_last_name: 'Smith',
+      status: 'open',
+      last_known_address: '456 Oak St',
+      parish: 'St. Andrew',
+      message_to_person: 'We miss you',
+      created_at: '2025-01-01T00:00:00Z',
+      requester_email: 'requester@example.com',
+    };
+
+    // First order() call is part of the email search chain - should return mock object for chaining
+    // Second order() call is for fetching updates - should return updates data
+    (supabase.order as ReturnType<typeof vi.fn>)
+      .mockReturnValueOnce(supabase) // First call in email search chain returns mock for chaining
+      .mockResolvedValueOnce({
+        // Second call for updates
+        data: [],
+        error: null,
+      });
+
+    // single() is called in the email search chain - should return request data
+    (supabase.single as ReturnType<typeof vi.fn>).mockResolvedValueOnce({
+      data: mockRequest,
+      error: null,
+    });
+
+    render(
+      <TrackingResult email="requester@example.com" onReset={mockOnReset} />
+    );
+
+    await waitFor(() => {
+      expect(screen.getByText('Jane Smith')).toBeInTheDocument();
+      expect(screen.getByText(/456 Oak St, St. Andrew/i)).toBeInTheDocument();
+    });
+
+    // Verify the correct query was made
+    expect(supabase.from).toHaveBeenCalledWith('requests');
+    expect(supabase.eq).toHaveBeenCalledWith(
+      'requester_email',
+      'requester@example.com'
+    );
+  });
+
+  it('displays error when no request found by email', async () => {
+    const { supabase } = await import('@/lib/supabase');
+
+    (supabase.single as ReturnType<typeof vi.fn>).mockResolvedValue({
+      data: null,
+      error: { code: 'PGRST116', message: 'No rows found' },
+    });
+
+    render(
+      <TrackingResult email="notfound@example.com" onReset={mockOnReset} />
+    );
+
+    await waitFor(() => {
+      expect(
+        screen.getByText(/no request found with this email address/i)
+      ).toBeInTheDocument();
+    });
   });
 });
