@@ -17,6 +17,9 @@ export interface MissingPersonRequest {
   target_first_name: string;
   target_last_name: string;
   last_known_address: string;
+  age?: number | null;
+  gender?: string | null;
+  nickname?: string | null;
 
   // Location information
   parish: string;
