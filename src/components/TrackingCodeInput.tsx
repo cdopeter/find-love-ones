@@ -14,21 +14,60 @@ import {
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 
-const trackingCodeSchema = z.object({
-  trackingCode: z
-    .string()
-    .min(1, 'Tracking number is required')
-    .min(8, 'Tracking number must be at least 8 characters')
-    .regex(
-      /^[A-Z0-9]+$/i,
-      'Tracking number must contain only letters and numbers'
-    ),
-});
+const trackingCodeSchema = z
+  .object({
+    trackingCode: z.string(),
+    email: z.string(),
+  })
+  .superRefine((data, ctx) => {
+    const trackingCodeProvided = data.trackingCode && data.trackingCode.length > 0;
+    const emailProvided = data.email && data.email.length > 0;
+
+    // Validate tracking code if provided
+    if (trackingCodeProvided) {
+      if (data.trackingCode.length < 8) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: ['trackingCode'],
+          message: 'Tracking number must be at least 8 characters',
+        });
+      } else if (!/^[A-Z0-9]+$/i.test(data.trackingCode)) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: ['trackingCode'],
+          message: 'Tracking number must contain only letters and numbers',
+        });
+      }
+    }
+
+    // Validate email if provided
+    if (emailProvided) {
+      // Use a more permissive regex that handles most email formats
+      // This matches the standard email format while being reasonably strict
+      const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+      if (!emailRegex.test(data.email)) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: ['email'],
+          message: 'Please enter a valid email address',
+        });
+      }
+    }
+
+    // Check that at least one field is provided and valid
+    if (!trackingCodeProvided && !emailProvided) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ['trackingCode'],
+        message: 'Please provide either a tracking number or an email address',
+      });
+    }
+  });
 
 type TrackingCodeFormData = z.infer<typeof trackingCodeSchema>;
 
 interface TrackingCodeInputProps {
-  onSubmit: (code: string) => void;
+  onSubmit: (params: { trackingCode?: string; email?: string }) => void;
 }
 
 export default function TrackingCodeInput({
@@ -42,16 +81,29 @@ export default function TrackingCodeInput({
     formState: { errors },
   } = useForm<TrackingCodeFormData>({
     resolver: zodResolver(trackingCodeSchema),
+    mode: 'onSubmit',
+    reValidateMode: 'onChange',
     defaultValues: {
       trackingCode: '',
+      email: '',
     },
   });
 
   const onFormSubmit = (data: TrackingCodeFormData) => {
     setError(null);
-    // Convert to uppercase to match the tracking code format
-    const formattedCode = data.trackingCode.trim().toUpperCase();
-    onSubmit(formattedCode);
+    const params: { trackingCode?: string; email?: string } = {};
+    
+    // Convert tracking code to uppercase if provided
+    if (data.trackingCode && data.trackingCode.trim().length >= 8) {
+      params.trackingCode = data.trackingCode.trim().toUpperCase();
+    }
+    
+    // Include email if provided
+    if (data.email && data.email.trim().length > 0) {
+      params.email = data.email.trim().toLowerCase();
+    }
+    
+    onSubmit(params);
   };
 
   return (
@@ -59,10 +111,10 @@ export default function TrackingCodeInput({
       <Box sx={{ textAlign: 'center', mb: 3 }}>
         <SearchIcon color="primary" sx={{ fontSize: 60, mb: 2 }} />
         <Typography variant="h5" gutterBottom>
-          Enter Your Tracking Number
+          Track Your Request
         </Typography>
         <Typography variant="body2" color="text.secondary">
-          You received this tracking number when you submitted your request.
+          Enter your tracking number or email address to view your request.
         </Typography>
       </Box>
 
@@ -81,17 +133,36 @@ export default function TrackingCodeInput({
               {...field}
               label="Tracking Number"
               fullWidth
-              required
               placeholder="e.g., ABC12345"
               error={!!errors.trackingCode}
               helperText={
                 errors.trackingCode?.message ||
                 'Enter the 8-character tracking code'
               }
-              sx={{ mb: 3 }}
+              sx={{ mb: 2 }}
               inputProps={{
                 style: { textTransform: 'uppercase' },
               }}
+            />
+          )}
+        />
+
+        <Controller
+          name="email"
+          control={control}
+          render={({ field }) => (
+            <TextField
+              {...field}
+              label="Email Address"
+              type="email"
+              fullWidth
+              placeholder="e.g., your@email.com"
+              error={!!errors.email}
+              helperText={
+                errors.email?.message ||
+                'Or enter the email used when submitting the request'
+              }
+              sx={{ mb: 3 }}
             />
           )}
         />

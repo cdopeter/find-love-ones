@@ -37,6 +37,9 @@ export default function RequestForm({ onSuccess }: RequestFormProps) {
     defaultValues: {
       target_first_name: '',
       target_last_name: '',
+      age: undefined,
+      gender: '',
+      nickname: '',
       last_known_address: '',
       parish: undefined,
       requester_first_name: '',
@@ -59,6 +62,9 @@ export default function RequestForm({ onSuccess }: RequestFormProps) {
       const requestData = {
         target_first_name: data.target_first_name,
         target_last_name: data.target_last_name,
+        age: data.age || null,
+        gender: data.gender || null,
+        nickname: data.nickname || null,
         last_known_address: data.last_known_address,
         parish: data.parish,
         requester_first_name: data.requester_first_name,
@@ -150,6 +156,63 @@ export default function RequestForm({ onSuccess }: RequestFormProps) {
                   required
                   error={!!errors.target_last_name}
                   helperText={errors.target_last_name?.message}
+                />
+              )}
+            />
+          </Grid>
+
+          <Grid size={{ xs: 12, sm: 4 }}>
+            <Controller
+              name="age"
+              control={control}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  label="Age (Optional)"
+                  fullWidth
+                  type="number"
+                  value={field.value ?? ''}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    field.onChange(value === '' ? undefined : Number(value));
+                  }}
+                  error={!!errors.age}
+                  helperText={errors.age?.message}
+                  inputProps={{ min: 0, max: 150 }}
+                />
+              )}
+            />
+          </Grid>
+
+          <Grid size={{ xs: 12, sm: 4 }}>
+            <Controller
+              name="gender"
+              control={control}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  label="Gender (Optional)"
+                  fullWidth
+                  placeholder="e.g., Male, Female, Non-binary"
+                  error={!!errors.gender}
+                  helperText={errors.gender?.message}
+                />
+              )}
+            />
+          </Grid>
+
+          <Grid size={{ xs: 12, sm: 4 }}>
+            <Controller
+              name="nickname"
+              control={control}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  label="Nickname (Optional)"
+                  fullWidth
+                  placeholder="e.g., Johnny, Jay"
+                  error={!!errors.nickname}
+                  helperText={errors.nickname?.message}
                 />
               )}
             />

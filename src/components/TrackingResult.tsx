@@ -17,12 +17,14 @@ import PersonIcon from '@mui/icons-material/Person';
 import { MissingPersonRequest, FoundUpdate } from '@/lib/types/database';
 
 interface TrackingResultProps {
-  trackingCode: string;
+  trackingCode?: string;
+  email?: string;
   onReset: () => void;
 }
 
 export default function TrackingResult({
   trackingCode,
+  email,
   onReset,
 }: TrackingResultProps) {
   const [request, setRequest] = useState<MissingPersonRequest | null>(null);
@@ -37,29 +39,51 @@ export default function TrackingResult({
 
       const { supabase } = await import('@/lib/supabase');
 
-      // The tracking code is the first 8 characters of the UUID in uppercase
-      // We need to search for requests where the ID starts with these characters (case-insensitive)
-      // id is stored as a uuid type in Postgres. Using ILIKE on a uuid column
-      // causes Postgres to try uuid ~~* '...' which fails with operator does
-      // not exist. Cast the id to text so the ILIKE operator is valid.
-      // const { data, error: fetchError } = await supabase
-      //   .from('requests')
-      //   .select('id, target_first_name, target_last_name, status, last_known_address, parish, message_to_person, created_at, requester_first_name, requester_last_name, requester_email')
-      //   .ilike('id::text', `${trackingCode.toLowerCase()}%`)
-      //   .limit(1)
-      //   .single();
-      const { data, error: fetchError } = await supabase
-        .rpc('search_requests_by_id_pattern', {
-          p_pattern: `${trackingCode.toLowerCase()}%`,
-        })
-        .limit(1)
-        .single();
+      let data;
+      let fetchError;
+
+      if (trackingCode) {
+        // Search by tracking code (first 8 characters of UUID)
+        // The tracking code is the first 8 characters of the UUID in uppercase
+        // We need to search for requests where the ID starts with these characters (case-insensitive)
+        // id is stored as a uuid type in Postgres. Using ILIKE on a uuid column
+        // causes Postgres to try uuid ~~* '...' which fails with operator does
+        // not exist. Cast the id to text so the ILIKE operator is valid.
+        const result = await supabase
+          .rpc('search_requests_by_id_pattern', {
+            p_pattern: `${trackingCode.toLowerCase()}%`,
+          })
+          .limit(1)
+          .single();
+        
+        data = result.data;
+        fetchError = result.error;
+      } else if (email) {
+        // Search by email address - use exact match for security
+        // Email is already normalized to lowercase in the form submission
+        const result = await supabase
+          .from('requests')
+          .select(
+            'id, target_first_name, target_last_name, status, last_known_address, parish, message_to_person, created_at, requester_first_name, requester_last_name, requester_email'
+          )
+          .eq('requester_email', email.toLowerCase())
+          .limit(1)
+          .single();
+        
+        data = result.data;
+        fetchError = result.error;
+      } else {
+        setError('Please provide either a tracking number or email address.');
+        setLoading(false);
+        return;
+      }
 
       if (fetchError) {
         if (fetchError.code === 'PGRST116') {
           // No rows found
+          const searchMethod = trackingCode ? 'tracking number' : 'email address';
           setError(
-            'No request found with this tracking number. Please check and try again.'
+            `No request found with this ${searchMethod}. Please check and try again.`
           );
         } else {
           throw fetchError;
@@ -97,7 +121,7 @@ export default function TrackingResult({
     } finally {
       setLoading(false);
     }
-  }, [trackingCode]);
+  }, [trackingCode, email]);
 
   useEffect(() => {
     fetchRequestByTrackingCode();
@@ -123,7 +147,7 @@ export default function TrackingResult({
           startIcon={<ArrowBackIcon />}
           onClick={onReset}
         >
-          Try Another Tracking Number
+          Try Another Search
         </Button>
       </Paper>
     );
@@ -140,7 +164,7 @@ export default function TrackingResult({
           startIcon={<ArrowBackIcon />}
           onClick={onReset}
         >
-          Try Another Tracking Number
+          Try Another Search
         </Button>
       </Paper>
     );
@@ -166,7 +190,16 @@ export default function TrackingResult({
         </Box>
 
         <Typography variant="body2" color="text.secondary" gutterBottom>
-          Tracking Number: <strong>{trackingCode}</strong>
+          {trackingCode && (
+            <>
+              Tracking Number: <strong>{trackingCode}</strong>
+            </>
+          )}
+          {email && (
+            <>
+              Email: <strong>{email}</strong>
+            </>
+          )}
         </Typography>
       </Box>
 
