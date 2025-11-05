@@ -3,11 +3,11 @@ import { createTheme } from '@mui/material/styles';
 // Design tokens as specified
 const tokens = {
   colors: {
-    primary: '#1b8f4b',
-    primaryDark: '#157a3f', // Darker for better contrast
-    primaryLight: '#dff3e8',
-    bg: '#f6f8f5',
-    text: '#0a2415',
+    primary: '#1b6d8f',
+    primaryDark: '#155a7a', // Darker for better contrast
+    primaryLight: '#dfe8f3',
+    bg: '#f5f7f8',
+    text: '#0a1524',
   },
   radii: {
     card: 24,
@@ -50,7 +50,7 @@ const theme = createTheme({
     },
     text: {
       primary: tokens.colors.text,
-      secondary: 'rgba(10, 36, 21, 0.7)',
+      secondary: 'rgba(10, 21, 36, 0.7)',
     },
   },
   typography: {
@@ -118,7 +118,7 @@ const theme = createTheme({
         contained: {
           backgroundColor: tokens.colors.primaryDark,
           '&:hover': {
-            backgroundColor: '#0f5e2f',
+            backgroundColor: '#0f475e',
           },
         },
       },
