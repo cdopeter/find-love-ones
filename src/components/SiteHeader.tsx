@@ -12,10 +12,11 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
-import FavoriteIcon from '@mui/icons-material/Favorite';
 import HomeIcon from '@mui/icons-material/Home';
 import AddIcon from '@mui/icons-material/Add';
 import SearchIcon from '@mui/icons-material/Search';
+
+const OPD_LOGO_URL = 'https://opd.gov.jm/wp-content/uploads/2020/07/logo-2020.png';
 
 const pages = [
   { label: 'Home', href: '/', icon: HomeIcon },
@@ -47,7 +48,18 @@ function SiteHeader() {
     >
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <FavoriteIcon  sx={{ display: { xs: 'none', md: 'flex' }, mr: 1, color: 'primary.main' }} />
+          <Box
+            component="img"
+            src={OPD_LOGO_URL}
+            alt="Office of the Public Defender Logo"
+            sx={{
+              display: { xs: 'none', md: 'flex' },
+              mr: 1,
+              height: 40,
+              width: 'auto',
+              objectFit: 'contain',
+            }}
+          />
           <Typography
             variant="h6"
             noWrap
@@ -110,7 +122,18 @@ function SiteHeader() {
               })}
             </Menu>
           </Box>
-          <FavoriteIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1, color: 'white' }} />
+          <Box
+            component="img"
+            src={OPD_LOGO_URL}
+            alt="Office of the Public Defender Logo"
+            sx={{
+              display: { xs: 'flex', md: 'none' },
+              mr: 1,
+              height: 32,
+              width: 'auto',
+              objectFit: 'contain',
+            }}
+          />
           <Typography
             variant="h6"
             noWrap
