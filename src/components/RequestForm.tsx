@@ -178,6 +178,7 @@ export default function RequestForm({ onSuccess }: RequestFormProps) {
                   }}
                   error={!!errors.age}
                   helperText={errors.age?.message}
+                  inputProps={{ min: 0, max: 150 }}
                 />
               )}
             />
