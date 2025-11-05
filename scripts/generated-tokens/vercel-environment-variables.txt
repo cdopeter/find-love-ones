@@ -1,0 +1,22 @@
+# Vercel Environment Variables Configuration
+# Copy these exact values into your Vercel dashboard
+
+## Required Variables
+THIRD_PARTY_TOKEN_ACTIVE=d5b745189586c5b17e6c4ceafae7426d3a3500402e7a379915cd65656ebf7b4d357d545cefb631660986fb9ea84e45095192f9ec6023656cbf3101a0edbe1709
+
+## Optional Variables (for advanced features)
+THIRD_PARTY_TOKEN_NEXT=02a9be66f67f29e5be5a4e82f1c22e2ab2a62ee6a11a6d7b593c50b2c93e8c2b6d748c39b7f0a73f9de9c3e3a8d7f8f2ca9c1f5e4b5a6e6e9d5f7a0c2d8e9f1
+THIRD_PARTY_API_ENABLED=true
+
+## Instructions
+1. Go to your Vercel dashboard
+2. Navigate to your project settings
+3. Go to Environment Variables
+4. Add each variable with the exact values above
+5. Make sure to set the environment to "Production" (and optionally Preview/Development)
+6. Redeploy your application after adding the variables
+
+## Important Notes
+- The THIRD_PARTY_TOKEN_ACTIVE is the production token that was just generated
+- The THIRD_PARTY_TOKEN_NEXT is for future token rotation
+- After adding these variables, you must redeploy for them to take effect
