@@ -42,7 +42,9 @@ const trackingCodeSchema = z
 
     // Validate email if provided
     if (emailProvided) {
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      // Use a more permissive regex that handles most email formats
+      // This matches the standard email format while being reasonably strict
+      const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
       if (!emailRegex.test(data.email)) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,

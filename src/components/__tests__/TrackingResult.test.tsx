@@ -8,7 +8,6 @@ vi.mock('@/lib/supabase', () => {
   const mockSupabase = {
     from: vi.fn().mockReturnThis(),
     select: vi.fn().mockReturnThis(),
-    ilike: vi.fn().mockReturnThis(),
     eq: vi.fn().mockReturnThis(),
     order: vi.fn().mockReturnThis(),
     limit: vi.fn().mockReturnThis(),
@@ -171,7 +170,7 @@ describe('TrackingResult', () => {
 
     (supabase.from as ReturnType<typeof vi.fn>).mockReturnThis();
     (supabase.select as ReturnType<typeof vi.fn>).mockReturnThis();
-    (supabase.ilike as ReturnType<typeof vi.fn>).mockReturnThis();
+    (supabase.eq as ReturnType<typeof vi.fn>).mockReturnThis();
     (supabase.single as ReturnType<typeof vi.fn>).mockResolvedValue({
       data: null,
       error: { code: 'PGRST116', message: 'No rows found' },
@@ -201,7 +200,7 @@ describe('TrackingResult', () => {
 
     (supabase.from as ReturnType<typeof vi.fn>).mockReturnThis();
     (supabase.select as ReturnType<typeof vi.fn>).mockReturnThis();
-    (supabase.ilike as ReturnType<typeof vi.fn>).mockReturnThis();
+    (supabase.eq as ReturnType<typeof vi.fn>).mockReturnThis();
     (supabase.single as ReturnType<typeof vi.fn>).mockResolvedValueOnce({
       data: mockRequest,
       error: null,

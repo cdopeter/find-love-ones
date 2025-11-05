@@ -59,13 +59,14 @@ export default function TrackingResult({
         data = result.data;
         fetchError = result.error;
       } else if (email) {
-        // Search by email address
+        // Search by email address - use exact match for security
+        // Email is already normalized to lowercase in the form submission
         const result = await supabase
           .from('requests')
           .select(
             'id, target_first_name, target_last_name, status, last_known_address, parish, message_to_person, created_at, requester_first_name, requester_last_name, requester_email'
           )
-          .ilike('requester_email', email.toLowerCase())
+          .eq('requester_email', email.toLowerCase())
           .limit(1)
           .single();
         
