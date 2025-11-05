@@ -18,9 +18,7 @@ describe('Footer', () => {
     render(<Footer />);
 
     expect(
-      screen.getByText(
-        /Voice of the voiceless, To loose the chains of injustice/i
-      )
+      screen.getByText(/Voice of the voiceless, To lose the chains of injustice/i)
     ).toBeInTheDocument();
   });
 

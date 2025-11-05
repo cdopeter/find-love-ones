@@ -50,7 +50,7 @@ function Footer() {
                   textAlign: { xs: 'center', md: 'left' },
                 }}
               >
-                &ldquo;Voice of the voiceless, To loose the chains of
+                &ldquo;Voice of the voiceless, To lose the chains of
                 injustice&rdquo;
               </Typography>
               <Typography
@@ -116,6 +116,7 @@ function Footer() {
               Follow Us
             </Typography>
             <Stack direction="row" spacing={1}>
+              {/* TODO: Update with actual OPD social media URLs */}
               <IconButton
                 aria-label="Facebook"
                 component="a"
