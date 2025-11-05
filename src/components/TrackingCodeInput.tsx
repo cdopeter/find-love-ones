@@ -17,18 +17,35 @@ import SearchIcon from '@mui/icons-material/Search';
 const trackingCodeSchema = z.object({
   trackingCode: z
     .string()
-    .min(1, 'Tracking number is required')
     .min(8, 'Tracking number must be at least 8 characters')
     .regex(
       /^[A-Z0-9]+$/i,
       'Tracking number must contain only letters and numbers'
-    ),
-});
+    )
+    .optional()
+    .or(z.literal('')),
+  email: z
+    .string()
+    .email('Please enter a valid email address')
+    .optional()
+    .or(z.literal('')),
+}).refine(
+  (data) => {
+    // At least one field must be provided
+    const hasTrackingCode = data.trackingCode && data.trackingCode.length >= 8;
+    const hasEmail = data.email && data.email.length > 0;
+    return hasTrackingCode || hasEmail;
+  },
+  {
+    message: 'Please provide either a tracking number or an email address',
+    path: ['trackingCode'],
+  }
+);
 
 type TrackingCodeFormData = z.infer<typeof trackingCodeSchema>;
 
 interface TrackingCodeInputProps {
-  onSubmit: (code: string) => void;
+  onSubmit: (params: { trackingCode?: string; email?: string }) => void;
 }
 
 export default function TrackingCodeInput({
@@ -44,14 +61,25 @@ export default function TrackingCodeInput({
     resolver: zodResolver(trackingCodeSchema),
     defaultValues: {
       trackingCode: '',
+      email: '',
     },
   });
 
   const onFormSubmit = (data: TrackingCodeFormData) => {
     setError(null);
-    // Convert to uppercase to match the tracking code format
-    const formattedCode = data.trackingCode.trim().toUpperCase();
-    onSubmit(formattedCode);
+    const params: { trackingCode?: string; email?: string } = {};
+    
+    // Convert tracking code to uppercase if provided
+    if (data.trackingCode && data.trackingCode.trim().length >= 8) {
+      params.trackingCode = data.trackingCode.trim().toUpperCase();
+    }
+    
+    // Include email if provided
+    if (data.email && data.email.trim().length > 0) {
+      params.email = data.email.trim().toLowerCase();
+    }
+    
+    onSubmit(params);
   };
 
   return (
@@ -59,10 +87,10 @@ export default function TrackingCodeInput({
       <Box sx={{ textAlign: 'center', mb: 3 }}>
         <SearchIcon color="primary" sx={{ fontSize: 60, mb: 2 }} />
         <Typography variant="h5" gutterBottom>
-          Enter Your Tracking Number
+          Track Your Request
         </Typography>
         <Typography variant="body2" color="text.secondary">
-          You received this tracking number when you submitted your request.
+          Enter your tracking number or email address to view your request.
         </Typography>
       </Box>
 
@@ -81,17 +109,36 @@ export default function TrackingCodeInput({
               {...field}
               label="Tracking Number"
               fullWidth
-              required
               placeholder="e.g., ABC12345"
               error={!!errors.trackingCode}
               helperText={
                 errors.trackingCode?.message ||
                 'Enter the 8-character tracking code'
               }
-              sx={{ mb: 3 }}
+              sx={{ mb: 2 }}
               inputProps={{
                 style: { textTransform: 'uppercase' },
               }}
+            />
+          )}
+        />
+
+        <Controller
+          name="email"
+          control={control}
+          render={({ field }) => (
+            <TextField
+              {...field}
+              label="Email Address"
+              type="email"
+              fullWidth
+              placeholder="e.g., your@email.com"
+              error={!!errors.email}
+              helperText={
+                errors.email?.message ||
+                'Or enter the email used when submitting the request'
+              }
+              sx={{ mb: 3 }}
             />
           )}
         />
