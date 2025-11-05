@@ -14,6 +14,7 @@ import TwitterIcon from '@mui/icons-material/Twitter';
 import EmailIcon from '@mui/icons-material/Email';
 import PhoneIcon from '@mui/icons-material/Phone';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
+import WhatsAppIcon from '@mui/icons-material/WhatsApp';
 import { tokens } from '@/theme';
 
 function Footer() {
@@ -91,6 +92,12 @@ function Footer() {
                     Local: (876) 922-7089 / 7090 / 7109 / 8256
                   </Typography>
                 </Box>
+              </Stack>
+              <Stack direction="row" spacing={1} alignItems="center">
+                <WhatsAppIcon fontSize="small" />
+                <Typography variant="body2">
+                  WhatsApp: (658)-219-0245
+                </Typography>
               </Stack>
               <Stack direction="row" spacing={1} alignItems="flex-start">
                 <LocationOnIcon fontSize="small" sx={{ mt: 0.5 }} />

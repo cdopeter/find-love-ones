@@ -41,6 +41,12 @@ describe('Footer', () => {
     ).toBeInTheDocument();
   });
 
+  it('renders WhatsApp number', () => {
+    render(<Footer />);
+
+    expect(screen.getByText(/WhatsApp: \(658\)-219-0245/i)).toBeInTheDocument();
+  });
+
   it('renders address', () => {
     render(<Footer />);
 
