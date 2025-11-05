@@ -13,11 +13,14 @@ import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 import FavoriteIcon from '@mui/icons-material/Favorite';
+import HomeIcon from '@mui/icons-material/Home';
+import AddIcon from '@mui/icons-material/Add';
+import SearchIcon from '@mui/icons-material/Search';
 
 const pages = [
-  { label: 'Home', href: '/' },
-  { label: 'Submit Request', href: '/request' },
-  { label: 'Tracker', href: '/tracker' },
+  { label: 'Home', href: '/', icon: HomeIcon },
+  { label: 'Submit Request', href: '/request', icon: AddIcon },
+  { label: 'Tracker', href: '/tracker', icon: SearchIcon },
 ];
 
 function SiteHeader() {
@@ -88,18 +91,23 @@ function SiteHeader() {
               onClose={handleCloseNavMenu}
               sx={{ display: { xs: 'block', md: 'none' } }}
             >
-              {pages.map((page) => (
-                <MenuItem
-                  key={page.label}
-                  onClick={handleCloseNavMenu}
-                  component={Link}
-                  href={page.href}
-                >
-                  <Typography sx={{ textAlign: 'center' }}>
-                    {page.label}
-                  </Typography>
-                </MenuItem>
-              ))}
+              {pages.map((page) => {
+                const IconComponent = page.icon;
+                return (
+                  <MenuItem
+                    key={page.label}
+                    onClick={handleCloseNavMenu}
+                    component={Link}
+                    href={page.href}
+                    sx={{ display: 'flex', alignItems: 'center', gap: 1 }}
+                  >
+                    <IconComponent sx={{ fontSize: 20 }} />
+                    <Typography sx={{ textAlign: 'center' }}>
+                      {page.label}
+                    </Typography>
+                  </MenuItem>
+                );
+              })}
             </Menu>
           </Box>
           <FavoriteIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1, color: 'white' }} />
@@ -127,26 +135,30 @@ function SiteHeader() {
               justifyContent: 'flex-end',
             }}
           >
-            {pages.map((page) => (
-              <Button
-                key={page.label}
-                component={Link}
-                href={page.href}
-                onClick={handleCloseNavMenu}
-                sx={{
-                  my: 2,
-                  color: 'white',
-                  display: 'block',
-                  fontWeight: 600,
-                  '&:focus': {
-                    outline: '2px solid white',
-                    outlineOffset: '2px',
-                  },
-                }}
-              >
-                {page.label}
-              </Button>
-            ))}
+            {pages.map((page) => {
+              const IconComponent = page.icon;
+              return (
+                <Button
+                  key={page.label}
+                  component={Link}
+                  href={page.href}
+                  onClick={handleCloseNavMenu}
+                  startIcon={<IconComponent />}
+                  sx={{
+                    my: 2,
+                    color: 'white',
+                    display: 'flex',
+                    fontWeight: 600,
+                    '&:focus': {
+                      outline: '2px solid white',
+                      outlineOffset: '2px',
+                    },
+                  }}
+                >
+                  {page.label}
+                </Button>
+              );
+            })}
           </Box>
         </Toolbar>
       </Container>

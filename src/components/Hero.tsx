@@ -58,7 +58,7 @@ export default function Hero() {
           position: 'relative',
           zIndex: 2,
           py: { xs: 12, md: 8, },
-          ml: {xs: 0, md: 0, lg: "auto", xl:10}
+          ml: {xs: 0, md: 0, lg: 1, xl:10}
         }}
       >
         <Box

@@ -59,7 +59,7 @@ function Footer() {
               >
                 {'© '}
                 {new Date().getFullYear()}
-                {' Office of the Public Defender'}
+                {' Powered By the Office of the Public Defender'}
               </Typography>
             </Stack>
           </Grid>
