@@ -139,7 +139,6 @@ function Footer() {
               <Typography
                 variant="h6"
                 sx={{
-                  color: 'white',
                   fontWeight: 'bold',
                   letterSpacing: 1,
                 }}
