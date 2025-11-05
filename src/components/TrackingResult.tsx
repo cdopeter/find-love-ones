@@ -74,7 +74,12 @@ export default function TrackingResult({
       }
 
       if (fetchError) {
-        if ((fetchError as { code?: string }).code === 'PGRST116') {
+        // Type guard for Supabase error
+        const isSupabaseError = (err: unknown): err is { code?: string } => {
+          return typeof err === 'object' && err !== null && 'code' in err;
+        };
+
+        if (isSupabaseError(fetchError) && fetchError.code === 'PGRST116') {
           // No rows found
           setError(
             trackingCode
@@ -186,10 +191,17 @@ export default function TrackingResult({
         </Box>
 
         <Typography variant="body2" color="text.secondary" gutterBottom>
-          {trackingCode && `Tracking Number: `}
-          {trackingCode && <strong>{trackingCode}</strong>}
-          {email && !trackingCode && `Email: `}
-          {email && !trackingCode && <strong>{email}</strong>}
+          {trackingCode ? (
+            <>
+              Tracking Number: <strong>{trackingCode}</strong>
+            </>
+          ) : (
+            email && (
+              <>
+                Email: <strong>{email}</strong>
+              </>
+            )
+          )}
         </Typography>
       </Box>
 

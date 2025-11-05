@@ -84,18 +84,20 @@ export default function TrackingCodeInput({
 
   const onFormSubmit = (data: TrackingCodeFormData) => {
     setError(null);
-    
+
+    const trackingCode = data.trackingCode?.trim();
+    const email = data.email?.trim();
+
     const result: { trackingCode?: string; email?: string } = {};
-    
-    if (data.trackingCode && data.trackingCode.trim()) {
-      // Convert to uppercase to match the tracking code format
-      result.trackingCode = data.trackingCode.trim().toUpperCase();
+
+    if (trackingCode) {
+      result.trackingCode = trackingCode.toUpperCase();
     }
-    
-    if (data.email && data.email.trim()) {
-      result.email = data.email.trim();
+
+    if (email) {
+      result.email = email;
     }
-    
+
     onSubmit(result);
   };
 
