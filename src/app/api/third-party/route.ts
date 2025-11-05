@@ -129,7 +129,7 @@ export async function POST(request: NextRequest) {
         error: 'Server configuration error - missing token',
       });
       return NextResponse.json(
-        { error: 'Server configuration error' },
+        { error: 'Server configuration error - missing token' },
         { status: 500 }
       );
     }
