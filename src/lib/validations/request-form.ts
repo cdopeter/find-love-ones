@@ -30,7 +30,6 @@ export const requestFormSchema = z.object({
   gender: z
     .enum(GENDER_VALUES)
     .optional()
-    .nullable()
     .or(z.literal('')),
 
   nickname: z
