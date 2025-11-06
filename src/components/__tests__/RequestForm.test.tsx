@@ -156,4 +156,104 @@ describe('RequestForm', () => {
       { timeout: 3000 }
     );
   });
+
+  it('renders gender dropdown with correct options', () => {
+    render(<RequestForm onSuccess={mockOnSuccess} />);
+
+    const genderSelect = screen.getByLabelText(/gender/i);
+    expect(genderSelect).toBeInTheDocument();
+  });
+
+  it('allows selecting gender from dropdown', async () => {
+    const user = userEvent.setup();
+    render(<RequestForm onSuccess={mockOnSuccess} />);
+
+    // Click on gender dropdown
+    const genderSelect = screen.getByLabelText(/gender/i);
+    await user.click(genderSelect);
+
+    // Check that all gender options are available
+    const maleOption = await screen.findByRole('option', { name: 'Male' });
+    const femaleOption = await screen.findByRole('option', { name: 'Female' });
+    const otherOption = await screen.findByRole('option', { name: 'Other' });
+    const unspecifiedOption = await screen.findByRole('option', {
+      name: 'Prefer not to say',
+    });
+
+    expect(maleOption).toBeInTheDocument();
+    expect(femaleOption).toBeInTheDocument();
+    expect(otherOption).toBeInTheDocument();
+    expect(unspecifiedOption).toBeInTheDocument();
+
+    // Select a gender option
+    await user.click(maleOption);
+
+    // After clicking, the dropdown should close and show the selected value
+    await waitFor(() => {
+      expect(screen.getByLabelText(/gender/i)).toHaveTextContent('Male');
+    });
+  });
+
+  it('defaults to unspecified when no gender is selected on submission', async () => {
+    const user = userEvent.setup();
+    const { supabase } = await import('@/lib/supabase');
+
+    // Create a spy to capture the insert call
+    const insertSpy = vi.fn(() => ({
+      select: vi.fn(() => ({
+        single: vi.fn(() => ({
+          data: { id: '12345678-1234-1234-1234-123456789012' },
+          error: null,
+        })),
+      })),
+    }));
+
+    vi.mocked(supabase.from).mockReturnValueOnce({
+      insert: insertSpy,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } as any);
+
+    render(<RequestForm onSuccess={mockOnSuccess} />);
+
+    // Fill in required fields for target person (no gender selected)
+    const firstNameInputs = screen.getAllByLabelText(/first name/i);
+    const lastNameInputs = screen.getAllByLabelText(/last name/i);
+
+    await user.type(firstNameInputs[0], 'John');
+    await user.type(lastNameInputs[0], 'Doe');
+    await user.type(
+      screen.getByLabelText(/last known address/i),
+      'Kingston Downtown'
+    );
+
+    // Select parish
+    const parishSelect = screen.getByLabelText(/parish/i);
+    await user.click(parishSelect);
+    const kingstonOption = await screen.findByRole('option', {
+      name: 'Kingston',
+    });
+    await user.click(kingstonOption);
+
+    // Fill in requester information
+    await user.type(screen.getByLabelText(/your first name/i), 'Jane');
+    await user.type(screen.getByLabelText(/your last name/i), 'Smith');
+    await user.type(screen.getByLabelText(/email/i), 'jane@example.com');
+
+    // Submit form
+    const submitButton = screen.getByRole('button', {
+      name: /submit request/i,
+    });
+    await user.click(submitButton);
+
+    await waitFor(
+      () => {
+        expect(insertSpy).toHaveBeenCalled();
+      },
+      { timeout: 3000 }
+    );
+
+    // Check that gender was set to 'unspecified' in the insert call
+    const insertedData = insertSpy.mock.calls[0][0][0];
+    expect(insertedData.gender).toBe('unspecified');
+  });
 });

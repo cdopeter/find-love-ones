@@ -19,6 +19,7 @@ import {
   type RequestFormData,
 } from '@/lib/validations/request-form';
 import { JAMAICAN_PARISHES } from '@/lib/constants/parishes';
+import { GENDER_OPTIONS } from '@/lib/constants/gender';
 
 interface RequestFormProps {
   onSuccess: (trackingCode: string) => void;
@@ -63,7 +64,7 @@ export default function RequestForm({ onSuccess }: RequestFormProps) {
         target_first_name: data.target_first_name,
         target_last_name: data.target_last_name,
         age: data.age || null,
-        gender: data.gender || null,
+        gender: data.gender || 'unspecified',
         nickname: data.nickname || null,
         last_known_address: data.last_known_address,
         parish: data.parish,
@@ -191,12 +192,22 @@ export default function RequestForm({ onSuccess }: RequestFormProps) {
               render={({ field }) => (
                 <TextField
                   {...field}
-                  label="Gender (Optional)"
+                  label="Gender"
                   fullWidth
-                  placeholder="e.g., Male, Female, Non-binary"
+                  select
+                  value={field.value || ''}
                   error={!!errors.gender}
                   helperText={errors.gender?.message}
-                />
+                >
+                  <MenuItem value="" disabled>
+                    Select gender
+                  </MenuItem>
+                  {GENDER_OPTIONS.map((option) => (
+                    <MenuItem key={option.value} value={option.value}>
+                      {option.label}
+                    </MenuItem>
+                  ))}
+                </TextField>
               )}
             />
           </Grid>
