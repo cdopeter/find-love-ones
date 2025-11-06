@@ -12,7 +12,8 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
-import FavoriteIcon from '@mui/icons-material/Favorite';
+
+const OPD_LOGO_URL = 'https://opd.gov.jm/wp-content/uploads/2020/07/logo-2020.png';
 
 const pages = [
   { label: 'Home', href: '/' },
@@ -37,22 +38,50 @@ function Navigation() {
     <AppBar position="static">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <FavoriteIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
-          <Typography
-            variant="h6"
-            noWrap
-            component="a"
-            href="/"
+          <Box
             sx={{
-              mr: 2,
               display: { xs: 'none', md: 'flex' },
-              fontWeight: 700,
-              color: 'inherit',
-              textDecoration: 'none',
+              alignItems: 'center',
+              mr: 2,
             }}
           >
-            Proof Of Wellness
-          </Typography>
+            <Box
+              component="img"
+              src={OPD_LOGO_URL}
+              alt="Office of the Public Defender Logo"
+              sx={{
+                mr: 1,
+                height: 40,
+                width: 'auto',
+                objectFit: 'contain',
+              }}
+            />
+            <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+              <Typography
+                variant="h6"
+                component="a"
+                href="/"
+                sx={{
+                  fontWeight: 700,
+                  color: 'inherit',
+                  textDecoration: 'none',
+                  lineHeight: 1.2,
+                }}
+              >
+                Proof Of Wellness
+              </Typography>
+              <Typography
+                variant="caption"
+                sx={{
+                  color: 'inherit',
+                  fontSize: '0.7rem',
+                  lineHeight: 1.2,
+                }}
+              >
+                Powered By The Office of The Public Defender
+              </Typography>
+            </Box>
+          </Box>
 
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
             <IconButton
@@ -95,23 +124,50 @@ function Navigation() {
               ))}
             </Menu>
           </Box>
-          <FavoriteIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
-          <Typography
-            variant="h5"
-            noWrap
-            component="a"
-            href="/"
+          <Box
             sx={{
-              mr: 2,
               display: { xs: 'flex', md: 'none' },
+              alignItems: 'center',
               flexGrow: 1,
-              fontWeight: 700,
-              color: 'inherit',
-              textDecoration: 'none',
             }}
           >
-            Proof Of Wellness
-          </Typography>
+            <Box
+              component="img"
+              src={OPD_LOGO_URL}
+              alt="Office of the Public Defender Logo"
+              sx={{
+                mr: 1,
+                height: 32,
+                width: 'auto',
+                objectFit: 'contain',
+              }}
+            />
+            <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+              <Typography
+                variant="h5"
+                component="a"
+                href="/"
+                sx={{
+                  fontWeight: 700,
+                  color: 'inherit',
+                  textDecoration: 'none',
+                  lineHeight: 1.2,
+                }}
+              >
+                Proof Of Wellness
+              </Typography>
+              <Typography
+                variant="caption"
+                sx={{
+                  color: 'inherit',
+                  fontSize: '0.6rem',
+                  lineHeight: 1.2,
+                }}
+              >
+                Powered By The Office of The Public Defender
+              </Typography>
+            </Box>
+          </Box>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pages.map((page) => (
               <Button
