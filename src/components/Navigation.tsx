@@ -12,13 +12,16 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
+import HomeIcon from '@mui/icons-material/Home';
+import AddIcon from '@mui/icons-material/Add';
+import SearchIcon from '@mui/icons-material/Search';
 
 const OPD_LOGO_URL = 'https://opd.gov.jm/wp-content/uploads/2020/07/logo-2020.png';
 
 const pages = [
-  { label: 'Home', href: '/' },
-  { label: 'Submit Request', href: '/request' },
-  { label: 'Tracker', href: '/tracker' },
+  { label: 'Home', href: '/', icon: HomeIcon },
+  { label: 'Submit Request', href: '/request', icon: AddIcon },
+  { label: 'Tracker', href: '/tracker', icon: SearchIcon },
 ];
 
 function Navigation() {
@@ -168,18 +171,27 @@ function Navigation() {
               </Typography>
             </Box>
           </Box>
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            {pages.map((page) => (
-              <Button
-                key={page.label}
-                component={Link}
-                href={page.href}
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: 'white', display: 'block' }}
-              >
-                {page.label}
-              </Button>
-            ))}
+          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent: 'flex-end', }}>
+            {pages.map((page) => {
+              const IconComponent = page.icon;
+              return (
+                <Button
+                  key={page.label}
+                  component={Link}
+                  href={page.href}
+                  startIcon={<IconComponent />}
+                  onClick={handleCloseNavMenu}
+                  sx={{ 
+                    my: 2, 
+                    color: 'white', 
+                    display: 'flex',
+                
+                  }}
+                >
+                  {page.label}
+                </Button>
+              );
+            })}
           </Box>
         </Toolbar>
       </Container>
