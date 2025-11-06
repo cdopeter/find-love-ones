@@ -49,32 +49,49 @@ function SiteHeader() {
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Box
-            component="img"
-            src={OPD_LOGO_URL}
-            alt="Office of the Public Defender Logo"
             sx={{
               display: { xs: 'none', md: 'flex' },
-              mr: 1,
-              height: 40,
-              width: 'auto',
-              objectFit: 'contain',
-            }}
-          />
-          <Typography
-            variant="h6"
-            noWrap
-            component={Link}
-            href="/"
-            sx={{
+              alignItems: 'center',
               mr: 2,
-              display: { xs: 'none', md: 'flex' },
-              fontWeight: 700,
-              color: 'primary.main',
-              textDecoration: 'none',
             }}
           >
-            Proof Of Wellness
-          </Typography>
+            <Box
+              component="img"
+              src={OPD_LOGO_URL}
+              alt="Office of the Public Defender Logo"
+              sx={{
+                mr: 1,
+                height: 40,
+                width: 'auto',
+                objectFit: 'contain',
+              }}
+            />
+            <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+              <Typography
+                variant="h6"
+                component={Link}
+                href="/"
+                sx={{
+                  fontWeight: 700,
+                  color: 'primary.main',
+                  textDecoration: 'none',
+                  lineHeight: 1.2,
+                }}
+              >
+                Proof Of Wellness
+              </Typography>
+              <Typography
+                variant="caption"
+                sx={{
+                  color: 'primary.main',
+                  fontSize: '0.7rem',
+                  lineHeight: 1.2,
+                }}
+              >
+                Powered By The Office of The Public Defender
+              </Typography>
+            </Box>
+          </Box>
 
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
             <IconButton
@@ -123,34 +140,50 @@ function SiteHeader() {
             </Menu>
           </Box>
           <Box
-            component="img"
-            src={OPD_LOGO_URL}
-            alt="Office of the Public Defender Logo"
             sx={{
               display: { xs: 'flex', md: 'none' },
-              mr: 1,
-              height: 32,
-              width: 'auto',
-              objectFit: 'contain',
-            }}
-          />
-          <Typography
-            variant="h6"
-            noWrap
-            component={Link}
-            href="/"
-            sx={{
-              mr: 2,
-              display: { xs: 'flex', md: 'none' },
+              alignItems: 'center',
               flexGrow: 1,
-              fontWeight: 700,
-              color: 'white',
-              textDecoration: 'none',
-              fontSize: { xs: '1rem' },
             }}
           >
-            Proof Of Wellness
-          </Typography>
+            <Box
+              component="img"
+              src={OPD_LOGO_URL}
+              alt="Office of the Public Defender Logo"
+              sx={{
+                mr: 1,
+                height: 32,
+                width: 'auto',
+                objectFit: 'contain',
+              }}
+            />
+            <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+              <Typography
+                variant="h6"
+                component={Link}
+                href="/"
+                sx={{
+                  fontWeight: 700,
+                  color: 'white',
+                  textDecoration: 'none',
+                  fontSize: '1rem',
+                  lineHeight: 1.2,
+                }}
+              >
+                Proof Of Wellness
+              </Typography>
+              <Typography
+                variant="caption"
+                sx={{
+                  color: 'white',
+                  fontSize: '0.6rem',
+                  lineHeight: 1.2,
+                }}
+              >
+                Powered By The Office of The Public Defender
+              </Typography>
+            </Box>
+          </Box>
           <Box
             sx={{
               flexGrow: 1,
