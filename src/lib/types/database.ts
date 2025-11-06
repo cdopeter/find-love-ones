@@ -2,6 +2,8 @@
  * Database types for the HopeNet application
  */
 
+import type { Gender } from '../constants/gender';
+
 export interface Profile {
   id: string;
   role: 'requester' | 'responder';
@@ -18,7 +20,7 @@ export interface MissingPersonRequest {
   target_last_name: string;
   last_known_address: string;
   age?: number | null;
-  gender?: string | null;
+  gender?: Gender | null;
   nickname?: string | null;
 
   // Location information

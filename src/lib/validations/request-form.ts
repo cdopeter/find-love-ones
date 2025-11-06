@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { JAMAICAN_PARISHES } from '../constants/parishes';
+import { GENDER_VALUES } from '../constants/gender';
 
 /**
  * Zod validation schema for the missing person request form
@@ -27,8 +28,7 @@ export const requestFormSchema = z.object({
     .nullable(),
 
   gender: z
-    .string()
-    .max(50, 'Gender must be less than 50 characters')
+    .enum(GENDER_VALUES)
     .optional()
     .or(z.literal('')),
 
