@@ -61,7 +61,7 @@ const theme = createTheme({
       lineHeight: tokens.typography.display.lineHeight,
       fontWeight: tokens.typography.display.fontWeight,
       '@media (max-width:600px)': {
-        fontSize: 40,
+        fontSize: 28,
         lineHeight: 1.2,
       },
     },
