@@ -68,8 +68,8 @@ export default function Hero() {
           sx={{
             maxWidth: { xs: '100%', md: '50%' },
             backgroundColor: { xs: 'rgba(246, 248, 245, 0.95)', md: 'transparent' },
-            borderRadius: { xs: tokens.radii.heroContainer / 8, md: 0 },
-            p: { xs: 3, md: 0, },
+            borderRadius: { xs: tokens.radii.heroContainer / 12, md: 0 },
+            p: { xs: 6, md: 0, },
           }}
         >
           <Typography
@@ -123,6 +123,7 @@ export default function Hero() {
             <KeyboardArrowDownIcon
               sx={{
                 color: tokens.colors.primary,
+                display: { xs: 'none', md: 'block' },
                 fontSize: 40,
                 animation: 'bounce 2s infinite',
                 '@keyframes bounce': {
