@@ -88,7 +88,7 @@ export default function Hero() {
             sx={{
               color: tokens.colors.text,
               mb: 4,
-              fontSize: { xs: 18, md: 20 },
+              fontSize: { xs: 16, md: 20 },
               lineHeight: 1.6,
               opacity: 0.9,
             }}
@@ -104,9 +104,9 @@ export default function Hero() {
               variant="contained"
               size="large"
               sx={{
-                py: 2,
-                px: 4,
-                fontSize: 18,
+                py: { xs: 1.5, md: 2 },
+                px: { xs: 3, md: 4 },
+                fontSize: { xs: 16, md: 18 },
                 fontWeight: 600,
                 boxShadow: tokens.shadows.large,
                 '&:hover': {
