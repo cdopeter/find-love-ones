@@ -136,15 +136,20 @@ function Footer() {
                 objectFit: 'contain',
               }}
               />
-              <Typography
-              variant="h6"
+              <Box
+              component="img"
+              src="/logos/yassuh-logo.png"
+              alt="Yassuh Logo"
               sx={{
-                fontWeight: 'bold',
-                letterSpacing: 1,
+                height: 60,
+                width: '40%',
+                objectFit: 'contain',
+                backgroundColor: 'white',
+                padding: '4px',
+                px: 2,
+                borderRadius: '2px',
               }}
-              >
-              YASSUH
-              </Typography>
+              />
             </Stack>
             <Divider sx={{ my: 2, borderColor: 'rgba(255, 255, 255, 0.12)' }} />
             <Typography variant="h6" gutterBottom>
