@@ -174,14 +174,6 @@ export default function PersonDetailDrawer({
               </Typography>
               <Typography variant="body1">{request.parish}</Typography>
             </Box>
-            <Box>
-              <Typography variant="body2" color="text.secondary">
-                Last Known Address
-              </Typography>
-              <Typography variant="body1">
-                {request.last_known_address}
-              </Typography>
-            </Box>
           </Stack>
         </Box>
 
@@ -198,22 +190,6 @@ export default function PersonDetailDrawer({
               <Typography variant="body1">
                 {request.requester_first_name} {request.requester_last_name}
               </Typography>
-            </Box>
-            {request.requester_phone && (
-              <Box>
-                <Typography variant="body2" color="text.secondary">
-                  Phone
-                </Typography>
-                <Typography variant="body1">
-                  {request.requester_phone}
-                </Typography>
-              </Box>
-            )}
-            <Box>
-              <Typography variant="body2" color="text.secondary">
-                Email
-              </Typography>
-              <Typography variant="body1">{request.requester_email}</Typography>
             </Box>
           </Stack>
         </Box>

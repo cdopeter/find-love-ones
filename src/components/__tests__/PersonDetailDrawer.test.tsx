@@ -51,7 +51,10 @@ describe('PersonDetailDrawer', () => {
     expect(screen.getByText('Person Details')).toBeInTheDocument();
     expect(screen.getByText('John')).toBeInTheDocument();
     expect(screen.getByText('Doe')).toBeInTheDocument();
-    expect(screen.getByText('Kingston Downtown')).toBeInTheDocument();
+    // Address, email, and phone should not be displayed
+    expect(screen.queryByText('Kingston Downtown')).not.toBeInTheDocument();
+    expect(screen.queryByText('jane@example.com')).not.toBeInTheDocument();
+    expect(screen.queryByText('876-123-4567')).not.toBeInTheDocument();
   });
 
   it('does not render when closed', () => {

@@ -27,6 +27,7 @@ export interface MissingPersonRequest {
   parish: string;
   lat?: number | null;
   lng?: number | null;
+  location_status?: 'found' | 'unknown' | 'missing' | null;
 
   // Requester information
   requester_first_name: string;
