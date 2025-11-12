@@ -95,45 +95,6 @@ function DashboardContent() {
     updateParams({ showParishOverlay: !params.showParishOverlay });
   };
 
-  const handleStatusUpdate = async (
-    id: string,
-    newStatus: 'open' | 'closed'
-  ) => {
-    try {
-      const { supabase } = await import('@/lib/supabase');
-      const { error: updateError } = await supabase
-        .from('requests')
-        .update({ status: newStatus })
-        .eq('id', id);
-
-      if (updateError) throw updateError;
-
-      // Update local state
-      setRequests((prev) =>
-        prev.map((req) =>
-          req.id === id
-            ? {
-                ...req,
-                status: newStatus,
-              }
-            : req
-        )
-      );
-      setSnackbar({
-        open: true,
-        message: 'Status updated successfully',
-        severity: 'success',
-      });
-    } catch (err) {
-      console.error('Error updating status:', err);
-      setSnackbar({
-        open: true,
-        message: 'Failed to update status',
-        severity: 'error',
-      });
-    }
-  };
-
   const handleMessageUpdate = async (id: string, message: string) => {
     try {
       const { supabase } = await import('@/lib/supabase');
@@ -270,7 +231,6 @@ function DashboardContent() {
           </Typography>
           <DashboardTable
             requests={filteredRequests}
-            onStatusUpdate={handleStatusUpdate}
             onRowClick={handleRowClick}
           />
         </Paper>
@@ -280,7 +240,6 @@ function DashboardContent() {
           request={selectedRequest}
           open={drawerOpen}
           onClose={handleDrawerClose}
-          onStatusUpdate={handleStatusUpdate}
           onMessageUpdate={handleMessageUpdate}
         />
 
