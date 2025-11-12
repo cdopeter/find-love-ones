@@ -65,9 +65,24 @@ export default function DashboardTable({
         header: 'Parish',
         cell: (info) => info.getValue(),
       }),
-      columnHelper.accessor('last_known_address', {
-        header: 'Last Known Address',
-        cell: (info) => info.getValue(),
+      columnHelper.accessor('location_status', {
+        header: 'Location Status',
+        cell: (info) => {
+          const value = info.getValue();
+          if (!value) return <Chip label="Unknown" size="small" />;
+          const colorMap = {
+            found: 'success' as const,
+            unknown: 'default' as const,
+            missing: 'error' as const,
+          };
+          return (
+            <Chip
+              label={value.charAt(0).toUpperCase() + value.slice(1)}
+              color={colorMap[value]}
+              size="small"
+            />
+          );
+        },
       }),
       columnHelper.accessor('status', {
         header: 'Status',
@@ -139,7 +154,7 @@ export default function DashboardTable({
         <TextField
           fullWidth
           size="small"
-          placeholder="Search by name, parish, or location..."
+          placeholder="Search by name or parish..."
           value={globalFilter ?? ''}
           onChange={(e) => setGlobalFilter(e.target.value)}
         />
