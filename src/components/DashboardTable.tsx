@@ -19,8 +19,6 @@ import {
   TableHead,
   TableRow,
   Paper,
-  Select,
-  MenuItem,
   Chip,
   Box,
   IconButton,
@@ -28,12 +26,11 @@ import {
   TextField,
 } from '@mui/material';
 import { ArrowUpward, ArrowDownward } from '@mui/icons-material';
-import { MissingPersonRequest, RequestStatus } from '@/lib/types/database';
+import { MissingPersonRequest } from '@/lib/types/database';
 import { useState } from 'react';
 
 interface DashboardTableProps {
   requests: MissingPersonRequest[];
-  onStatusUpdate: (id: string, status: RequestStatus) => void;
   onRowClick: (request: MissingPersonRequest) => void;
 }
 
@@ -41,7 +38,6 @@ const columnHelper = createColumnHelper<MissingPersonRequest>();
 
 export default function DashboardTable({
   requests,
-  onStatusUpdate,
   onRowClick,
 }: DashboardTableProps) {
   const [sorting, setSorting] = useState<SortingState>([]);
@@ -84,34 +80,7 @@ export default function DashboardTable({
           );
         },
       }),
-      columnHelper.accessor('status', {
-        header: 'Status',
-        cell: (info) => {
-          const row = info.row.original;
-          if (!row.id) return <Chip label="Unknown" size="small" />;
-          return (
-            <Select
-              value={info.getValue()}
-              onChange={(e) => {
-                e.stopPropagation();
-                if (row.id) {
-                  onStatusUpdate(row.id, e.target.value as RequestStatus);
-                }
-              }}
-              size="small"
-              sx={{ minWidth: 120 }}
-              onClick={(e) => e.stopPropagation()}
-            >
-              <MenuItem value="open">
-                <Chip label="Open" color="warning" size="small" />
-              </MenuItem>
-              <MenuItem value="closed">
-                <Chip label="Closed" color="success" size="small" />
-              </MenuItem>
-            </Select>
-          );
-        },
-      }),
+
       columnHelper.accessor(
         (row) => `${row.requester_first_name} ${row.requester_last_name}`,
         {
@@ -128,7 +97,7 @@ export default function DashboardTable({
         },
       }),
     ],
-    [onStatusUpdate]
+    []
   );
 
   const table = useReactTable({

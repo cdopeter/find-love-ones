@@ -15,13 +15,15 @@ import MenuItem from '@mui/material/MenuItem';
 import HomeIcon from '@mui/icons-material/Home';
 import AddIcon from '@mui/icons-material/Add';
 import SearchIcon from '@mui/icons-material/Search';
+import DashboardIcon from '@mui/icons-material/Dashboard';
 
 const OPD_LOGO_URL = 'https://opd.gov.jm/wp-content/uploads/2020/07/logo-2020.png';
 
 const pages = [
   { label: 'Home', href: '/', icon: HomeIcon },
   { label: 'Submit Request', href: '/request', icon: AddIcon },
-  { label: 'Tracker', href: '/tracker', icon: SearchIcon },
+  { label: 'Search', href: '/dashboard', icon: SearchIcon },
+  { label: 'Tracker', href: '/tracker', icon: DashboardIcon },
 ];
 
 function Navigation() {
@@ -113,18 +115,23 @@ function Navigation() {
               onClose={handleCloseNavMenu}
               sx={{ display: { xs: 'block', md: 'none' } }}
             >
-              {pages.map((page) => (
-                <MenuItem
-                  key={page.label}
-                  onClick={handleCloseNavMenu}
-                  component={Link}
-                  href={page.href}
-                >
-                  <Typography sx={{ textAlign: 'center' }}>
-                    {page.label}
-                  </Typography>
-                </MenuItem>
-              ))}
+              {pages.map((page) => {
+                const IconComponent = page.icon;
+                return (
+                  <MenuItem
+                    key={page.label}
+                    onClick={handleCloseNavMenu}
+                    component={Link}
+                    href={page.href}
+                    sx={{ display: 'flex', alignItems: 'center', gap: 1 }}
+                  >
+                    <IconComponent sx={{ fontSize: 20 }} />
+                    <Typography sx={{ textAlign: 'center' }}>
+                      {page.label}
+                    </Typography>
+                  </MenuItem>
+                );
+              })}
             </Menu>
           </Box>
           <Box

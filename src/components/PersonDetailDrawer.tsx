@@ -9,9 +9,6 @@ import {
   Divider,
   Button,
   TextField,
-  Select,
-  MenuItem,
-  FormControl,
   Alert,
   Stack,
   CircularProgress,
@@ -19,7 +16,6 @@ import {
 import { Close as CloseIcon, Save as SaveIcon } from '@mui/icons-material';
 import {
   MissingPersonRequest,
-  RequestStatus,
   FoundUpdate,
 } from '@/lib/types/database';
 
@@ -27,7 +23,6 @@ interface PersonDetailDrawerProps {
   request: MissingPersonRequest | null;
   open: boolean;
   onClose: () => void;
-  onStatusUpdate: (id: string, status: RequestStatus) => void;
   onMessageUpdate: (id: string, message: string) => void;
 }
 
@@ -35,7 +30,6 @@ export default function PersonDetailDrawer({
   request,
   open,
   onClose,
-  onStatusUpdate,
   onMessageUpdate,
 }: PersonDetailDrawerProps) {
   const [editingMessage, setEditingMessage] = useState(false);
@@ -80,12 +74,6 @@ export default function PersonDetailDrawer({
       setTimeout(() => setSaveSuccess(false), 3000);
       // Refresh the updates list
       await fetchFoundUpdates();
-    }
-  };
-
-  const handleStatusChange = (newStatus: RequestStatus) => {
-    if (request?.id) {
-      onStatusUpdate(request.id, newStatus);
     }
   };
 
@@ -142,22 +130,6 @@ export default function PersonDetailDrawer({
                   {request.target_last_name}
                 </Typography>
               </Box>
-            </Box>
-            <Box>
-              <Typography variant="body2" color="text.secondary">
-                Status
-              </Typography>
-              <FormControl fullWidth size="small">
-                <Select
-                  value={request.status}
-                  onChange={(e) =>
-                    handleStatusChange(e.target.value as RequestStatus)
-                  }
-                >
-                  <MenuItem value="open">Open</MenuItem>
-                  <MenuItem value="closed">Closed</MenuItem>
-                </Select>
-              </FormControl>
             </Box>
           </Stack>
         </Box>
