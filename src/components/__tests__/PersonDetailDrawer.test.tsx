@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest';
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import PersonDetailDrawer from '@/components/PersonDetailDrawer';
 import { MissingPersonRequest } from '@/lib/types/database';
@@ -34,7 +34,6 @@ describe('PersonDetailDrawer', () => {
   };
 
   const mockOnClose = vi.fn();
-  const mockOnStatusUpdate = vi.fn();
   const mockOnMessageUpdate = vi.fn();
 
   it('renders person details when open', () => {
@@ -43,7 +42,6 @@ describe('PersonDetailDrawer', () => {
         request={mockRequest}
         open={true}
         onClose={mockOnClose}
-        onStatusUpdate={mockOnStatusUpdate}
         onMessageUpdate={mockOnMessageUpdate}
       />
     );
@@ -63,7 +61,6 @@ describe('PersonDetailDrawer', () => {
         request={mockRequest}
         open={false}
         onClose={mockOnClose}
-        onStatusUpdate={mockOnStatusUpdate}
         onMessageUpdate={mockOnMessageUpdate}
       />
     );
@@ -77,7 +74,6 @@ describe('PersonDetailDrawer', () => {
         request={null}
         open={true}
         onClose={mockOnClose}
-        onStatusUpdate={mockOnStatusUpdate}
         onMessageUpdate={mockOnMessageUpdate}
       />
     );
@@ -92,7 +88,6 @@ describe('PersonDetailDrawer', () => {
         request={mockRequest}
         open={true}
         onClose={mockOnClose}
-        onStatusUpdate={mockOnStatusUpdate}
         onMessageUpdate={mockOnMessageUpdate}
       />
     );
@@ -103,30 +98,5 @@ describe('PersonDetailDrawer', () => {
     await user.click(closeButton);
 
     expect(mockOnClose).toHaveBeenCalled();
-  });
-
-  it('allows status update', async () => {
-    const user = userEvent.setup();
-    render(
-      <PersonDetailDrawer
-        request={mockRequest}
-        open={true}
-        onClose={mockOnClose}
-        onStatusUpdate={mockOnStatusUpdate}
-        onMessageUpdate={mockOnMessageUpdate}
-      />
-    );
-
-    // Find and click status select
-    const statusSelect = screen.getByRole('combobox');
-    await user.click(statusSelect);
-
-    // Select 'closed' status
-    const closedOption = await screen.findByRole('option', { name: /closed/i });
-    await user.click(closedOption);
-
-    await waitFor(() => {
-      expect(mockOnStatusUpdate).toHaveBeenCalledWith('123', 'closed');
-    });
   });
 });

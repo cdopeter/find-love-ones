@@ -4,7 +4,6 @@ import DashboardTable from '@/components/DashboardTable';
 import { MissingPersonRequest } from '@/lib/types/database';
 
 describe('DashboardTable', () => {
-  const mockOnStatusUpdate = vi.fn();
   const mockOnRowClick = vi.fn();
 
   const mockRequests: MissingPersonRequest[] = [
@@ -54,7 +53,6 @@ describe('DashboardTable', () => {
     render(
       <DashboardTable
         requests={mockRequests}
-        onStatusUpdate={mockOnStatusUpdate}
         onRowClick={mockOnRowClick}
       />
     );
@@ -72,7 +70,6 @@ describe('DashboardTable', () => {
     render(
       <DashboardTable
         requests={mockRequests}
-        onStatusUpdate={mockOnStatusUpdate}
         onRowClick={mockOnRowClick}
       />
     );
@@ -89,7 +86,6 @@ describe('DashboardTable', () => {
     render(
       <DashboardTable
         requests={mockRequests}
-        onStatusUpdate={mockOnStatusUpdate}
         onRowClick={mockOnRowClick}
       />
     );
@@ -99,7 +95,6 @@ describe('DashboardTable', () => {
     expect(screen.getByText('Last Name')).toBeInTheDocument();
     expect(screen.getByText('Parish')).toBeInTheDocument();
     expect(screen.getByText('Location Status')).toBeInTheDocument();
-    expect(screen.getByText('Status')).toBeInTheDocument();
     expect(screen.getByText('Requester')).toBeInTheDocument();
     expect(screen.getByText('Reported')).toBeInTheDocument();
   });
@@ -108,7 +103,6 @@ describe('DashboardTable', () => {
     render(
       <DashboardTable
         requests={mockRequests}
-        onStatusUpdate={mockOnStatusUpdate}
         onRowClick={mockOnRowClick}
       />
     );
